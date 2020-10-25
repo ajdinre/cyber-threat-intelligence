@@ -1,1 +1,1 @@
-# cyber-threat-intelligence
+# Cyber Threat Intelligence

@@ -3,6 +3,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from .forms import UploadFileForm
 from django.contrib import messages
+from cti.models import IP
 
 # Imaginary function to handle an uploaded file.
 #from somewhere import handle_uploaded_file
@@ -27,3 +28,8 @@ def upload(request):
     else:
         form = UploadFileForm()
     return render(request, 'cti/upload.html', {'form': form})
+
+def test_sql(request):
+    ips = IP.objects.all
+    return render(request, 'cti/test_sql.html', {'ips': ips})
+

@@ -71,15 +71,18 @@ TEMPLATES = [
 WSGI_APPLICATION = 'django_project.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/3.1/ref/settings/#databases
+#Za spajanje na bazu se koristi adapter psycopg2
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME':  'cti_db',
+        'USER': 'postgres',
+        'PASSWORD': '1234',
+        'HOST': 'localhost'
     }
 }
+
 
 
 # Password validation

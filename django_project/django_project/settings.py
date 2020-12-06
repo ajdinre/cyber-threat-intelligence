@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [
@@ -126,3 +127,8 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'upload')
+LOGIN_REDIRECT_URL = 'cti-home'
+
+LOGIN_URL = 'cti-login'
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'

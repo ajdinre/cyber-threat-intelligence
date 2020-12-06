@@ -1,9 +1,11 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
-from .forms import UploadFileForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .forms import UserRegisterForm
+from django.http import HttpResponseRedirect
+from .forms import UploadFileForm
+from cti.models import IP
 
 # Imaginary function to handle an uploaded file.
 #from somewhere import handle_uploaded_file

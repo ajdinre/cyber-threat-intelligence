@@ -1,0 +1,22 @@
+{% extends "cti/base.html" %} {% block content %}
+<div class="container">
+    <h1>SQL db test</h1>
+    <h2>example list of bad ips:</h2>
+    <table class="table table-dark">
+        <thead>
+            <tr>
+                <th scope="col">id</th>
+                <th scope="col">adress</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for ip in ips %}
+            <tr>
+                <th scope="row">{{ip.id}}</th>
+                <td>{{ip.ip_adress}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock content%}

@@ -6,14 +6,14 @@
         <thead>
             <tr>
                 <th scope="col">id</th>
-                <th scope="col">adress</th>
+                <th scope="col">address</th>
             </tr>
         </thead>
         <tbody>
             {% for ip in ips %}
             <tr>
                 <th scope="row">{{ip.id}}</th>
-                <td>{{ip.ip_adress}}</td>
+                <td>{{ip.ip_address}}</td>
             </tr>
             {% endfor %}
         </tbody>

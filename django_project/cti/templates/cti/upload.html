@@ -19,15 +19,17 @@
                 {% csrf_token %}
                 <div class="input-group-prepend">
                     <div class="input-group">
-                        <input
-                            id="input-b3"
-                            name="file"
-                            type="file"
-                            class="form-control-file"
-                            data-show-upload="false"
-                            data-show-caption="true"
-                            data-msg-placeholder="Select file for upload..."
-                        />
+                        <div class="">
+                            <input
+                                id="input-b3"
+                                name="file"
+                                type="file"
+                                class="form-control-file"
+                                data-show-upload="false"
+                                data-show-caption="true"
+                                data-msg-placeholder="Select file for upload..."
+                            />
+                        </div>
                     </div>
 
                     <button type="submit" class="btn btn-dark">Pohrani</button>

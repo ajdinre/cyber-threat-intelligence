@@ -1,6 +1,7 @@
 #!/usr/bin/python
 import os
 from cti.models import IP
+from cti.models import Log_line
 import ipinfo 
 access_token = '229cd8582fb43a'
 
@@ -87,11 +88,34 @@ def analyze(filename):
         lines[i] = lines[i].rstrip()
     
 
-    uniqueIPs = []
-    uniqueIPs = IPFilter(lines)
-    saveIPs(uniqueIPs)
+    #uniqueIPs = []
+    #uniqueIPs = IPFilter(lines)
+    #saveIPs(uniqueIPs)
 
+    for i in range(len(lines)):
+        line = lines[i]
+        details = line.split()
+        ip_address = details[0]
+        timestamp = details[3][1:]
+        requestMethod = details[5][1:]
+        path = details[6]
+        httpVersion = details[7][-4:-1]
+        response = details[8]
+        sizeInBytes = details[9]
+        temp_log_line = Log_line( ip_address = IP.objects.get(address = ip_address),
+                 timestamp = timestamp,
+                 requestMethod = requestMethod,
+                 path = path,
+                 httpVersion = httpVersion,
+                 response = response,
+                 sizeInBytes = sizeInBytes)
+        temp_log_line.save()
 
+        #da mi ne popuni memoriju
+        if (i == 100):
+            return
+
+    
 
 
 if __name__ == "__main__":

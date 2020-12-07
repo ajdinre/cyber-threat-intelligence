@@ -15,3 +15,17 @@ class IP(models.Model):
 
 class Apache_log(models.Model):
     log_file = models.FileField()
+
+class Server_attack(models.Model):
+    server_name = models.CharField(max_length=32, null=False)
+    filehash = models.CharField(max_length=64, null=False)
+
+class Log_line(models.Model):
+    ip_address = models.ForeignKey(
+        IP, on_delete=models.CASCADE)
+    timestamp = models.CharField(max_length=32, null=True) #treba stavit u timestamp a ne string
+    requestMethod = models.CharField(max_length=7, null=True)
+    path = models.CharField(max_length=512, null=True)
+    httpVersion = models.CharField(max_length=32, null=True)
+    response = models.CharField(max_length=32, null=True)
+    sizeInBytes = models.CharField(max_length=32, null=True)

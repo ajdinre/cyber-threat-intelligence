@@ -75,6 +75,7 @@ WSGI_APPLICATION = 'django_project.wsgi.application'
 #Za spajanje na bazu se koristi adapter psycopg2
 
 DATABASES = {
+    
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME':  'cti_db',

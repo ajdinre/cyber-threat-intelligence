@@ -21,7 +21,6 @@ from cti import views as cti_views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('cti.urls')),
-    path('register/', cti_views.register, name='cti-register'),
     path('login/', auth_views.LoginView.as_view(template_name='cti/login.html'), name='cti-login'),
     path('logout/', auth_views.LogoutView.as_view(template_name='cti/logout.html'), name='cti-logout'),
 ]

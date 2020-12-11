@@ -5,6 +5,7 @@ from cti.models import Log_line
 import ipinfo 
 access_token = '229cd8582fb43a'
 
+
 def IPFilter(lines):
     uniqueIPs = []
     for i in range(len(lines)):
@@ -12,16 +13,12 @@ def IPFilter(lines):
             uniqueIPs.append(lines[i].split()[0])
     return uniqueIPs
 
+
 def getIPInfo(ip_address):
     global access_token
     handler = ipinfo.getHandler(access_token)
     details = handler.getDetails(ip_address)
     return details
-
-
-#def additionalInfo(lines, uniqueIPs):
-#    dictionaryInfo = {}
-#    return 
 
 
 def saveIPs(uniqueIPs):
@@ -73,7 +70,6 @@ def saveIPs(uniqueIPs):
         tempIP = IP(address = ipFromFile, hostname = hostname, city = city, region = region, country = country, countryname = countryname, org = org, postal = postal, timezone = timezone, latitude = latitude, longitude = longitude)
         tempIP.save()
 
-
 def analyze(filename):
     os.system('pwd')
     filename = str(filename)
@@ -86,11 +82,10 @@ def analyze(filename):
 
     for i in range(len(lines)):  # strip newline char
         lines[i] = lines[i].rstrip()
-    
 
-    #uniqueIPs = []
-    #uniqueIPs = IPFilter(lines)
-    #saveIPs(uniqueIPs)
+    uniqueIPs = []
+    uniqueIPs = IPFilter(lines)
+    saveIPs(uniqueIPs)
 
     for i in range(len(lines)):
         line = lines[i]
@@ -110,12 +105,6 @@ def analyze(filename):
                  response = response,
                  sizeInBytes = sizeInBytes)
         temp_log_line.save()
-
-        #da mi ne popuni memoriju
-        if (i == 100):
-            return
-
-    
 
 
 if __name__ == "__main__":

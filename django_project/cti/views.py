@@ -7,6 +7,8 @@ from .forms import UploadFileForm
 from cti.models import IP
 from .models import Apache_log
 from .log_analyzer import analyze
+import threading
+
 
 def home(request):
     return render(request, 'cti/home.html')
@@ -20,9 +22,9 @@ def upload(request):
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
             instance = Apache_log(log_file=request.FILES['file'])
-            instance.save()
-            print(instance.log_file) #ime fajla
-            analyze(instance.log_file)
+            
+            analyzeThread = threading.Thread(target=analyze, args=(instance.log_file,))
+            analyzeThread.start()
 
             messages.success(request, 'File is saved.')
         else:

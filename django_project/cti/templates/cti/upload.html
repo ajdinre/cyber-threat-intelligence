@@ -9,11 +9,10 @@
         </div>
         {% endif %}
         <div class="card-body">
-            <h1>Dodaj Apache log</h1>
+            <h1>Upload Apache log</h1>
             <br />
             <p class="card-text">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam
-                pharetra diam eget finibus imperdiet.
+                Please select an apache log file. Please note that analyzing takes some time.
             </p>
             <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
@@ -30,7 +29,7 @@
                         />
                     </div>
 
-                    <button type="submit" class="btn btn-dark">Pohrani</button>
+                    <button type="submit" class="btn btn-dark">Upload</button>
                 </div>
             </form>
         </div>

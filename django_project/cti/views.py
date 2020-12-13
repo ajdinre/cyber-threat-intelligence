@@ -8,11 +8,17 @@ from cti.models import IP
 from .models import Apache_log
 from .log_analyzer import analyze
 import threading
+import os 
 
 
 def home(request):
     return render(request, 'cti/home.html')
 
+@login_required
+def uploaded_files(request):
+    file_list = Apache_log.objects.all()
+    path="media"
+    return render(request, 'cti/uploaded_files.html', {'files': file_list})
 
 @login_required
 def upload(request):
@@ -22,7 +28,7 @@ def upload(request):
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
             instance = Apache_log(log_file=request.FILES['file'])
-            
+            instance.save()
             analyzeThread = threading.Thread(target=analyze, args=(instance.log_file,))
             analyzeThread.start()
 

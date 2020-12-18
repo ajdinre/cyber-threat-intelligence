@@ -15,6 +15,7 @@ class IP(models.Model):
 
 class Apache_log(models.Model):
     log_file = models.FileField()
+    created = models.DateTimeField(auto_now_add=True)
 
 class Server_attack(models.Model):
     server_name = models.CharField(max_length=32, null=False)

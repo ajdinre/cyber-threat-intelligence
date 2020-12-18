@@ -7,7 +7,6 @@
                   <th scope="col">#</th>
                   <th scope="col">File name</th>
                   <th scope="col">Timestamp</th>
-                  <th scope="col">File hash (sha256)</th>
                 </tr>
             </thead>
             <tbody>    
@@ -15,8 +14,7 @@
         <tr>
             <th scope="row">{{file.id}}</th>
             <td><a href="{{file.log_file.url}}">{{file.log_file}}</a></td>
-            <td>13.12.2020 10:53:22</td>
-            <td>8024c8910cf51321a7a50c95564ae361d6dd2e93f34fab150014255471108f88</td>
+            <td>{{file.created}}</td>
           </tr>
           {% endfor %}
         </tbody>

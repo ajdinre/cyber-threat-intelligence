@@ -10,7 +10,7 @@ from .log_analyzer import analyze
 import threading
 import os 
 
-
+@login_required
 def home(request):
     return render(request, 'cti/home.html')
 
@@ -19,6 +19,18 @@ def uploaded_files(request):
     file_list = Apache_log.objects.all()
     path="media"
     return render(request, 'cti/uploaded_files.html', {'files': file_list})
+
+@login_required
+def search_ip(request):
+    query = request.GET.get('ip') 
+    if (query != None):
+        ips = IP.objects.filter(address__contains=query)
+    else:
+        ips = None
+
+    path="search/ip"
+    return render(request, 'cti/search_ips.html', {'ips': ips})
+
 
 @login_required
 def upload(request):

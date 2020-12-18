@@ -1,0 +1,53 @@
+{% extends "cti/base.html" %}
+{% block content %}
+<div class="container">
+    <div class="card mt-3">
+        <div class="card-body">
+            <h1>IP search</h1>
+            <form method="get">
+                {% csrf_token %}
+                    <div class="input-group mb-3">
+                        <input type="text" name="ip" class="form-control" placeholder="Please enter an IP address">
+                        <button type="submit" class="btn btn-dark ml-3">Search</button>
+                    </div>
+                   
+                </div>
+            </form>
+            <div style="overflow: scroll; white-space: nowrap;">
+                <table class="table mt-3">
+                    <thead>
+                        <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">IP adress</th>
+                        <th scope="col">Country</th>
+                        <th scope="col">Country Name</th>
+                        <th scope="col">Hostname</th>
+                        <th scope="col">City</th>
+                        <th scope="col">Region</th>
+                        <th scope="col">Org</th>
+                        <th scope="col">Postal</th>
+                        <th scope="col">Timezone</th>
+                        </tr>
+                    </thead>
+                    <tbody>    
+                    {% for ip in ips %}
+                    <tr>
+                        <th scope="row">{{ip.id}}</th>
+                        <td>{{ip.address}}</td>
+                        <td>{{ip.country}}</td>
+                        <td>{{ip.countryname}}</td>
+                        <td>{{ip.hostname}}</td>
+                        <td>{{ip.city}}</td>
+                        <td>{{ip.region}}</td>
+                        <td>{{ip.org}}</td>
+                        <td>{{ip.postal}}</td>
+                        <td>{{ip.timezone}}</td>
+
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+        </div>
+    </div>
+</div>
+{% endblock content%}

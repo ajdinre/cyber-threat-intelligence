@@ -8,13 +8,13 @@
                 {% csrf_token %}
                     <div class="input-group mb-3">
                         <input type="text" name="ip" class="form-control" placeholder="Please enter an IP address">
-                        <button type="submit" class="btn btn-dark ml-3">Search</button>
+                        <button type="submit" class="btn btn-info ml-3">Search</button>
                     </div>
                    
                 </div>
             </form>
             <div style="overflow: scroll; white-space: nowrap;">
-                <table class="table mt-3">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                         <tr>
                         <th scope="col">#</th>

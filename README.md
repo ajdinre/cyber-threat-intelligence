@@ -30,14 +30,15 @@ postgres-#     ENCODING = 'UTF-8';
 CREATE DATABASE
 postgres=# 
 ```
-5. Install the  pip packages from requirements.txt 
-```
-$ pip install -r requirements.txt
-```
-6. Clone this repository and enter it
+4. Clone this repository and enter it
 ```
 $ git clone https://github.com/ajdintrejic/cyber-threat-intelligence.git
 $ cd cyber-threat-intelligence
+```
+
+5. Install the  pip packages from requirements.txt 
+```
+$ pip install -r requirements.txt
 ```
 
 7. Enter the Django directory and migrate

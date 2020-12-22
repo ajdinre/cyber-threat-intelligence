@@ -1,6 +1,10 @@
 
 #makni upload folder
 django_project/upload/
+django_project/media/
+django_project/cti/__pycache__/
+
+django_project/.DS_Store
 
 #Ovo ispod sam pokupio s interneta
 

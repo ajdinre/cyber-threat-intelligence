@@ -30,11 +30,9 @@ postgres-#     ENCODING = 'UTF-8';
 CREATE DATABASE
 postgres=# 
 ```
-5. Install the following pip packages (NOTE: this will be added to requirements.txt later)
+5. Install the  pip packages from requirements.txt 
 ```
-django
-pycopg2
-django-crispy-forms
+$ pip install -r requirements.txt
 ```
 6. Clone this repository and enter it
 ```

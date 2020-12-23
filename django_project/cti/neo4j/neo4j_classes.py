@@ -18,6 +18,25 @@ def create_node(class_name, attributes):
     db = Database("bolt://localhost:7687", "neo4j", "password")
     return db.query(query_string)
 
+
+#creates a node only if the node with the same name and exact same attributes doesn't already exist
+# if it exists, that node is returned
+#e.g. MERGE (charlie { name: 'Charlie Sheen', age: 10 }) RETURN charlie
+def create_if_not_exist(class_name, attributes):
+    i = 0
+    query_string = 'MERGE(label' + ':' + class_name + '{'
+    for attribute in attributes:
+        if i == 0:
+            query_string += attribute + ': "' + attributes[attribute] + '"'
+        else:
+            query_string += ', ' + attribute + ': "' + attributes[attribute] + '"'
+        i += 1
+    query_string += '}) RETURN label'
+
+    db = Database("bolt://localhost:7687", "neo4j", "password")
+    return db.query(query_string)
+
+
 #metoda stvara vezu između čvorova tipa first_node_name i second_node_name
 # metoda prvou bazi traži čvorove tih tipova sa atributima zadanim s first_node i second_node
 # ako takvih nema, baca izniku????
@@ -46,6 +65,7 @@ def create_relationship(first_node_name, first_node, second_node_name, second_no
     db = Database("bolt://localhost:7687", "neo4j", "password")
     return db.query(query_string)
 
+
 #metoda vraća sve čvorove tipa class_name s atributima zadanim u attributes
 #klasa je ime čvora, parametri je dictionary sa where parametrima
 def get_nodes(class_name, attributes):
@@ -67,6 +87,30 @@ def get_nodes(class_name, attributes):
 #        "method": "GET"
 #}
 #print(test('Request', mydict))
+
+#vraća sve čvorove koji su u bazi
+def get_all():
+    query_string = 'MATCH (a) RETURN (a)'
+    db = Database("bolt://localhost:7687", "neo4j", "password")
+    return db.query(query_string)
+
+#returns a list of properties on the node
+#known_properties is a dictionary of at least one node property
+#e.g. MATCH (a) WHERE a.name = '' RETURN keys(a)
+def get_attributes(known_properties):
+    i = 0
+    query_string = 'MATCH(a) WHERE a.'
+    for known_property in known_properties:
+        if i == 0:
+            query_string += known_property + ' = "' + known_properties[known_property] + '"'
+        else:
+            query_string += ' AND a.' + known_property + ' = "' + known_properties[known_property] + '"'
+    query_string += 'RETURN keys(a)'
+
+    db = Database("bolt://localhost:7687", "neo4j", "password")
+    result = db.query(query_string)
+    return result[0]['keys(a)']
+
 
 # metoda vraća sve requestove koje je poslala ip adresa
 def get_requests_for_ip(ip_address):

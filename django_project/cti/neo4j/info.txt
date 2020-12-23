@@ -1,0 +1,6 @@
+Kako isprobati neo4j bazu?
+1. https://neo4j.com/download/
+    instalirati neo4j desktop client
+2. stvoriti novu bazu sa imenom 'django' i lozinkom 'password'
+3. pokrenuti bazu
+4. ???

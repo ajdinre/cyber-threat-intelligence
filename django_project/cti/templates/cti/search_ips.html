@@ -31,19 +31,19 @@
                     </thead>
                     <tbody>    
                     {% for ip in ips %}
-                    <tr>
-                        <th scope="row">{{ip.id}}</th>
-                        <td>{{ip.address}}</td>
-                        <td>{{ip.country}}</td>
-                        <td>{{ip.countryname}}</td>
-                        <td>{{ip.hostname}}</td>
-                        <td>{{ip.city}}</td>
-                        <td>{{ip.region}}</td>
-                        <td>{{ip.org}}</td>
-                        <td>{{ip.postal}}</td>
-                        <td>{{ip.timezone}}</td>
+                        <tr>
+                            <th scope="row">{{ip.id}}</th>
+                            <td>{{ip.address}}</td>
+                            <td>{{ip.country}}</td>
+                            <td>{{ip.countryname}}</td>
+                            <td>{{ip.hostname}}</td>
+                            <td>{{ip.city}}</td>
+                            <td>{{ip.region}}</td>
+                            <td>{{ip.org}}</td>
+                            <td>{{ip.postal}}</td>
+                            <td>{{ip.timezone}}</td>
 
-                    </tr>
+                        </tr>
                     {% endfor %}
                     </tbody>
                 </table>

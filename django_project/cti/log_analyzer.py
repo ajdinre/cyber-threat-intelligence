@@ -3,7 +3,7 @@ import os
 from cti.models import IP
 from cti.models import Log_line
 import ipinfo 
-access_token = '229cd8582fb43a'
+access_token = '249b72c836625c'
 
 
 def IPFilter(lines):
@@ -66,14 +66,13 @@ def saveIPs(uniqueIPs):
             longitude = details.longitude
         except:
             longitude = None
-
         tempIP = IP(address = ipFromFile, hostname = hostname, city = city, region = region, country = country, countryname = countryname, org = org, postal = postal, timezone = timezone, latitude = latitude, longitude = longitude)
         tempIP.save()
 
 def analyze(filename):
     os.system('pwd')
     filename = str(filename)
-    path = 'upload/' + filename
+    path = 'media/' + filename
 
     lines = []
     with open(path, 'r') as f: 

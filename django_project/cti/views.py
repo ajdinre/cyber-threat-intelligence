@@ -3,8 +3,10 @@ from django.http import HttpResponseRedirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
+from django.db.models import Count
 from .forms import UploadFileForm
 from cti.models import IP
+from cti.models import Log_line
 from .models import Apache_log
 from .log_analyzer import analyze
 import threading
@@ -12,7 +14,16 @@ import os
 
 @login_required
 def home(request):
-    return render(request, 'cti/home.html')
+    # Get top countries by IP
+    TopCountriesByIP = IP.objects.values('countryname').annotate(c=Count('countryname')).order_by('-c')[:10]
+    # Number of IPs
+    numberOfIPs = IP.objects.count()
+    # Number of Requests
+    numberOfRequests = Log_line.objects.count()
+    # Number of Files
+    numberOfFiles = Apache_log.objects.count()
+    print(numberOfRequests)
+    return render(request, 'cti/home.html', {'TopCountriesByIP': TopCountriesByIP, 'numberOfIPs': numberOfIPs, 'numberOfRequests': numberOfRequests, 'numberOfFiles': numberOfFiles})
 
 @login_required
 def uploaded_files(request):

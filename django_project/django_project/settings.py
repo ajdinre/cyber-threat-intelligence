@@ -75,13 +75,20 @@ WSGI_APPLICATION = 'django_project.wsgi.application'
 
 #Za spajanje na bazu se koristi adapter psycopg2
 
+#za spajanje na bazu napišite ove komande u postgres
+
+# CREATE DATABASE cti_db;
+# CREATE USER cti_user WITH ENCRYPTED PASSWORD 'cti_password';
+# GRANT ALL PRIVILEGES ON DATABASE cti_db TO cti_user;
+
+
 DATABASES = {
     
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME':  'cti_db',
-        'USER': 'postgres',
-       'PASSWORD': '1234',
+        'USER': 'cti_user',
+       'PASSWORD': 'cti_password',
         'HOST': 'localhost',
         'PORT': '5432'
     }

@@ -1,0 +1,29 @@
+{% extends "cti/base.html" %} 
+{% block content %}
+
+<div class="container">
+    <div class="card mt-3">
+        <div class="card-body">
+            <h1>Profile details</h1>
+            <br />
+            <div class="container">
+                {% if user.userprofile.image %}
+                <img src="{{ 'user.userprofile.image.url' }}" width="240"> 
+                {% endif %}
+                <p>Security Clearance: {{ user.userprofile.security }}</p>
+                <p>Username: {{ user }}</p>
+                <p>First name: {{ user.first_name }}</p>
+                <p>Last name: {{ user.last_name }}</p>
+                <p>Employee status: {{ user.userprofile.employee_status }}</p>
+                <hr>
+                <p>Email: {{ user.email }}</p>
+                <p>Phone number: {{ user.userprofile.phone_no }}</p>
+                <p>Address: {{ user.userprofile.address }}</p>
+                <p>City: {{ user.userprofile.city }}</p>
+            
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content%}

@@ -3,7 +3,10 @@ import os
 from cti.models import IP
 from cti.models import Log_line
 import ipinfo 
-access_token = '249b72c836625c'
+#ajdin's token
+#access_token = '249b72c836625c'
+#kloncar's token
+access_token = '5a8dcf646a1d15'
 
 
 def IPFilter(lines):

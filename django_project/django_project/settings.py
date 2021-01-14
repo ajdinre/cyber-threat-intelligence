@@ -84,13 +84,13 @@ WSGI_APPLICATION = 'django_project.wsgi.application'
 
 DATABASES = {
     
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME':  'cti_db',
-        'USER': 'cti_user',
-       'PASSWORD': 'cti_password',
-        'HOST': 'localhost',
-        'PORT': '5432'
+   'default': {
+      'ENGINE': 'django.db.backends.postgresql',
+       'NAME':  'cti_db',
+       'USER': 'cti_user',
+      'PASSWORD': 'cti_password',
+       'HOST': 'localhost',
+       'PORT': '5432'
     }
 }
 

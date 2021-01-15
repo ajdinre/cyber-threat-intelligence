@@ -36,9 +36,39 @@ def uploaded_files(request):
 
 @login_required
 def search_ip(request):
-    query = request.GET.get('ip') 
+    query = request.GET.get('searchInput') 
+    # TODO: make a switch for every option then repeat query code based on that
+    
     if (query != None):
-        ips = IP.objects.filter(address__contains=query)
+        requestTag = request.GET.get('searchCategory')
+        if (requestTag =='ipAddress'):
+            ips = IP.objects.filter(address__contains=query)
+            
+        elif (requestTag =='countryCode'):
+            ips = IP.objects.filter(country__contains=query)
+
+        elif (requestTag =='countryName'):
+            ips = IP.objects.filter(countryname__contains=query)
+
+        elif (requestTag =='hostname'):
+            ips = IP.objects.filter(hostname__contains=query)
+
+        elif (requestTag =='city'):
+            ips = IP.objects.filter(city__contains=query)
+
+        elif (requestTag =='region'):
+            ips = IP.objects.filter(region__contains=query)
+
+        elif (requestTag =='org'):
+            ips = IP.objects.filter(org__contains=query)
+
+        elif (requestTag =='postal'):
+            ips = IP.objects.filter(postal__contains=query)
+
+        elif (requestTag =='timezone'):
+            ips = IP.objects.filter(timezone__contains=query)
+              
+
     else:
         ips = None
 

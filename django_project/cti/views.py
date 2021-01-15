@@ -57,11 +57,9 @@ def upload(request):
             server_name = form['servername'].value()
             file = request.FILES['file']
             server_data = {'server_name': str(server_name), 'file_name': str(file)}
-            #create_node('Server', server_data)
-            #instance = Apache_log(log_file=request.FILES['file'])
-            #instance.save()
-            #analyzeThread = threading.Thread(target=analyze, args=(instance.log_file,))
-            analyzeThread = threading.Thread(target=analyze, args=(file, server_data))
+            instance = Apache_log(log_file=request.FILES['file'])
+            instance.save()
+            analyzeThread = threading.Thread(target=analyze, args=(instance.log_file, server_data))
             analyzeThread.start()
 
             messages.success(request, 'File is saved.')

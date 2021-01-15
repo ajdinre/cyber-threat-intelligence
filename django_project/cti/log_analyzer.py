@@ -19,71 +19,63 @@ def getIPInfo(ip_address):
     global access_token
     handler = ipinfo.getHandler(access_token)
     details = handler.getDetails(ip_address)
-    ip_attributes = {
-        "ip_address": ip_address,
-        "hostname": details.hostname,
-        "city": details.city,
-        "region": details.region,
-        "country": details.country,
-        "countryname": details.country_name,
-        "org": details.org,
-        "postal": details.postal,
-        "timezone": details.timezone,
-        "latitude": details.latitude,
-        "longitude": details.longitude
-    }
-    return ip_attributes
+    return details
 
 
-def saveIPs(uniqueIPs):
+def saveIPs(uniqueIPs, server_data):
     for i in range(len(uniqueIPs)):
         ipFromFile = uniqueIPs[i]
-        ip_attributes = getIPInfo(ipFromFile)
+        details = getIPInfo(ipFromFile)
 
+        ip_attributes = {}
+        ip_attributes['ip_address'] = ipFromFile
+
+        try:
+            ip_attributes['hostname'] = details.hostname
+        except:
+            hostname = None
+        try:
+            ip_attributes['city'] = details.city
+        except:
+            city = None
+        try:
+            ip_attributes['region'] = details.region
+        except:
+            region = None
+        try:
+            ip_attributes['country'] = details.country
+        except:
+            country = None
+        try:
+            ip_attributes['countryname'] = details.countryname
+        except:
+            countryname = None
+        try:
+            ip_attributes['org'] = details.org
+        except:
+            org = None
+        try:
+            ip_attributes['postal'] = details.postal
+        except:
+            postal = None
+        try:
+            ip_attributes['timezone'] = details.timezone
+        except:
+            timezone = None
+        try:
+            ip_attributes['latitude'] = details.latitude
+        except:
+            latitude = None
+        try:
+            ip_attributes['longitude'] = details.longitude
+        except:
+            longitude = None
         create_node('IP', ip_attributes)
+        create_node('Server', server_data)
+        create_relationship('IP', ip_attributes, 'Server', server_data, 'HAS_ACCESSED')
 
-        # try:
-        #     hostname = details.hostname
-        # except:
-        #     hostname = None
-        # try:
-        #     city = details.city
-        # except:
-        #     city = None
-        # try:
-        #     region = details.region
-        # except:
-        #     region = None
-        # try:
-        #     country = details.country
-        # except:
-        #     country = None
-        # try:
-        #     countryname = details.country_name
-        # except:
-        #     countryname = None
-        # try:
-        #     org = details.org
-        # except:
-        #     org = None
-        # try:
-        #     postal = details.postal
-        # except:
-        #     postal = None
-        # try:
-        #     timezone = details.timezone
-        # except:
-        #     timezone = None
-        # try:
-        #     latitude = details.latitude
-        # except:
-        #     latitude = None
-        # try:
-        #     longitude = details.longitude
-        # except:
-        #     longitude = None
-        # tempIP = IP(address = ipFromFile, hostname = hostname, city = city, region = region, country = country, countryname = countryname, org = org, postal = postal, timezone = timezone, latitude = latitude, longitude = longitude)
-        # tempIP.save()
+        return ip_attributes
+
 
 def analyze(filename, server_data):
     os.system('pwd')
@@ -100,9 +92,7 @@ def analyze(filename, server_data):
 
     uniqueIPs = []
     uniqueIPs = IPFilter(lines)
-    saveIPs(uniqueIPs)
-
-    create_node('Server', server_data)
+    ip_attributes = saveIPs(uniqueIPs, server_data)
 
     for i in range(len(lines)):
         line = lines[i]
@@ -125,9 +115,7 @@ def analyze(filename, server_data):
         }
 
         create_node('Log_line', log_attributes)
-        ip_attributes = getIPInfo(ip_address)
-        get_nodes('IP', ip_attributes)
-        create_relationship('IP', ip_attributes, 'Log_line', log_attributes, 'HAS_LOG')
+        create_relationship('IP', ip_attributes, 'Log_line', log_attributes, 'HAS_SENT')
 
         # temp_log_line = Log_line( ip_address = IP.objects.get(address = ip_address),
         #          timestamp = timestamp,

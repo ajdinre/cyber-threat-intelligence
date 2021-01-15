@@ -10,7 +10,18 @@ A Django application for analyzing Apache logs for possible Denial-of-service at
 
 1. Install Postgres and Python
 
-2. Start the Postgres service
+2. Start the Postgres service and initialize the database cluster
+
+For Arch Linux
+```
+$ sudo -iu postgres
+$ initdb -D /var/lib/postgres/data
+$ exit
+```
+For Fedora
+```
+$ /usr/bin/postgresql-setup --initdb
+```
 
 On Linux:
 ```
@@ -19,7 +30,6 @@ $ sudo systemctl start postgresql.service
 
 3. Create a database "cti_db" in Postgres
 ```
-$ sudo postgresql-setup initdb          #initialize PG cluster
 $ sudo -iu postgres                     #switch to postgres user
 $ psql                                  #enter psql as postgres user
 psql (12.5)
@@ -29,13 +39,20 @@ postgres=# CREATE DATABASE cti_db;
 postgres=# CREATE USER cti_user WITH ENCRYPTED PASSWORD 'cti_password';
 postgres=# GRANT ALL PRIVILEGES ON DATABASE cti_db TO cti_user;
 ```
-4. Clone this repository and enter it
+4. Start neo4j database
+```
+Download neo4j from https://neo4j.com/download/
+Fill the form on the website with random data
+Create new database with name 'django' and password 'password'
+Start the database
+```
+5. Clone this repository and enter it
 ```
 $ git clone https://github.com/ajdintrejic/cyber-threat-intelligence.git
 $ cd cyber-threat-intelligence
 ```
 
-5. Install the  pip packages from requirements.txt 
+6. Install the  pip packages from requirements.txt 
 ```
 $ pip install -r requirements.txt
 ```

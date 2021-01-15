@@ -8,9 +8,9 @@ def create_node(class_name, attributes):
     i = 0
     query_string = 'CREATE(label' + ':' + class_name + '{'
     for attribute in attributes:
-        if i == 1:
+        if i == 0:
             query_string += attribute + ': "' + attributes[attribute] + '"'
-        elif i > 1:
+        else:
             query_string += ', ' + attribute + ': "' + attributes[attribute] + '"'
         i += 1
     query_string += '}) RETURN label'
@@ -80,7 +80,10 @@ def get_nodes(class_name, attributes):
     query_string += '}) RETURN label'
 
     db = Database("bolt://localhost:7687", "neo4j", "password")
-    return db.query(query_string)
+    result = []
+    for res in db.query(query_string):
+        result.append(res['label'])
+    return result
 #example
 #mydict = {
 #    "datetime": "30/Aug/2020:03:24:31",

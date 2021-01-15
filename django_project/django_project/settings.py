@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'crispy_forms',
+    'user_visit',
 ]
 
 MIDDLEWARE = [
@@ -50,6 +51,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'user_visit.middleware.UserVisitMiddleware',
 ]
 
 ROOT_URLCONF = 'django_project.urls'
@@ -84,15 +86,16 @@ WSGI_APPLICATION = 'django_project.wsgi.application'
 
 DATABASES = {
     
-   'default': {
-      'ENGINE': 'django.db.backends.postgresql',
+    'default': {
+       'ENGINE': 'django.db.backends.postgresql',
        'NAME':  'cti_db',
        'USER': 'cti_user',
       'PASSWORD': 'cti_password',
        'HOST': 'localhost',
-       'PORT': '5432'
-    }
+        'PORT': '5432'
+   }
 }
+
 
 
 

@@ -8,7 +8,12 @@ A Django application for analyzing Apache logs for possible Denial-of-service at
 
 ## How to run this app
 
-1. Install Postgres and Python
+1. Install Postgres, Python3 and Neo4J
+
+On Ubuntu:
+```
+sudo apt install neo4j-client postgresql python3 python-is-python3
+```
 
 2. Start the Postgres service
 

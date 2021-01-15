@@ -13,10 +13,15 @@
             <h1>Upload Apache log</h1>
             <br />
             <p class="card-text">
-                Please select an apache log file. Please note that analyzing takes some time.
+                Please enter the server name and select an apache log file. Please note that analyzing takes some time.
             </p>
             <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
+                <div>
+                    <label for="servername">Server name:</label><br>
+                    <input type="text" id="servername" name="servername"><br>
+                    <br><br>
+                </div>
                 <div class="input-group-prepend">
                     <div class="input-group">
                         <input

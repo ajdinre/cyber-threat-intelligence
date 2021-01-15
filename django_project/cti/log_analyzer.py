@@ -85,7 +85,7 @@ def saveIPs(uniqueIPs):
         # tempIP = IP(address = ipFromFile, hostname = hostname, city = city, region = region, country = country, countryname = countryname, org = org, postal = postal, timezone = timezone, latitude = latitude, longitude = longitude)
         # tempIP.save()
 
-def analyze(filename):
+def analyze(filename, server_data):
     os.system('pwd')
     filename = str(filename)
     path = 'media/' + filename
@@ -101,6 +101,8 @@ def analyze(filename):
     uniqueIPs = []
     uniqueIPs = IPFilter(lines)
     saveIPs(uniqueIPs)
+
+    create_node('Server', server_data)
 
     for i in range(len(lines)):
         line = lines[i]

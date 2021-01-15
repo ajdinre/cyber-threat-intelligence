@@ -14,21 +14,20 @@ A Django application for analyzing Apache logs for possible Denial-of-service at
 
 On Linux:
 ```
-$ systemctl start postgresql.service
+$ sudo systemctl start postgresql.service
 ```
 
 3. Create a database "cti_db" in Postgres
 ```
+$ sudo postgresql-setup initdb          #initialize PG cluster
 $ sudo -iu postgres                     #switch to postgres user
 $ psql                                  #enter psql as postgres user
 psql (12.5)
 Type "help" for help.
 
-postgres=# CREATE DATABASE cti_db       #create the database with the instructions from db.sql
-postgres-#     WITH OWNER = postgres
-postgres-#     ENCODING = 'UTF-8';
-CREATE DATABASE
-postgres=# 
+postgres=# CREATE DATABASE cti_db;
+postgres=# CREATE USER cti_user WITH ENCRYPTED PASSWORD 'cti_password';
+postgres=# GRANT ALL PRIVILEGES ON DATABASE cti_db TO cti_user;
 ```
 4. Clone this repository and enter it
 ```

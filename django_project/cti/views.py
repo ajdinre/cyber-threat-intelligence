@@ -7,6 +7,7 @@ from django.db.models import Count
 from .forms import UploadFileForm, EditProfileForm
 from cti.models import IP
 from cti.models import Log_line
+from cti.neo4j.neo4j_classes import create_node
 from .models import Apache_log
 from .log_analyzer import analyze
 import threading
@@ -53,9 +54,14 @@ def upload(request):
     elif request.method == 'POST':
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
-            instance = Apache_log(log_file=request.FILES['file'])
-            instance.save()
-            analyzeThread = threading.Thread(target=analyze, args=(instance.log_file,))
+            server_name = form['servername'].value()
+            file = request.FILES['file']
+            server_data = {'server_name': str(server_name), 'file_name': str(file)}
+            #create_node('Server', server_data)
+            #instance = Apache_log(log_file=request.FILES['file'])
+            #instance.save()
+            #analyzeThread = threading.Thread(target=analyze, args=(instance.log_file,))
+            analyzeThread = threading.Thread(target=analyze, args=(file, server_data))
             analyzeThread.start()
 
             messages.success(request, 'File is saved.')

@@ -10,6 +10,7 @@
                     <th scope="col">#</th>
                     <th scope="col">File name</th>
                     <th scope="col">Timestamp</th>
+                    <th scope="col">File information</th>
                     </tr>
                 </thead>
                 <tbody>    
@@ -18,6 +19,9 @@
                 <th scope="row">{{file.id}}</th>
                 <td><a href="{{file.log_file.url}}">{{file.log_file}}</a></td>
                 <td>{{file.created}}</td>
+                <td><form method="POST" action="{% url 'cti-file-info' %}">{% csrf_token %}
+                    <button type="submit" name="file_id" value="{{file.id}}" class="d-none d-sm-inline-block btn btn-sm btn-danger shadow-sm fas fa-download fa-sm text-white-50">
+                    </button></form></td>
             </tr>
             {% endfor %}
             </tbody>

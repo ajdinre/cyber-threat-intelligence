@@ -1,28 +1,29 @@
-{% extends "cti/base.html" %} 
-{% block content %}
+{% extends "cti/base.html" %} {% block content %}
 <div class="container">
-    <div class="card mt-3">
-        <div class="card-body">
-            <h1>Uploaded files</h1>
-            <table class="table">
-                <thead>
-                    <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">File name</th>
-                    <th scope="col">Timestamp</th>
-                    </tr>
-                </thead>
-                <tbody>    
-            {% for file in files %}
-            <tr>
-                <th scope="row">{{file.id}}</th>
-                <td><a href="{{file.log_file.url}}">{{file.log_file}}</a></td>
-                <td>{{file.created}}</td>
-            </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-        </div>
+  <div class="card mt-3">
+    <div class="card-body">
+      <h1>Uploaded files</h1>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">File name</th>
+            <th scope="col">Timestamp</th>
+            <th scope="col">Analyzed</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for file in files %}
+          <tr>
+            <th scope="row">{{file.id}}</th>
+            <td><a href="{{file.log_file.url}}">{{file.log_file}}</a></td>
+            <td>{{file.created}}</td>
+            <td>{{file.analyzed}}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
     </div>
+  </div>
 </div>
 {% endblock content%}

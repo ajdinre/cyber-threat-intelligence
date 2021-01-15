@@ -2,6 +2,8 @@
 import os
 from cti.models import IP
 from cti.models import Log_line
+from cti.models import Apache_log
+
 import ipinfo 
 access_token = '249b72c836625c'
 
@@ -24,6 +26,13 @@ def getIPInfo(ip_address):
 def saveIPs(uniqueIPs):
     for i in range(len(uniqueIPs)):
         ipFromFile = uniqueIPs[i]
+
+
+        #if the ip is in the database, don't add it again
+        if IP.objects.filter(address=ipFromFile).exists():
+            continue
+        
+
         details = getIPInfo(ipFromFile)
 
         try:
@@ -70,9 +79,11 @@ def saveIPs(uniqueIPs):
         tempIP.save()
 
 def analyze(filename):
+    print("filename1: " + str(filename))
+
     os.system('pwd')
-    filename = str(filename)
-    path = 'media/' + filename
+    filenameString = str(filename)
+    path = 'media/' + filenameString
 
     lines = []
     with open(path, 'r') as f: 
@@ -104,6 +115,11 @@ def analyze(filename):
                  response = response,
                  sizeInBytes = sizeInBytes)
         temp_log_line.save()
+
+        print("filename2 " + str(filenameString))
+        file = Apache_log.objects.get(log_file=filenameString) 
+        file.analyzed = True
+        file.save()
 
 
 if __name__ == "__main__":

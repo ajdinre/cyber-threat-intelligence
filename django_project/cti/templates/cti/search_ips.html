@@ -3,13 +3,13 @@
 <div class="container">
     <div class="card mt-3">
         <div class="card-body">
-            <h1>IP search</h1>
+            <h1>Search</h1>
             <!--TODO: Implement search by category drop down menu (DONE)
                       Selected option stays selected after search?-->
 
             <form method="get">
                 {% csrf_token %}
-                <select class="form-control" name="searchCategory">
+                <select class="form-control mb-3" name="searchCategory">
                     <option value="ipAddress">IP address</option>
                     <option value="countryCode">Country Code</option>
                     <option value="countryName">Country Name</option>

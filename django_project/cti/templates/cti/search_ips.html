@@ -3,11 +3,25 @@
 <div class="container">
     <div class="card mt-3">
         <div class="card-body">
-            <h1>IP search</h1>
+            <h1>Search</h1>
+            <!--TODO: Implement search by category drop down menu (DONE)
+                      Selected option stays selected after search?-->
+
             <form method="get">
                 {% csrf_token %}
+                <select class="form-control mb-3" name="searchCategory">
+                    <option value="ipAddress">IP address</option>
+                    <option value="countryCode">Country Code</option>
+                    <option value="countryName">Country Name</option>
+                    <option value="hostname">Hostname</option>
+                    <option value="city">City</option>
+                    <option value="region">Region</option>
+                    <option value="org">Org</option>  
+                    <option value="postal">Postal</option>
+                    <option value="timezone">Timezone</option>
+               </select>
                     <div class="input-group mb-3">
-                        <input type="text" name="ip" class="form-control" placeholder="Please enter an IP address">
+                        <input type="text" name="searchInput" class="form-control" placeholder="What you want to find?">
                         <button type="submit" class="btn btn-info ml-3">Search</button>
                     </div>
                    
@@ -18,8 +32,8 @@
                     <thead>
                         <tr>
                         <th scope="col">#</th>
-                        <th scope="col">IP adress</th>
-                        <th scope="col">Country</th>
+                        <th scope="col">IP address</th>
+                        <th scope="col">Country Code</th>
                         <th scope="col">Country Name</th>
                         <th scope="col">Hostname</th>
                         <th scope="col">City</th>

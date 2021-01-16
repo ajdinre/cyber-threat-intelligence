@@ -14,6 +14,7 @@ On Ubuntu:
 ```
 sudo apt install neo4j-client postgresql python3 python-is-python3
 ```
+https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-neo4j-on-ubuntu-20-04
 
 2. Start the Postgres service
 

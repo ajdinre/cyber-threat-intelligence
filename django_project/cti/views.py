@@ -1,10 +1,10 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.db.models import Count
-from .forms import UploadFileForm, EditProfileForm
+from .forms import UploadFileForm, EditProfileForm, AddressForm, StatisticsForm
 from cti.models import IP
 from cti.models import Log_line
 from .models import Apache_log
@@ -14,6 +14,9 @@ import os
 from django.urls import reverse
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
+from django.template.loader import get_template
+from .pdf_generator import render_to_pdf
+from cti.neo4j.neo4j_classes import get_nodes, get_requests_for_ip
 
 @login_required
 def home(request):
@@ -137,3 +140,97 @@ def change_password(request):
 
         args = {'form': form}
         return render(request, 'cti/change_password.html', args)
+
+@login_required
+def report(request):
+    if request.method == 'POST':
+        if 'htmlST' in request.POST or 'pdfST' in request.POST:
+            form = StatisticsForm(request.POST)
+        else:
+            form = AddressForm(request.POST)
+        if form.is_valid():
+            if 'htmlST' in request.POST or 'pdfST' in request.POST:
+                param = form.cleaned_data['parameter']
+                value = form.cleaned_data['value']
+
+                try:
+                    if param == "Country":
+                        data = IP.objects.filter(countryname=value)
+                    elif param == "City":
+                        data = IP.objects.filter(city=value)
+                    elif param == "Region":
+                        data = IP.objects.filter(region=value)
+                    elif param == "Request method":
+                        log_ip = Log_line.objects.filter(requestMethod=value).values_list('ip_address_id', flat=True).distinct()
+                        data = IP.objects.filter(id__in=log_ip)
+                    if not data:
+                        raise IP.DoesNotExist
+                    template = get_template('cti/statisticsReport.html')
+                    context = {
+                        "data" : data,
+                        "parameter" : param,
+                        "count" : data.count(),
+                        "value" : value,
+                    }
+
+                    html = template.render(context)
+                    if 'htmlST' in request.POST:
+                        return HttpResponse(html)
+
+                    pdf = render_to_pdf('cti/statisticsReport.html', context)
+                    if pdf:
+                        response = HttpResponse(pdf, content_type='application/pdf')
+                        content = "attachment; filename='Report.pdf'"
+                        download = request.GET.get("download")
+                        response['Content-Disposition'] = content
+                        return response
+                    return HttpResponse("Not found")
+                except(IP.DoesNotExist):
+                    messages.warning(request, 'Invalid input.')
+            else:
+                address = form.cleaned_data['address']
+                try:
+                    data = IP.objects.get(address=address)
+                    id = data.id
+                    data_logs = Log_line.objects.filter(ip_address_id=id)
+                    template = get_template('cti/viewReport.html')
+                    context = {
+                        "ip" : data,
+                        "ip_log" : data_logs,
+                    }
+
+                    html = template.render(context)
+                    if 'htmlIP' in request.POST:
+                        return HttpResponse(html)
+
+                    pdf = render_to_pdf('cti/viewReport.html', context)
+                    if pdf:
+                        response = HttpResponse(pdf, content_type='application/pdf')
+                        content = "attachment; filename='Report.pdf'"
+                        download = request.GET.get("download")
+                        response['Content-Disposition'] = content
+                        return response
+                    return HttpResponse("Not found")
+
+                except(IP.DoesNotExist):
+                    messages.warning(request, 'IP address not found.')
+
+    return render(request, 'cti/report.html', {'form' : AddressForm(), 'formST' : StatisticsForm()})
+
+@login_required
+def file_info(request):
+    file_id = request.POST.get('file_id')
+    if file_id != None:
+        file_data = Apache_log.objects.filter(id=file_id).first()
+        context = {
+            'file' : file_data
+        }
+
+        pdf = render_to_pdf('cti/file_info.html', context)
+        if pdf:
+            response = HttpResponse(pdf, content_type='application/pdf')
+            content = "attachment; filename='FileInformation.pdf'"
+            download = request.GET.get("download")
+            response['Content-Disposition'] = content
+            return response
+    return HttpResponse("Not found")

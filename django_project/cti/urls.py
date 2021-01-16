@@ -9,4 +9,6 @@ urlpatterns = [
     path('profile/', views.view_profile, name='cti-profile'),
     path('settings/', views.settings, name='cti-settings'),
     path('password/', views.change_password, name='cti-changepassword'),
+    path('report/', views.report, name='cti-report'),
+    path('fileinfo/', views.file_info, name='cti-file-info'),
 ]

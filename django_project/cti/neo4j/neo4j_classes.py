@@ -117,6 +117,6 @@ def get_attributes(known_properties):
 
 # metoda vraća sve requestove koje je poslala ip adresa
 def get_requests_for_ip(ip_address):
-    query_string = 'MATCH(a:Ip {address: "' + ip_address + '"})-[:HAS_SENT]->(b:Request) RETURN b'
+    query_string = 'MATCH(a:IP {ip_address: "' + ip_address + '"})-[:HAS_SENT]->(b:Log_line) RETURN b'
     db = Database("bolt://localhost:7687", "neo4j", "password")
     return db.query(query_string)

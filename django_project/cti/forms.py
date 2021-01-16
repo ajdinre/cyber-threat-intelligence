@@ -12,6 +12,7 @@ CHOICES = [
 
 class UploadFileForm(forms.Form):
     #title = forms.CharField(max_length=50)
+    servername = forms.CharField(max_length=200)
     file = forms.FileField()
 
 

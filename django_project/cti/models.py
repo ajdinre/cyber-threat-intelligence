@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.core.validators import MinLengthValidator, int_list_validator
-
+from model_utils import Choices
 
 class IP(models.Model):
     address = models.CharField(max_length=39, null=True)
@@ -39,18 +39,9 @@ class Log_line(models.Model):
 
 class UserProfile(models.Model):
 
-    CONFIDENTIAL = 'CF'
-    SECRET = 'S'
-    TOP_SECRET = 'TS'
-
-    SECURITY_LEVEL = (
-        (CONFIDENTIAL, 'Confidential'),
-        (SECRET, 'Secret'),
-        (TOP_SECRET, 'Top Secret'),
-    )
- 
+    SECURITY_LEVEL = Choices('Confidential', 'Secret', 'Top_Secret')
     security = models.CharField(
-        max_length=2,
+        max_length=12,
         choices=SECURITY_LEVEL,
         
     )

@@ -10,6 +10,14 @@
                 {% if user.userprofile.image %}
                 <img src="{{ 'user.userprofile.image.url' }}" width="240"> 
                 {% endif %}
+                <!-- ne radi -->
+                {% if user.userprofile.security == userprofile.security.SECURITY_LEVEL.Confidential %}
+                <button class="btn btn-success ml-3">Confidential</button>
+                {% elif user.userprofile.security == userprofile.security.SECURITY_LEVEL.Secret %}
+                <button class="btn btn-warning ml-3">Secret</button>
+                {% elif user.userprofile.security == userprofile.security.SECURITY_LEVEL.Top_Secret %}
+                <button class="btn btn-danger ml-3">Top Secret</button>
+                {% endif %}
                 <p>Security Clearance: {{ user.userprofile.security }}</p>
                 <p>Username: {{ user }}</p>
                 <p>First name: {{ user.first_name }}</p>

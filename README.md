@@ -57,5 +57,14 @@ $ python manage.py migrate
 $ python manage.py runserver
 ```
 
+9. Create a superuser account
+```
+$ python manage.py createsuperuser
+```
+This will propmt for information like username, email and password.
+
+
+The app should now be running http://localhost:8000 and you should be able to log into it with the credentials from step 9.
+
 ## Bug reporting
 Please submit any bugs you encounter to GitHub Issues

@@ -14,6 +14,7 @@ On Ubuntu:
 ```
 sudo apt install neo4j-client postgresql python3 python-is-python3
 ```
+https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-neo4j-on-ubuntu-20-04
 
 2. Start the Postgres service
 
@@ -29,9 +30,7 @@ $ psql                                  #enter psql as postgres user
 psql (12.5)
 Type "help" for help.
 
-postgres=# CREATE DATABASE cti_db       #create the database with the instructions from db.sql
-postgres-#     WITH OWNER = postgres
-postgres-#     ENCODING = 'UTF-8';
+postgres=# CREATE DATABASE cti_db;       #create the database with the instructions from db.sql
 CREATE DATABASE
 postgres=# 
 ```
@@ -56,6 +55,15 @@ $ python manage.py migrate
 ```
 $ python manage.py runserver
 ```
+
+9. Create a superuser account
+```
+$ python manage.py createsuperuser
+```
+This will propmt for information like username, email and password.
+
+
+The app should now be running http://localhost:8000 and you should be able to log into it with the credentials from step 9.
 
 ## Bug reporting
 Please submit any bugs you encounter to GitHub Issues

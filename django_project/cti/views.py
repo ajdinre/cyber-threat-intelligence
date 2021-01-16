@@ -28,7 +28,7 @@ def home(request):
     numberOfRequests = Log_line.objects.count()
     # Number of Files
     numberOfFiles = Apache_log.objects.count()
-    print(numberOfRequests)
+    # print(numberOfRequests)
     return render(request, 'cti/home.html', {'TopCountriesByIP': TopCountriesByIP, 'numberOfIPs': numberOfIPs, 'numberOfRequests': numberOfRequests, 'numberOfFiles': numberOfFiles})
 
 @login_required

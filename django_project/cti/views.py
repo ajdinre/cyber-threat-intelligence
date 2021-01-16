@@ -87,6 +87,10 @@ def upload(request):
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
             instance = Apache_log(log_file=request.FILES['file'])
+            instance.analyzed = False
+            print("instance")
+            print(instance.log_file)
+            print(instance.analyzed)
             instance.save()
             analyzeThread = threading.Thread(target=analyze, args=(instance.log_file,))
             analyzeThread.start()

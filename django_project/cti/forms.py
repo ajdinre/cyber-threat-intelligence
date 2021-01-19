@@ -4,7 +4,7 @@ from django.contrib.auth.forms import UserChangeForm
 from .models import UserProfile
 
 CHOICES = [
-    ('Country', 'Country'),
+    ('Country', 'Country code'),
     ('City', 'City'),
     ('Region', 'Region'),
     ('Request method', 'Request method')

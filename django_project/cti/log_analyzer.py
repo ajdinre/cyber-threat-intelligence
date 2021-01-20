@@ -3,7 +3,7 @@ import os
 from cti.models import IP
 from cti.models import Log_line
 from cti.models import Apache_log
-from cti.neo4j.neo4j_classes import create_node, get_nodes, create_relationship
+from cti.neo4j.neo4j_classes import create_relationship_if_not_exist, create_if_not_exist
 
 import ipinfo 
 access_token = '5a8dcf646a1d15'
@@ -24,7 +24,7 @@ def getIPInfo(ip_address):
     return details
 
 
-def saveIPs(uniqueIPs, server_data):
+def saveIPs(uniqueIPs):
     for i in range(len(uniqueIPs)):
         ipFromFile = uniqueIPs[i]
         details = getIPInfo(ipFromFile)
@@ -35,46 +35,44 @@ def saveIPs(uniqueIPs, server_data):
         try:
             ip_attributes['hostname'] = details.hostname
         except:
-            hostname = None
+            hostname = None                                     #if hostname isn't found for this IP address then ignore it
         try:
             ip_attributes['city'] = details.city
         except:
-            city = None
+            city = None                                         #ignore
         try:
             ip_attributes['region'] = details.region
         except:
-            region = None
+            region = None                                       #ignore
         try:
             ip_attributes['country'] = details.country
         except:
-            country = None
+            country = None                                      #ignore
         try:
             ip_attributes['countryname'] = details.countryname
         except:
-            countryname = None
+            countryname = None                                  #ignore
         try:
             ip_attributes['org'] = details.org
         except:
-            org = None
+            org = None                                          #ignore
         try:
             ip_attributes['postal'] = details.postal
         except:
-            postal = None
+            postal = None                                       #ignore
         try:
             ip_attributes['timezone'] = details.timezone
         except:
-            timezone = None
+            timezone = None                                     #ignore
         try:
             ip_attributes['latitude'] = details.latitude
         except:
-            latitude = None
+            latitude = None                                     #ignore
         try:
             ip_attributes['longitude'] = details.longitude
         except:
-            longitude = None
-        create_node('IP', ip_attributes)
-        create_node('Server', server_data)
-        create_relationship('IP', ip_attributes, 'Server', server_data, 'HAS_ACCESSED')
+            longitude = None                                    #ignore
+        create_if_not_exist('IP', ip_attributes)
 
         return ip_attributes
 
@@ -94,7 +92,8 @@ def analyze(filename, server_data):
 
     uniqueIPs = []
     uniqueIPs = IPFilter(lines)
-    ip_attributes = saveIPs(uniqueIPs, server_data)
+    ip_attributes = saveIPs(uniqueIPs)
+    create_if_not_exist('Server', server_data)
 
     for i in range(len(lines)):
         line = lines[i]
@@ -116,17 +115,9 @@ def analyze(filename, server_data):
             "sizeInBytes": sizeInBytes
         }
 
-        create_node('Log_line', log_attributes)
-        create_relationship('IP', ip_attributes, 'Log_line', log_attributes, 'HAS_SENT')
-
-        # temp_log_line = Log_line( ip_address = IP.objects.get(address = ip_address),
-        #          timestamp = timestamp,
-        #          requestMethod = requestMethod,
-        #          path = path,
-        #          httpVersion = httpVersion,
-        #          response = response,
-        #          sizeInBytes = sizeInBytes)
-        # temp_log_line.save()
+        create_if_not_exist('Log_line', log_attributes)
+        create_relationship_if_not_exist('IP', ip_attributes, 'Log_line', log_attributes, 'HAS_SENT')
+        create_relationship_if_not_exist('Log_line', log_attributes, 'Server', server_data, 'HAS_ACCESSED')
 
         print("filename2 " + str(filenameString))
         file = Apache_log.objects.get(log_file=filenameString) 

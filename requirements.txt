@@ -6,3 +6,4 @@ Pillow==8.1.0
 neo4j-driver==4.1.1
 django-model-utils==4.1.1
 django-user-visit==0.4
+xhtml2pdf==0.2.5

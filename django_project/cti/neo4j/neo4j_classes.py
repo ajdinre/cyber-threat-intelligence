@@ -36,6 +36,32 @@ def create_if_not_exist(class_name, attributes):
     db = Database("bolt://localhost:7687", "neo4j", "password")
     return db.query(query_string)
 
+# creates a relationship between first_node_name and second_node_name only if it doesn't already exist
+# if a relationship between nodes with properties first_node and second_node exists nothing happens
+# ALL properties have to match for the database to realise it is a duplicate
+def create_relationship_if_not_exist(first_node_name, first_node, second_node_name, second_node, relationship_name):
+    i = 0
+    j = 0
+    query_string = 'MATCH(a:' + first_node_name + '),(b:' + second_node_name + ') WHERE '
+    for attribute in first_node:
+        if i == 0:
+            query_string += 'a.' + attribute + ' = "' + first_node[attribute] + '"'
+        else:
+            query_string += ' AND a.' + attribute + ' = "' + first_node[attribute] + '"'
+        i += 1
+    for attribute in second_node:
+        if j == 0:
+            if i > 0:
+                query_string += ' AND '
+            query_string += 'b.' + attribute + ' = "' + second_node[attribute] + '"'
+        else:
+            query_string += ' AND b.' + attribute + ' = "' + second_node[attribute] + '"'
+        j += 1
+    query_string += ' MERGE(a)-[r:' + relationship_name + ']->(b) RETURN r'
+
+    db = Database("bolt://localhost:7687", "neo4j", "password")
+    return db.query(query_string)
+
 
 #metoda stvara vezu između čvorova tipa first_node_name i second_node_name
 # metoda prvou bazi traži čvorove tih tipova sa atributima zadanim s first_node i second_node
@@ -232,3 +258,11 @@ def get_by_timezone(timezone):
     for i in response:
         response_list.append(i['n'])
     return response_list  
+
+# returns all IP addresses that have sent a request with the requestMethod = request_method
+# (request_method is a string e.g. 'GET')
+# MATCH(a:IP)-[:HAS_SENT]->(b:Log_line {requestMethod:'GET'}) return a
+def get_ips_with_request_method(request_method):
+    query_string = 'MATCH(a:IP)-[:HAS_SENT]->(b:Log_line {requestMethod: "' + request_method + '"}) RETURN DISTINCT a'
+    db = Database("bolt://localhost:7687", "neo4j", "password")
+    return db.query(query_string)

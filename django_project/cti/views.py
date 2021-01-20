@@ -27,7 +27,7 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
 from django.template.loader import get_template
 from .pdf_generator import render_to_pdf
-from cti.neo4j.neo4j_classes import get_nodes, get_requests_for_ip
+from cti.neo4j.neo4j_classes import get_nodes, get_requests_for_ip, get_ips_with_request_method
 
 @login_required
 def home(request):
@@ -167,49 +167,55 @@ def report(request):
                 param = form.cleaned_data['parameter']
                 value = form.cleaned_data['value']
 
-                try:
-                    if param == "Country":
-                        data = IP.objects.filter(countryname=value)
-                    elif param == "City":
-                        data = IP.objects.filter(city=value)
-                    elif param == "Region":
-                        data = IP.objects.filter(region=value)
-                    elif param == "Request method":
-                        log_ip = Log_line.objects.filter(requestMethod=value).values_list('ip_address_id', flat=True).distinct()
-                        data = IP.objects.filter(id__in=log_ip)
-                    if not data:
-                        raise IP.DoesNotExist
-                    template = get_template('cti/statisticsReport.html')
-                    context = {
-                        "data" : data,
-                        "parameter" : param,
-                        "count" : data.count(),
-                        "value" : value,
-                    }
+                if param == "Country":
+                    data = get_nodes("IP", { "country" : value })
+                elif param == "City":
+                    data = get_nodes("IP", { "city" : value })
+                elif param == "Region":
+                    data = get_nodes("IP", { "region" : value })
+                elif param == "Request method":
+                    data_res = get_ips_with_request_method(value)
+                    data = []
+                    for ip in data_res:
+                        data.append(ip['a'])
+                if not data:
+                    messages.warning(request, 'No data found.')
+                    return HttpResponseRedirect("")
+                template = get_template('cti/statisticsReport.html')
+                context = {
+                    "data" : data,
+                    "parameter" : param,
+                    "count" : len(data),
+                    "value" : value,
+                }
 
-                    html = template.render(context)
-                    if 'htmlST' in request.POST:
-                        return HttpResponse(html)
+                html = template.render(context)
+                if 'htmlST' in request.POST:
+                    return HttpResponse(html)
 
-                    pdf = render_to_pdf('cti/statisticsReport.html', context)
-                    if pdf:
-                        response = HttpResponse(pdf, content_type='application/pdf')
-                        content = "attachment; filename='Report.pdf'"
-                        download = request.GET.get("download")
-                        response['Content-Disposition'] = content
-                        return response
-                    return HttpResponse("Not found")
-                except(IP.DoesNotExist):
-                    messages.warning(request, 'Invalid input.')
+                pdf = render_to_pdf('cti/statisticsReport.html', context)
+                if pdf:
+                    response = HttpResponse(pdf, content_type='application/pdf')
+                    content = "attachment; filename='Report.pdf'"
+                    download = request.GET.get("download")
+                    response['Content-Disposition'] = content
+                    return response
+                return HttpResponse("Not found")
             else:
                 address = form.cleaned_data['address']
                 try:
-                    data = IP.objects.get(address=address)
-                    id = data.id
-                    data_logs = Log_line.objects.filter(ip_address_id=id)
+                    data = get_nodes("IP", {"ip_address" : address })
+                    data_logs_res = get_requests_for_ip(address)
                     template = get_template('cti/viewReport.html')
+                    if not data:
+                        messages.warning(request, 'Could not find the requested IP address.')
+                        return HttpResponseRedirect("")
+
+                    data_logs = []
+                    for log in data_logs_res:
+                        data_logs.append(log['b'])
                     context = {
-                        "ip" : data,
+                        "ip" : data[0],
                         "ip_log" : data_logs,
                     }
 

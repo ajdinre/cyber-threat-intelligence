@@ -57,7 +57,7 @@ postgres=# GRANT ALL PRIVILEGES ON DATABASE cti_db TO cti_user;
 
 ```
 Download neo4j from https://neo4j.com/download/
-Fill the form on the website with random data
+Fill out the form on the website with random data
 Create new database with name 'django' and password 'password'
 Start the database
 ```

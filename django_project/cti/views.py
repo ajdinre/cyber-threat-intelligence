@@ -14,7 +14,7 @@ from  cti.neo4j.neo4j_classes import get_count_of_ip
 from  cti.neo4j.neo4j_classes import get_Top_countries_by_ip
 from  cti.neo4j.neo4j_classes import get_by_ip
 from  cti.neo4j.neo4j_classes import get_by_country_code
-from  cti.neo4j.neo4j_classes import get_by_country_name
+# ne postoji više from  cti.neo4j.neo4j_classes import get_by_country_name
 from  cti.neo4j.neo4j_classes import get_by_city
 from  cti.neo4j.neo4j_classes import get_by_org
 from  cti.neo4j.neo4j_classes import get_by_region

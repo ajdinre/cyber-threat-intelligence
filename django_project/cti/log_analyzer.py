@@ -8,73 +8,11 @@ from cti.neo4j.neo4j_classes import create_relationship_if_not_exist, create_if_
 import ipinfo 
 access_token = '5a8dcf646a1d15'
 
-
-def IPFilter(lines):
-    uniqueIPs = []
-    for i in range(len(lines)):
-        if lines[i].split()[0] not in uniqueIPs:
-            uniqueIPs.append(lines[i].split()[0])
-    return uniqueIPs
-
-
 def getIPInfo(ip_address):
     global access_token
     handler = ipinfo.getHandler(access_token)
     details = handler.getDetails(ip_address)
     return details
-
-
-def saveIPs(uniqueIPs):
-    for i in range(len(uniqueIPs)):
-        ipFromFile = uniqueIPs[i]
-        details = getIPInfo(ipFromFile)
-
-        ip_attributes = {}
-        ip_attributes['ip_address'] = ipFromFile
-
-        try:
-            ip_attributes['hostname'] = details.hostname
-        except:
-            hostname = None                                     #if hostname isn't found for this IP address then ignore it
-        try:
-            ip_attributes['city'] = details.city
-        except:
-            city = None                                         #ignore
-        try:
-            ip_attributes['region'] = details.region
-        except:
-            region = None                                       #ignore
-        try:
-            ip_attributes['country'] = details.country
-        except:
-            country = None                                      #ignore
-        try:
-            ip_attributes['countryname'] = details.countryname
-        except:
-            countryname = None                                  #ignore
-        try:
-            ip_attributes['org'] = details.org
-        except:
-            org = None                                          #ignore
-        try:
-            ip_attributes['postal'] = details.postal
-        except:
-            postal = None                                       #ignore
-        try:
-            ip_attributes['timezone'] = details.timezone
-        except:
-            timezone = None                                     #ignore
-        try:
-            ip_attributes['latitude'] = details.latitude
-        except:
-            latitude = None                                     #ignore
-        try:
-            ip_attributes['longitude'] = details.longitude
-        except:
-            longitude = None                                    #ignore
-        create_if_not_exist('IP', ip_attributes)
-
-        return ip_attributes
 
 
 def analyze(filename, server_data):
@@ -90,9 +28,6 @@ def analyze(filename, server_data):
     for i in range(len(lines)):  # strip newline char
         lines[i] = lines[i].rstrip()
 
-    uniqueIPs = []
-    uniqueIPs = IPFilter(lines)
-    ip_attributes = saveIPs(uniqueIPs)
     create_if_not_exist('Server', server_data)
 
     for i in range(len(lines)):
@@ -105,6 +40,53 @@ def analyze(filename, server_data):
         httpVersion = details[7][-4:-1]
         response = details[8]
         sizeInBytes = details[9]
+
+        details = getIPInfo(ip_address)
+
+        ip_attributes = {}
+        ip_attributes['ip_address'] = ip_address
+
+        try:
+            ip_attributes['hostname'] = details.hostname
+        except:
+            hostname = None  # if hostname isn't found for this IP address then ignore it
+        try:
+            ip_attributes['city'] = details.city
+        except:
+            city = None  # ignore
+        try:
+            ip_attributes['region'] = details.region
+        except:
+            region = None  # ignore
+        try:
+            ip_attributes['country'] = details.country
+        except:
+            country = None  # ignore
+        try:
+            ip_attributes['countryname'] = details.countryname
+        except:
+            countryname = None  # ignore
+        try:
+            ip_attributes['org'] = details.org
+        except:
+            org = None  # ignore
+        try:
+            ip_attributes['postal'] = details.postal
+        except:
+            postal = None  # ignore
+        try:
+            ip_attributes['timezone'] = details.timezone
+        except:
+            timezone = None  # ignore
+        try:
+            ip_attributes['latitude'] = details.latitude
+        except:
+            latitude = None  # ignore
+        try:
+            ip_attributes['longitude'] = details.longitude
+        except:
+            longitude = None  # ignore
+        create_if_not_exist('IP', ip_attributes)
 
         log_attributes = {
             "timestamp": timestamp,

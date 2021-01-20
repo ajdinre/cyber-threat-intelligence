@@ -10,6 +10,16 @@ from cti.models import Log_line
 from cti.neo4j.neo4j_classes import create_node
 from .models import Apache_log
 from .log_analyzer import analyze
+from  cti.neo4j.neo4j_classes import get_count_of_ip
+from  cti.neo4j.neo4j_classes import get_Top_countries_by_ip
+from  cti.neo4j.neo4j_classes import get_by_ip
+from  cti.neo4j.neo4j_classes import get_by_country_code
+from  cti.neo4j.neo4j_classes import get_by_country_name
+from  cti.neo4j.neo4j_classes import get_by_city
+from  cti.neo4j.neo4j_classes import get_by_org
+from  cti.neo4j.neo4j_classes import get_by_region
+from  cti.neo4j.neo4j_classes import get_by_timezone
+from  cti.neo4j.neo4j_classes import get_by_postal
 import threading
 import os
 from django.urls import reverse
@@ -22,9 +32,9 @@ from cti.neo4j.neo4j_classes import get_nodes, get_requests_for_ip, get_ips_with
 @login_required
 def home(request):
     # Get top countries by IP
-    TopCountriesByIP = IP.objects.values('countryname').annotate(c=Count('countryname')).order_by('-c')[:10]
+    TopCountriesByIP = get_Top_countries_by_ip()
     # Number of IPs
-    numberOfIPs = IP.objects.count()
+    numberOfIPs = get_count_of_ip()
     # Number of Requests
     numberOfRequests = Log_line.objects.count()
     # Number of Files
@@ -46,31 +56,31 @@ def search_ip(request):
     if (query != None):
         requestTag = request.GET.get('searchCategory')
         if (requestTag =='ipAddress'):
-            ips = IP.objects.filter(address__contains=query)
+            ips = get_by_ip(query)
             
         elif (requestTag =='countryCode'):
-            ips = IP.objects.filter(country__contains=query)
+            ips = get_by_country_code(query)
 
         elif (requestTag =='countryName'):
-            ips = IP.objects.filter(countryname__contains=query)
+            ips = get_by_country_name(query)
 
         elif (requestTag =='hostname'):
             ips = IP.objects.filter(hostname__contains=query)
 
         elif (requestTag =='city'):
-            ips = IP.objects.filter(city__contains=query)
+            ips = get_by_city(query)
 
         elif (requestTag =='region'):
-            ips = IP.objects.filter(region__contains=query)
+            ips = get_by_region(query)
 
         elif (requestTag =='org'):
-            ips = IP.objects.filter(org__contains=query)
+            ips = get_by_org(query)
 
         elif (requestTag =='postal'):
-            ips = IP.objects.filter(postal__contains=query)
+            ips = get_by_postal(query)
 
         elif (requestTag =='timezone'):
-            ips = IP.objects.filter(timezone__contains=query)
+            ips = get_by_timezone(query)
               
 
     else:

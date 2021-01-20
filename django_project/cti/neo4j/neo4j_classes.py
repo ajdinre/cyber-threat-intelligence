@@ -147,6 +147,117 @@ def get_requests_for_ip(ip_address):
     db = Database("bolt://localhost:7687", "neo4j", "password")
     return db.query(query_string)
 
+# metoda vraća sve jedinstvene ip adrese koje postoje u bazi
+def get_count_of_ip():
+    query_string = 'MATCH (p:IP) WITH DISTINCT p.ip_address as p RETURN count(p) as count'
+    db = Database("bolt://localhost:7687", "neo4j", "password")
+    ip_count = db.query(query_string)[0]['count']
+    return ip_count
+
+#metoda koja vraća listu 10 mapa ključ-countryname, vrijednost- broj sa najvećim brojem ip adresa
+def get_Top_countries_by_ip():
+    countries_dict = {}
+    query_string = 'MATCH (n:IP) return DISTINCT n'
+    db = Database("bolt://localhost:7687", "neo4j", "password")
+    query_result = db.query(query_string)
+    for ip in query_result:
+        country = ip['n']['countryname']
+        if country in countries_dict.keys():
+            countries_dict[country] += 1
+        else :
+            countries_dict[country] = 1
+    countries_dict_sorted = sorted(countries_dict.items(), key=lambda x: x[1], reverse=True)
+    countries_dict_sorted_view = []
+    if len(countries_dict_sorted)<10:
+        range_of_countries = len(countries_dict_sorted)
+    else :
+        range_of_countries = 10
+    for i in range (range_of_countries):
+        help_dict = {}
+        help_dict['countryname'] = countries_dict_sorted[i][0]
+        help_dict['c'] = countries_dict_sorted[i][1]
+        countries_dict_sorted_view.append(help_dict)
+    return countries_dict_sorted_view
+
+#metoda za search po ip adresi
+def get_by_ip(ip_address):
+    query_string = 'MATCH (n) WHERE n.ip_address="' + ip_address+ '" RETURN n '
+    db = Database("bolt://localhost:7687", "neo4j", "password")
+    response = db.query(query_string)
+    response_list = []
+    for i in response:
+        response_list.append(i['n'])
+    return response_list
+
+#metoda za search po country code
+def get_by_country_code(countryCode):
+    query_string = 'MATCH (n) WHERE n.country="' + countryCode + '" RETURN n '
+    db = Database("bolt://localhost:7687", "neo4j", "password")
+    response = db.query(query_string)
+    response_list = []
+    for i in response:
+        response_list.append(i['n'])
+    return response_list
+
+#metoda za search po country name
+def get_by_country_name(countryName):
+    query_string = 'MATCH (n) WHERE n.countryname="' + countryName + '" RETURN n '
+    db = Database("bolt://localhost:7687", "neo4j", "password")
+    response = db.query(query_string)
+    response_list = []
+    for i in response:
+        response_list.append(i['n'])
+    return response_list   
+
+#metoda za search po city
+def get_by_city(city):
+    query_string = 'MATCH (n) WHERE n.city="' + city + '" RETURN n '
+    db = Database("bolt://localhost:7687", "neo4j", "password")
+    response = db.query(query_string)
+    response_list = []
+    for i in response:
+        response_list.append(i['n'])
+    return response_list   
+
+#metoda za search po region
+def get_by_region(region):
+    query_string = 'MATCH (n) WHERE n.region="' + region + '" RETURN n '
+    db = Database("bolt://localhost:7687", "neo4j", "password")
+    response = db.query(query_string)
+    response_list = []
+    for i in response:
+        response_list.append(i['n'])
+    return response_list  
+
+#metoda za search po org
+def get_by_org(org):
+    query_string = 'MATCH (n) WHERE n.org="' + org + '" RETURN n '
+    db = Database("bolt://localhost:7687", "neo4j", "password")
+    response = db.query(query_string)
+    response_list = []
+    for i in response:
+        response_list.append(i['n'])
+    return response_list  
+
+#metoda za search po postal
+def get_by_postal(postal):
+    query_string = 'MATCH (n) WHERE n.postal="' + str(postal) + '" RETURN n '
+    db = Database("bolt://localhost:7687", "neo4j", "password")
+    response = db.query(query_string)
+    response_list = []
+    for i in response:
+        response_list.append(i['n'])
+    return response_list  
+
+#metoda za search po timezone
+def get_by_timezone(timezone):
+    query_string = 'MATCH (n) WHERE n.timezone="' + timezone + '" RETURN n '
+    db = Database("bolt://localhost:7687", "neo4j", "password")
+    response = db.query(query_string)
+    response_list = []
+    for i in response:
+        response_list.append(i['n'])
+    return response_list  
 
 # returns all IP addresses that have sent a request with the requestMethod = request_method
 # (request_method is a string e.g. 'GET')

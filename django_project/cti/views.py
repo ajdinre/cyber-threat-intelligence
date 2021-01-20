@@ -17,7 +17,7 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
 from django.template.loader import get_template
 from .pdf_generator import render_to_pdf
-from cti.neo4j.neo4j_classes import get_nodes, get_requests_for_ip
+from cti.neo4j.neo4j_classes import get_nodes, get_requests_for_ip, get_ips_with_request_method
 
 @login_required
 def home(request):
@@ -164,8 +164,10 @@ def report(request):
                 elif param == "Region":
                     data = get_nodes("IP", { "region" : value })
                 elif param == "Request method":
-                    log_ip = get_nodes("Log_line", { "requestMethod" : value })
-                    data = IP.objects.filter(id__in=log_ip)
+                    data_res = get_ips_with_request_method(value)
+                    data = []
+                    for ip in data_res:
+                        data.append(ip['a'])
                 if not data:
                     messages.warning(request, 'No data found.')
                     return HttpResponseRedirect("")

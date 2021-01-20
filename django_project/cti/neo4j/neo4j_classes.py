@@ -146,3 +146,12 @@ def get_requests_for_ip(ip_address):
     query_string = 'MATCH(a:IP {ip_address: "' + ip_address + '"})-[:HAS_SENT]->(b:Log_line) RETURN b'
     db = Database("bolt://localhost:7687", "neo4j", "password")
     return db.query(query_string)
+
+
+# returns all IP addresses that have sent a request with the requestMethod = request_method
+# (request_method is a string e.g. 'GET')
+# MATCH(a:IP)-[:HAS_SENT]->(b:Log_line {requestMethod:'GET'}) return a
+def get_ips_with_request_method(request_method):
+    query_string = 'MATCH(a:IP)-[:HAS_SENT]->(b:Log_line {requestMethod: "' + request_method + '"}) RETURN DISTINCT a'
+    db = Database("bolt://localhost:7687", "neo4j", "password")
+    return db.query(query_string)

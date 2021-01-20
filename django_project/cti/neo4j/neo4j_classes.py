@@ -154,14 +154,14 @@ def get_count_of_ip():
     ip_count = db.query(query_string)[0]['count']
     return ip_count
 
-#metoda koja vraća listu 10 mapa ključ-countryname, vrijednost- broj sa najvećim brojem ip adresa
+#metoda koja vraća listu 10 mapa ključ-country, vrijednost- broj sa najvećim brojem ip adresa
 def get_Top_countries_by_ip():
     countries_dict = {}
     query_string = 'MATCH (n:IP) return DISTINCT n'
     db = Database("bolt://localhost:7687", "neo4j", "password")
     query_result = db.query(query_string)
     for ip in query_result:
-        country = ip['n']['countryname']
+        country = ip['n']['country']
         if country in countries_dict.keys():
             countries_dict[country] += 1
         else :
@@ -174,7 +174,7 @@ def get_Top_countries_by_ip():
         range_of_countries = 10
     for i in range (range_of_countries):
         help_dict = {}
-        help_dict['countryname'] = countries_dict_sorted[i][0]
+        help_dict['country'] = countries_dict_sorted[i][0]
         help_dict['c'] = countries_dict_sorted[i][1]
         countries_dict_sorted_view.append(help_dict)
     return countries_dict_sorted_view
@@ -199,15 +199,15 @@ def get_by_country_code(countryCode):
         response_list.append(i['n'])
     return response_list
 
-#metoda za search po country name
-def get_by_country_name(countryName):
-    query_string = 'MATCH (n) WHERE n.countryname="' + countryName + '" RETURN n '
-    db = Database("bolt://localhost:7687", "neo4j", "password")
-    response = db.query(query_string)
-    response_list = []
-    for i in response:
-        response_list.append(i['n'])
-    return response_list   
+#metoda za search po country name - toga više nema!!
+# def get_by_country_name(countryName):
+#     query_string = 'MATCH (n) WHERE n.countryname="' + countryName + '" RETURN n '
+#     db = Database("bolt://localhost:7687", "neo4j", "password")
+#     response = db.query(query_string)
+#     response_list = []
+#     for i in response:
+#         response_list.append(i['n'])
+#     return response_list   
 
 #metoda za search po city
 def get_by_city(city):

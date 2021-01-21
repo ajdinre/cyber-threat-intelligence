@@ -2,6 +2,12 @@
 
 A Django application for analyzing Apache logs for possible Denial-of-service attacks.
 
+## Screenshots
+![screenshot_1](screenshot_3.png)
+![screenshot_2](screenshot_3.png)
+![screenshot_3](screenshot_3.png)
+
+
 ## Detecting Dos Attacks
 
 //TODO

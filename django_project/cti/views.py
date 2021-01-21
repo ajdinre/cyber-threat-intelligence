@@ -29,6 +29,10 @@ from django.template.loader import get_template
 from .pdf_generator import render_to_pdf
 from cti.neo4j.neo4j_classes import get_nodes, get_requests_for_ip, get_ips_with_request_method
 
+# TEST IMPORTS
+from django.utils.deconstruct import deconstructible
+from django.template.defaultfilters import filesizeformat
+#import validator.py
 @login_required
 def home(request):
     # Get top countries by IP
@@ -95,23 +99,59 @@ def upload(request):
     if request.method == 'GET':
         return render(request, 'cti/upload.html')
     elif request.method == 'POST':
+
         form = UploadFileForm(request.POST, request.FILES)
+        #TODO: 
+        #   Check if file is empty DONE
+        #   Check if file isn't too big in size DONE
+        #   Check if file is in right format DONE
+        
         if form.is_valid():
+            #PROVJERA FILE TYPE-A: PRIHVAĆAMO SAMO TEXT FILE I LOG FILE
+            
             server_name = form['servername'].value()
             file = request.FILES['file']
-            server_data = {'server_name': str(server_name), 'file_name': str(file)}
-            instance = Apache_log(log_file=request.FILES['file'])
-            instance.analyzed = False
-            print("instance")
-            print(instance.log_file)
-            print(instance.analyzed)
-            instance.save()
-            analyzeThread = threading.Thread(target=analyze, args=(instance.log_file, server_data))
-            analyzeThread.start()
+            print(str(file.content_type))
+            #print('^^^^^OVO JE FILE TYPE ^^^^^^^')
 
-            messages.success(request, 'File is saved.')
-        else:
-            messages.warning(request, 'An error has occured.')
+            if file.content_type == 'application/octet-stream' or file.content_type == 'text/plain':
+                #TODO: FIND A PLACE FOR MAX SIZE VARIABLE (DECIDE MAX SIZE TOO)
+                Num_of_MBs = 40
+                MaxsizeinMBs= 1024*1024*Num_of_MBs
+
+                if file.size < MaxsizeinMBs:
+
+                    server_data = {'server_name': str(server_name), 'file_name': str(file)}
+                    instance = Apache_log(log_file=request.FILES['file'])
+                    instance.analyzed = False
+                    #print("instance")
+                    #print(instance.log_file)
+                    #print(instance.analyzed)
+                    instance.save()
+                    analyzeThread = threading.Thread(target=analyze, args=(instance.log_file, server_data))
+                    analyzeThread.start()
+
+                    messages.success(request, 'File is saved.')
+                else:
+                    messages.warning(request,'File is too big! Allowed size is '+str(Num_of_MBs)+'MBs, your file is: '+str(file.size//(1024*1024))+'MBs.')
+                    form = UploadFileForm()
+                
+            else:
+                messages.warning(request, 'File is not an apache log or a text file!')
+                
+
+                form = UploadFileForm()
+                #print(file)
+                #print(file.values)
+                #print(vars(file))
+                #print(file.size)
+        else:   #One or more file upload checks was not satisfied
+            
+            #   Check if file is empty!
+            #print(str(form.errors))
+            if form.has_error('file'):
+                messages.warning(request,'File is empty!')
+            
     else:
         form = UploadFileForm()
     return render(request, 'cti/upload.html', {'form': form})

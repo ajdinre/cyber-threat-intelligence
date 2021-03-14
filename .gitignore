@@ -5,6 +5,8 @@ django_project/media/
 django_project/cti/__pycache__/
 
 django_project/.DS_Store
+django_project/cti/.DS_Store
+.idea/
 
 #Ovo ispod sam pokupio s interneta
 

@@ -29,7 +29,7 @@ from django.template.loader import get_template
 from .pdf_generator import render_to_pdf
 from cti.neo4j.neo4j_classes import get_nodes, get_requests_for_ip, get_ips_with_request_method
 
-from cti.serializers import UserSerializer, GroupSerializer
+from cti.serializers import UserSerializer, GroupSerializer, ApacheLogSerializer
 
 from rest_framework import viewsets
 from rest_framework import permissions
@@ -54,6 +54,15 @@ class GroupViewSet(viewsets.ModelViewSet):
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
     #permission_classes = [permissions.IsAuthenticated]
+
+class ApacheLogViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows files to be viewed or edited.
+    """
+    queryset = Apache_log.objects.all()
+    serializer_class = ApacheLogSerializer
+    #permission_classes = [permissions.IsAuthenticated]
+
 
 # Documentation
 

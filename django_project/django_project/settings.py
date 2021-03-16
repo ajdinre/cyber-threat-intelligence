@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'rest_framework',
     'cti.apps.CtiConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -148,3 +149,9 @@ LOGIN_URL = 'cti-login'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10
+}

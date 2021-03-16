@@ -29,6 +29,36 @@ from django.template.loader import get_template
 from .pdf_generator import render_to_pdf
 from cti.neo4j.neo4j_classes import get_nodes, get_requests_for_ip, get_ips_with_request_method
 
+from cti.serializers import UserSerializer, GroupSerializer
+
+from rest_framework import viewsets
+from rest_framework import permissions
+from django.contrib.auth.models import User, Group
+
+
+
+# Testing rest api
+
+class UserViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to be viewed or edited.
+    """
+    queryset = User.objects.all().order_by('-date_joined')
+    serializer_class = UserSerializer
+    #permission_classes = [permissions.IsAuthenticated]
+
+class GroupViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows groups to be viewed or edited.
+    """
+    queryset = Group.objects.all()
+    serializer_class = GroupSerializer
+    #permission_classes = [permissions.IsAuthenticated]
+
+# Documentation
+
+
+
 # TEST IMPORTS
 from django.utils.deconstruct import deconstructible
 from django.template.defaultfilters import filesizeformat

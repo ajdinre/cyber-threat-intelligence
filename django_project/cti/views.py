@@ -1,41 +1,28 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib import messages
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth.models import User, Group
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
 from django.db.models import Count
 from .forms import UploadFileForm, EditProfileForm, AddressForm, StatisticsForm
-from cti.models import IP
-from cti.models import Log_line
-from cti.neo4j.neo4j_classes import create_node
+from cti.models import IP, Log_line
 from .models import Apache_log
 from .log_analyzer import analyze
-from  cti.neo4j.neo4j_classes import get_count_of_ip
-from  cti.neo4j.neo4j_classes import get_Top_countries_by_ip
-from  cti.neo4j.neo4j_classes import get_by_ip
-from  cti.neo4j.neo4j_classes import get_by_country_code
-# ne postoji više from  cti.neo4j.neo4j_classes import get_by_country_name
-from  cti.neo4j.neo4j_classes import get_by_city
-from  cti.neo4j.neo4j_classes import get_by_org
-from  cti.neo4j.neo4j_classes import get_by_region
-from  cti.neo4j.neo4j_classes import get_by_timezone
-from  cti.neo4j.neo4j_classes import get_by_postal
-import threading
-import os
+from cti.neo4j.neo4j_classes import create_node, get_count_of_ip, get_Top_countries_by_ip, get_by_ip, get_by_country_code, get_by_city, get_by_org, get_by_region, get_by_timezone, get_by_postal, get_nodes, get_requests_for_ip, get_ips_with_request_method
 from django.urls import reverse
-from django.contrib.auth.forms import PasswordChangeForm
-from django.contrib.auth import update_session_auth_hash
 from django.template.loader import get_template
 from .pdf_generator import render_to_pdf
-from cti.neo4j.neo4j_classes import get_nodes, get_requests_for_ip, get_ips_with_request_method
 
 from cti.serializers import UserSerializer, GroupSerializer, ApacheLogSerializer
 
-from rest_framework import viewsets
-from rest_framework import permissions
-from django.contrib.auth.models import User, Group
+from rest_framework import viewsets, mixins, permissions, status, views
+from rest_framework.parsers import FileUploadParser, MultiPartParser, FormParser
+from rest_framework.response import Response
 
-
+import threading
+import os
 
 # Testing rest api
 
@@ -45,7 +32,7 @@ class UserViewSet(viewsets.ModelViewSet):
     """
     queryset = User.objects.all().order_by('-date_joined')
     serializer_class = UserSerializer
-    #permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]
 
 class GroupViewSet(viewsets.ModelViewSet):
     """
@@ -53,7 +40,8 @@ class GroupViewSet(viewsets.ModelViewSet):
     """
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
-    #permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]
+
 
 class ApacheLogViewSet(viewsets.ModelViewSet):
     """
@@ -61,17 +49,28 @@ class ApacheLogViewSet(viewsets.ModelViewSet):
     """
     queryset = Apache_log.objects.all()
     serializer_class = ApacheLogSerializer
-    #permission_classes = [permissions.IsAuthenticated]
+    http_method_names = ['get']
+    permission_classes = [permissions.IsAuthenticated]
 
+class FileUploadView(views.APIView):
+    permission_classes = [permissions.IsAuthenticated]
 
-# Documentation
+    #TODO: ovo ne mogu testirati bez Angulara
+
+    parser_classes = (FormParser, MultiPartParser)
+    def post(self, request, filename, format=None):
+        file_obj = request.data['file']
+        # ...
+        # do some stuff with uploaded file
+        # ...
+        print(vars(file_obj))
+        return Response(status=204)
 
 
 
 # TEST IMPORTS
 from django.utils.deconstruct import deconstructible
 from django.template.defaultfilters import filesizeformat
-#import validator.py
 @login_required
 def home(request):
     # Get top countries by IP

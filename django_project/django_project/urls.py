@@ -24,5 +24,9 @@ urlpatterns = [
 
     #Documentation
     path('swagger-ui/', TemplateView.as_view(template_name='cti/swagger-ui.html', extra_context={'schema_url':'openapi-schema'}), name='swagger-ui'),
-    path('openapi/', get_schema_view(title="Cyber Threat Intelligence", description="Api documentation for CTI project.", version="0.1.0-alpha"), name='openapi-schema')
+    path('openapi/', get_schema_view(title="Cyber Threat Intelligence", description="Api documentation for CTI project.", version="0.1.0-alpha"), name='openapi-schema'),
+
+    #REST
+    path('log/upload', cti_views.FileUploadView.as_view())
+
 ]

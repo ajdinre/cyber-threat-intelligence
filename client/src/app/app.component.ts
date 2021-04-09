@@ -1,6 +1,4 @@
-import { Component } from '@angular/core';
-
-//import { environment } from './../environments/environment';
+import { Component,ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -8,8 +6,12 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  //constructor(){
-  //  console.log(environment.apiUrl);
-  //}
+
+  isLoggedIn: boolean = false;
+
   title = 'client';
+
+  isLoggedInSwitch(){
+    this.isLoggedIn = !this.isLoggedIn
+  }
 }

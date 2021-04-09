@@ -1,14 +1,6 @@
-<h1>ANGULAR ROUTER TEST</h1>
-
-<nav>
-  <ul>
-    <li>
-      <a [routerLink]="['/signin']" routerLinkActive="router-link-active">Sign In Route!</a>
-    </li>
-    <li>
-      <a [routerLink]="['/home']" routerLinkActive="router-link-active">Home Route!</a>
-    </li>
-  </ul>
-
-</nav>
-<router-outlet></router-outlet>
+<div>
+  <app-unauthorized *ngIf="!isLoggedIn" (isLoggedInSwitch)="isLoggedInSwitch()"></app-unauthorized>
+</div>
+<div>
+  <app-authorized *ngIf ="isLoggedIn"></app-authorized>
+</div>

@@ -109,6 +109,7 @@ def get_nodes(node_label, node_properties):
         i += 1
     query_string += '}) RETURN label'
     db = Database(db_url, db_name, db_password)
+    for res in db.query(query_string):
         result.append(res['label'])
     return result
 
@@ -257,3 +258,25 @@ def get_ips_with_request_method(request_method):
     query_string = 'MATCH(a:IP)-[:HAS_SENT]->(b:Log_line {requestMethod: "' + request_method + '"}) RETURN DISTINCT a'
     db = Database(db_url, db_name, db_password)
     return db.query(query_string)
+
+
+# returns a list of all IP addresses and their properties
+def get_all_ips():
+    result_array = []
+    query_string = 'MATCH(a:IP) RETURN a'
+    db = Database(db_url, db_name, db_password)
+    result = db.query(query_string)
+    for res in db.query(query_string):
+        result_array.append(res['a'])
+    return result_array
+
+
+# returns a list of all Servers and their properties
+def get_all_servers():
+    result_array = []
+    query_string = 'MATCH(a:Server) RETURN a'
+    db = Database(db_url, db_name, db_password)
+    result = db.query(query_string)
+    for res in db.query(query_string):
+        result_array.append(res['a'])
+    return result_array

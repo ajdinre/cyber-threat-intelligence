@@ -1,22 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { HeaderComponent } from './header.component';
-import { SharedModule } from './../../shared.module';
+import { AuthorizedComponent } from './authorized.component';
 
-
-describe('HeaderComponent', () => {
-  let component: HeaderComponent;
-  let fixture: ComponentFixture<HeaderComponent>;
+describe('AuthorizedComponent', () => {
+  let component: AuthorizedComponent;
+  let fixture: ComponentFixture<AuthorizedComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ HeaderComponent ]
+      declarations: [ AuthorizedComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(HeaderComponent);
+    fixture = TestBed.createComponent(AuthorizedComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,0 +1,12 @@
+
+.mat-sidenav, .mat-sidenav-content {
+  padding: 24px;
+}
+.menu-spacer{
+  flex: 1 1 auto;
+
+}
+.sidenav-content{
+  height:max-content;
+  width: max-content;
+}

@@ -1,0 +1,60 @@
+<div style="float: left; width:50%;">
+  <form [formGroup]="signInForm" (ngSubmit)="submitForm()">
+    <p>
+      <label for="username"> Username </label>
+      <input type="text" id="username" name="username" formControlName="username">
+    </p>
+
+    <div
+      *ngIf="!username?.valid && (username?.dirty || username?.touched)">
+      <div [hidden]="!username?.errors?.required">
+        Username is required!
+      </div>
+      <div [hidden]="!username?.errors?.minlength">
+        Username must contain minimum of 4 characters!
+      </div>
+      <div [hidden]="!username?.errors?.maxlength">
+        Username shouldn't contain more than 14 characters.
+      </div>
+    </div>
+    <p>
+      <label for="password"> Password</label>
+      <input type="text" id="password" name="password" formControlName="password">
+    </p>
+    <div
+      *ngIf="!password?.valid && (password?.dirty || password?.touched)">
+      <div [hidden]="!password?.errors?.required">
+        Password is required!
+      </div>
+      <div [hidden]="!password?.errors?.minlength">
+        Password must contain minimum of 4 characters!
+      </div>
+      <div [hidden]="!password?.errors?.maxlength">
+        Password shouldn't contain more than 14 characters.
+      </div>
+    </div>
+
+    <p>
+      <button type="submit"> Submit! </button>
+    </p>
+  </form>
+
+
+</div>
+
+<div style="float: right; width:50%;">
+
+  <h3>Form Status</h3>
+  <b>valid : </b>{{signInForm.valid}}
+  <b>invalid : </b>{{signInForm.invalid}}
+  <b>touched : </b>{{signInForm.touched}}
+  <b>untouched : </b>{{signInForm.untouched}}
+  <b>pristine : </b>{{signInForm.pristine}}
+  <b>dirty : </b>{{signInForm.dirty}}
+  <b>disabled : </b>{{signInForm.disabled}}
+  <b>enabled : </b>{{signInForm.enabled}}
+
+  <h3>Form Value</h3>
+  {{signInForm.value |json}}
+
+</div>

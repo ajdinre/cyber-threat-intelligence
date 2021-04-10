@@ -1,12 +1,13 @@
-import { TestBed } from '@angular/core/testing';
+import { APP_BASE_HREF } from '@angular/common';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
-import { UserComponent } from './modules/user/user.component';
-import { VisitorComponent } from './modules/visitor/visitor.component';
 import { FooterComponent } from './shared/components/footer/footer.component';
 import { HeaderComponent } from './shared/components/header/header.component';
 
 describe('AppComponent', () => {
+  let component: AppComponent,
+    fixture: ComponentFixture<AppComponent>;
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
@@ -14,12 +15,25 @@ describe('AppComponent', () => {
       ],
       declarations: [
         AppComponent,
-        VisitorComponent,
-        UserComponent,
         FooterComponent,
         HeaderComponent
       ],
+      providers:[
+        {
+          provide: APP_BASE_HREF,
+          useValue: "/"
+        }
+      ]
     }).compileComponents();
+  });
+
+
+  //getting component
+
+  beforeEach(()=>{
+    fixture = TestBed.createComponent(AppComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
   });
 
   it('should create the app', () => {

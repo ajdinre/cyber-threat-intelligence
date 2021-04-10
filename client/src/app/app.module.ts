@@ -17,6 +17,13 @@ import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
 import { AuthorizedComponent } from './authorized/authorized.component';
 import { ROUTES } from './app.routes'
 import { FormsModule,ReactiveFormsModule } from '@angular/forms';
+import { HomeComponent } from './features-modules/home/home.component';
+import { SharedModule } from './shared/shared.module';
+import { APP_BASE_HREF, PlatformLocation } from '@angular/common';
+
+export function getBaseHref(platformLocation: PlatformLocation):string{
+  return platformLocation.getBaseHrefFromDOM();
+}
 
 @NgModule({
   declarations: [
@@ -25,8 +32,10 @@ import { FormsModule,ReactiveFormsModule } from '@angular/forms';
     AuthorizedComponent,
     NoContentComponent
 
+
   ],
   imports: [
+    RouterModule.forRoot(ROUTES),
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
@@ -36,10 +45,14 @@ import { FormsModule,ReactiveFormsModule } from '@angular/forms';
     MatToolbarModule,
     MatIconModule,
     MatSidenavModule,
-    MatListModule,
-
+    MatListModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide:APP_BASE_HREF,
+      useFactory: getBaseHref,
+      deps: [PlatformLocation]}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

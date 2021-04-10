@@ -8,12 +8,18 @@ export const ROUTES: Routes =
     {
       path: '',
       redirectTo: 'home',
-      pathMatch: 'full',
+      pathMatch: 'full'
     },
     {
       path: 'home',
-      loadChildren: './feature-modules/dashboard/dashboard.module#DashboardModule'
+      loadChildren: ()=> import('src/app/features-modules/home/home.module').then(m=>m.HomeModule)
     },
+    {
+      path: 'file-upload',
+      loadChildren: ()=> import('src/app/features-modules/file-upload/file-upload.module').then(m=>m.FileUploadModule)
+
+    }
+    ,
     {
       path: 'unauthorized',
       component: UnauthorizedComponent

@@ -1,15 +1,37 @@
-import { Component, OnInit } from '@angular/core';
-
+import { Component,ViewChild,AfterViewInit, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import * as EventEmitter from 'events';
 @Component({
   selector: 'app-authorized',
   templateUrl: './authorized.component.html',
   styleUrls: ['./authorized.component.css']
 })
-export class AuthorizedComponent implements OnInit {
+export class AuthorizedComponent implements AfterViewInit{
+  public showMenu = false;
+  public toggleSelected = true;
 
-  constructor() { }
+  constructor(private router: Router) {
 
-  ngOnInit(): void {
+   }
+
+  ngAfterViewInit(){
+    setTimeout(() => {
+      this.showMenu = window.innerWidth > 700 ? true : false;
+      this.toggleSelected = this.showMenu;
+    }, 0);
+  }
+
+  chooseRoutedComponent(routeUrl:any[]){
+    this.router.navigateByUrl('no-content', {skipLocationChange: true}).then(()=>
+      this.router.navigate([routeUrl]));
+  }
+
+  onResize(event){
+    this.showMenu = event.target.innerwidth > 700 ? true : false;
+    this.toggleSelected = this.showMenu;
+  }
+  toggle(){
+    this.toggleSelected = !this.toggleSelected;
   }
 
 }

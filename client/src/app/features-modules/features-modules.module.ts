@@ -8,11 +8,13 @@ import { ToolboxComponent } from './grafana/toolbox/toolbox.component';
 import { DashboardComponent } from './grafana/dashboard/dashboard.component';
 import { FileSearchTableComponent } from './file-search-table/file-search-table.component';
 import { SignInComponent } from './sign-in/sign-in.component';
+import { HomeComponent } from './home/home.component';
+import { FileUploadComponent } from './file-upload/file-upload.component';
 
 
 
 @NgModule({
-  declarations: [IpSearchTableComponent, GrafanaComponent, GraphStatsComponent, FileUploaderComponent, ToolboxComponent, DashboardComponent, FileSearchTableComponent, SignInComponent],
+  declarations: [IpSearchTableComponent, GrafanaComponent, GraphStatsComponent, FileUploaderComponent, ToolboxComponent, DashboardComponent, FileSearchTableComponent, SignInComponent, HomeComponent, FileUploadComponent],
   imports: [
     CommonModule
   ]

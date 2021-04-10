@@ -1,1 +1,32 @@
-<p>authorized works!</p>
+<div (window:resize)="onResize($event)">
+
+  <mat-sidenav-container class="sidenav-container">
+    <mat-sidenav mode="side"
+    #drawer
+    clas="sidenav"
+    fixedInViewport="true">
+    <mat-toolbar color="primary">Menu</mat-toolbar>
+    <mat-nav-list>
+
+      <a mat-list-item href="/home"> Home Component </a>
+      <a mat-list-item href="/file-upload"> File Upload Component </a>
+
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content class="sidenav-content">
+    <mat-toolbar color="primary">
+      <button type="button" aria-label="Toggle sidenav"
+      mat-icon-button (click)="drawer.toggle()">
+      <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+      </button>
+      <span>Cyber Threat Intelligence</span>
+    </mat-toolbar>
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+
+  </mat-sidenav-container>
+
+
+
+</div>

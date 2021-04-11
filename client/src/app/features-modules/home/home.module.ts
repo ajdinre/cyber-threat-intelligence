@@ -4,7 +4,6 @@ import { RouterModule } from '@angular/router';
 import { SharedModule } from './../../shared/shared.module';
 import { HomeComponent } from './home.component';
 import { HomeRoutingModule } from './home-routing.module';
-import { AppModule } from 'src/app/app.module';
 
 @NgModule({
   declarations: [
@@ -12,8 +11,7 @@ import { AppModule } from 'src/app/app.module';
   ],
   imports: [
     CommonModule,
-    HomeRoutingModule,
-    AppModule
+    HomeRoutingModule
     //SharedModule,
     //RouterModule.forChild(routes),
 

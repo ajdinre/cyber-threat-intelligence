@@ -41,7 +41,7 @@ import { AuthorizedModule } from './authorized/authorized.module';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
+
     AuthorizedModule,
     BrowserAnimationsModule,
     FormsModule,
@@ -51,6 +51,7 @@ import { AuthorizedModule } from './authorized/authorized.module';
     MatIconModule,
     MatSidenavModule,
     MatListModule,
+    AppRoutingModule
 
 
   ],

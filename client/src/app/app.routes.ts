@@ -1,3 +1,4 @@
+/*
 import { Routes } from '@angular/router';
 
 import { NoContentComponent } from './no-content/no-content.component';
@@ -29,3 +30,4 @@ export const ROUTES: Routes =
       component: NoContentComponent
     }
   ];
+*/

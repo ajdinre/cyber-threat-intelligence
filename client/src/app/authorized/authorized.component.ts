@@ -1,6 +1,8 @@
 import { Component,ViewChild,AfterViewInit, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import {MatSidenavModule} from '@angular/material/sidenav';
 import * as EventEmitter from 'events';
+
 @Component({
   selector: 'app-authorized',
   templateUrl: './authorized.component.html',

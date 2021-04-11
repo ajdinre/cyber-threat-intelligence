@@ -3,8 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, RoutesRecognized } from '@angular/router';
 import { SharedModule } from './../../shared/shared.module';
 import { FileUploadComponent } from './file-upload.component';
-import { routes } from './file-upload.routes';
-
+import { FileUploadRoutingModule } from './file-upload-routing.module';
 
 @NgModule({
   declarations: [
@@ -12,12 +11,13 @@ import { routes } from './file-upload.routes';
   ],
   imports: [
     CommonModule,
-    SharedModule,
-    RouterModule.forChild(routes),
+    FileUploadRoutingModule
+    //SharedModule,
+    //RouterModule.forChild(routes),
 
   ],
 
 })
 export class FileUploadModule{
-  public static routes = routes;
+  //public static routes = routes;
  }

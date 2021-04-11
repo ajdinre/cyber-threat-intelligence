@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule, RoutesRecognized } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { SharedModule } from './../../shared/shared.module';
 import { HomeComponent } from './home.component';
-import { routes } from './home.routes';
-
+import { HomeRoutingModule } from './home-routing.module';
+import { AppModule } from 'src/app/app.module';
 
 @NgModule({
   declarations: [
@@ -12,12 +12,17 @@ import { routes } from './home.routes';
   ],
   imports: [
     CommonModule,
-    SharedModule,
-    RouterModule.forChild(routes),
+    HomeRoutingModule,
+    AppModule
+    //SharedModule,
+    //RouterModule.forChild(routes),
 
   ],
+  exports:[
+    HomeComponent
+  ]
 
 })
 export class HomeModule {
-  public static routes = routes;
+  //public static routes = routes;
  }

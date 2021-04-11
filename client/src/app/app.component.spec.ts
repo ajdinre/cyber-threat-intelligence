@@ -6,8 +6,7 @@ import { FooterComponent } from './shared/components/footer/footer.component';
 import { HeaderComponent } from './shared/components/header/header.component';
 
 describe('AppComponent', () => {
-  let component: AppComponent,
-    fixture: ComponentFixture<AppComponent>;
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
@@ -18,23 +17,14 @@ describe('AppComponent', () => {
         FooterComponent,
         HeaderComponent
       ],
-      providers:[
-        {
-          provide: APP_BASE_HREF,
-          useValue: "/"
-        }
-      ]
+      providers:[]
     }).compileComponents();
   });
 
 
   //getting component
 
-  beforeEach(()=>{
-    fixture = TestBed.createComponent(AppComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+
 
   it('should create the app', () => {
     const fixture = TestBed.createComponent(AppComponent);

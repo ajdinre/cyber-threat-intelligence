@@ -1,4 +1,4 @@
-import { FileUploadComponent} from './file-upload.component';
+/*import { FileUploadComponent} from './file-upload.component';
 import {RouterModule} from '@angular/router';
 
 export const routes = [
@@ -6,3 +6,4 @@ export const routes = [
     path: '', component: FileUploadComponent
   }
 ];
+*/

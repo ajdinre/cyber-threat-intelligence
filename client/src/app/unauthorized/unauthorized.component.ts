@@ -9,7 +9,6 @@ import { AppComponent } from '../app.component';
   styleUrls: ['./unauthorized.component.css']
 })
 export class UnauthorizedComponent{
-  //@Input() isLoggedIn: boolean;
   @Output("isLoggedInSwitch") isLoggedInSwitch: EventEmitter<any> = new EventEmitter();
 
   constructor(private fb:FormBuilder) { }
@@ -31,7 +30,7 @@ export class UnauthorizedComponent{
 
 
   submitForm(){
-    console.log(this.signInForm.get('username'))
+    //console.log(this.signInForm.get('username'))
     this.isLoggedInSwitch.emit();
   }
 }

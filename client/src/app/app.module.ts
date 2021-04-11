@@ -1,43 +1,48 @@
+//predefined modules and components
+
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
-import { NoContentComponent } from './no-content/no-content.component';
+import { RouterModule, Router, Routes } from '@angular/router';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { SharedComponent } from './shared/shared.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FormsModule,ReactiveFormsModule } from '@angular/forms';
+
+//angular materials modules
 import { MatButtonModule } from  '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
-import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
-import { AuthorizedComponent } from './authorized/authorized.component';
-import { ROUTES } from './app.routes'
-import { FormsModule,ReactiveFormsModule } from '@angular/forms';
-import { HomeComponent } from './features-modules/home/home.component';
-import { SharedModule } from './shared/shared.module';
-import { APP_BASE_HREF, PlatformLocation } from '@angular/common';
 
-export function getBaseHref(platformLocation: PlatformLocation):string{
-  return platformLocation.getBaseHrefFromDOM();
-}
+//my componentns
+import { NoContentComponent } from './no-content/no-content.component';
+import { AppComponent } from './app.component';
+import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
+import { HomeComponent } from './features-modules/home/home.component';
+import { AuthorizedComponent } from './authorized';
+import { SharedComponent } from './shared/shared.component';
+
+//my modules
+import { AppRoutingModule } from './app-routing.module';
+import { routes } from './app-routing.module'
+import { SharedModule } from './shared/shared.module';
+import { AuthorizedModule } from './authorized/authorized.module';
+
+
+
+
 
 @NgModule({
   declarations: [
     AppComponent,
     UnauthorizedComponent,
-    AuthorizedComponent,
     NoContentComponent
-
-
   ],
   imports: [
-    RouterModule.forRoot(ROUTES),
     BrowserModule,
     AppRoutingModule,
+    AuthorizedModule,
     BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
@@ -45,14 +50,11 @@ export function getBaseHref(platformLocation: PlatformLocation):string{
     MatToolbarModule,
     MatIconModule,
     MatSidenavModule,
-    MatListModule
+    MatListModule,
+
+
   ],
-  providers: [
-    {
-      provide:APP_BASE_HREF,
-      useFactory: getBaseHref,
-      deps: [PlatformLocation]}
-  ],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

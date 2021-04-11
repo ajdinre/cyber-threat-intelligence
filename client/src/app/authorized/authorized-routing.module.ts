@@ -1,12 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { HomeComponent } from '../features-modules/home/home.component';
 import { HomeModule } from '../features-modules/home/home.module';
 import { AuthorizedComponent } from './authorized.component';
 
 const routes: Routes = [
   {
-    path:'authorized',
-    component: AuthorizedComponent,
+    path:'',
+    component: HomeComponent,
     pathMatch: 'full',
     children: [
       {

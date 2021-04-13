@@ -1,34 +1,40 @@
 import { NgModule } from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {UnauthorizedComponent} from './unauthorized/unauthorized.component'
-import { AuthorizedModule } from './authorized/authorized.module';
+import { AnalyseComponent } from './analyse/analyse.component';
+import { FileUploadComponent } from './file-upload/file-upload.component';
+import { HomeComponent } from './home/home.component';
 import { NoContentComponent } from './no-content/no-content.component';
-
-//import {AuthorizedComponent} from './authorized/authorized.component';
+import { UploadedFilesComponent } from './uploaded-files/uploaded-files.component';
 
 
 export const routes: Routes =
   [
     {
-      path: 'authorized',
-      pathMatch: 'full',
-      loadChildren: ()=> import('./authorized/authorized.module').then(m=>m.AuthorizedModule)
-    }
-    ,
+      path: 'uploaded-files',
+      component: UploadedFilesComponent
 
+    },
     {
-      path: 'unauthorized',
-      pathMatch: 'full',
-      component: UnauthorizedComponent
+      path: 'analyse',
+      component: AnalyseComponent
+
+    },
+    {
+      path: 'file-upload',
+      component: FileUploadComponent
+
+    },
+    {
+      path: 'home',
+      component: HomeComponent
     },
     {
       path: '',
-      redirectTo: 'unauthorized',
-      pathMatch: 'full'
+      pathMatch: 'full',
+      redirectTo: 'home'
     },
     {
       path: '**',
-      //pathMatch: 'full',
       component: NoContentComponent
     }
   ];

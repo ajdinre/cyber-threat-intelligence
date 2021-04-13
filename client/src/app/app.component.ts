@@ -1,35 +1,33 @@
-import { InstantiateExpr } from '@angular/compiler';
-import { Component,ViewChild, OnInit, Inject } from '@angular/core';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { Router,ActivatedRoute, NavigationEnd } from '@angular/router';
-import { filter } from 'rxjs/operators';
+import { Component,ViewChild, OnInit, Inject, AfterViewInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit{
-  name = 'Get Current Url Route Demo';
-  currentRoute: string | undefined;
-  isLoggedIn: boolean = false;
-  initialRoute: string | undefined;
-  title = 'client';
-
-  constructor(private router: Router,private ActivatedRoute:ActivatedRoute){
+export class AppComponent implements OnInit, AfterViewInit{
+  title = 'Cyber Threat Intelligence';
+  public showMenu = false;
+  public toggleSelected = true;
+  constructor(private router: Router) {
   }
 
 
   ngOnInit(){
-    this.router.events.pipe(
-      filter(event=>event instanceof NavigationEnd)).subscribe(()=>{
-        console.log(this.ActivatedRoute.root)
-      })
-
   }
 
-  isLoggedInSwitch(){
-    this.isLoggedIn = !this.isLoggedIn
-    this.router.navigate(['authorized'])
+  ngAfterViewInit(){
+    setTimeout(() => {
+      this.showMenu = window.innerWidth > 700 ? true : false;
+      this.toggleSelected = this.showMenu;
+    }, 0);
+  }
+  onResize(event){
+    this.showMenu = event.target.innerwidth > 700 ? true : false;
+    this.toggleSelected = this.showMenu;
+  }
+  toggle(){
+    this.toggleSelected = !this.toggleSelected;
   }
 }

@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AuthorizedComponent } from './authorized.component';
+import { UploadedFilesComponent } from './uploaded-files.component';
 
-describe('AuthorizedComponent', () => {
-  let component: AuthorizedComponent;
-  let fixture: ComponentFixture<AuthorizedComponent>;
+describe('UploadedFilesComponent', () => {
+  let component: UploadedFilesComponent;
+  let fixture: ComponentFixture<UploadedFilesComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AuthorizedComponent ]
+      declarations: [ UploadedFilesComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AuthorizedComponent);
+    fixture = TestBed.createComponent(UploadedFilesComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

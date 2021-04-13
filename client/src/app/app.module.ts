@@ -18,31 +18,23 @@ import { MatListModule } from '@angular/material/list';
 //my componentns
 import { NoContentComponent } from './no-content/no-content.component';
 import { AppComponent } from './app.component';
-import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
-import { HomeComponent } from './features-modules/home/home.component';
-import { AuthorizedComponent } from './authorized';
+import { HomeComponent } from './home/home.component';
 import { SharedComponent } from './shared/shared.component';
 
 //my modules
 import { AppRoutingModule } from './app-routing.module';
 import { routes } from './app-routing.module'
 import { SharedModule } from './shared/shared.module';
-import { AuthorizedModule } from './authorized/authorized.module';
-
-
-
-
+import { UploadedFilesComponent } from './uploaded-files/uploaded-files.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    UnauthorizedComponent,
-    NoContentComponent
+    NoContentComponent,
+    UploadedFilesComponent
   ],
   imports: [
     BrowserModule,
-
-    AuthorizedModule,
     BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,

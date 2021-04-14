@@ -14,6 +14,8 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
+import { MatInputModule } from '@angular/material/input';
+import { MatCardModule } from '@angular/material/card';
 
 //my componentns
 import { NoContentComponent } from './no-content/no-content.component';
@@ -26,7 +28,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { routes } from './app-routing.module'
 import { SharedModule } from './shared/shared.module';
 import { UploadedFilesComponent } from './uploaded-files/uploaded-files.component';
-import { FileUploadModule } from './file-upload/file-upload.module';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
   declarations: [
@@ -44,7 +46,9 @@ import { FileUploadModule } from './file-upload/file-upload.module';
     MatIconModule,
     MatSidenavModule,
     MatListModule,
-    //FileUploadModule,
+    MatInputModule,
+    MatCardModule,
+    FlexLayoutModule,
     AppRoutingModule
 
 

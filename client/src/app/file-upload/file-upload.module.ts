@@ -1,12 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-//import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule, RoutesRecognized } from '@angular/router';
 import { SharedModule } from '../shared/shared.module';
 import { FileUploadComponent } from './file-upload.component';
 import { FileUploadRoutingModule } from './file-upload-routing.module';
 import { AngularFileUploaderModule } from "angular-file-uploader";
-//import { HttpClientModule } from '@angular/common/http'
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
   declarations: [
@@ -16,6 +15,7 @@ import { AngularFileUploaderModule } from "angular-file-uploader";
     CommonModule,
     FileUploadRoutingModule,
     AngularFileUploaderModule,
+    FlexLayoutModule
     //BrowserModule,
     //HttpClientModule
     //SharedModule,

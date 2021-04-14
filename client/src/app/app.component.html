@@ -5,7 +5,7 @@
     #drawer
     clas="sidenav"
     fixedInViewport="true">
-    <mat-toolbar color="primary">Menu</mat-toolbar>
+    <mat-toolbar color="primary">CTI</mat-toolbar>
     <mat-nav-list>
 
       <a mat-list-item routerLink="/home" routerLinkActive="active"> Home </a>
@@ -22,7 +22,8 @@
       mat-icon-button (click)="drawer.toggle()">
       <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
-      <span>{{title}}</span>
+
+      <span center="center" routerLink="/analyse" routerLinkActive="active">ANALYSE</span>
     </mat-toolbar>
       <router-outlet></router-outlet>
     </mat-sidenav-content>

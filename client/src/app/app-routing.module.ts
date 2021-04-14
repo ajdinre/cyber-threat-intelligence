@@ -11,22 +11,21 @@ export const routes: Routes =
   [
     {
       path: 'uploaded-files',
-      component: UploadedFilesComponent
-
+      loadChildren: () => import('./uploaded-files/uploaded-files.module').then(m=>m.UploadedFilesModule)
     },
     {
       path: 'analyse',
-      component: AnalyseComponent
+      loadChildren: () => import('./analyse/analyse.module').then(m=>m.AnalyseModule)
 
     },
     {
       path: 'file-upload',
-      component: FileUploadComponent
+      loadChildren: () => import('./file-upload/file-upload.module').then(m=>m.FileUploadModule)
 
     },
     {
       path: 'home',
-      component: HomeComponent
+      loadChildren: () => import('./home/home.module').then(m=>m.HomeModule)
     },
     {
       path: '',

@@ -26,6 +26,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { routes } from './app-routing.module'
 import { SharedModule } from './shared/shared.module';
 import { UploadedFilesComponent } from './uploaded-files/uploaded-files.component';
+import { FileUploadModule } from './file-upload/file-upload.module';
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import { UploadedFilesComponent } from './uploaded-files/uploaded-files.componen
     MatIconModule,
     MatSidenavModule,
     MatListModule,
+    //FileUploadModule,
     AppRoutingModule
 
 

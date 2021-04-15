@@ -16,6 +16,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
+import { MatMenu, MatMenuModule} from '@angular/material/menu';
 
 //my componentns
 import { NoContentComponent } from './no-content/no-content.component';
@@ -48,6 +49,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     MatListModule,
     MatInputModule,
     MatCardModule,
+    MatMenuModule,
     FlexLayoutModule,
     AppRoutingModule
 

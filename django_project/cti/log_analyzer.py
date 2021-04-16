@@ -3,7 +3,7 @@ import os
 from cti.models import IP
 from cti.models import Log_line
 from cti.models import Apache_log
-from cti.neo4j.neo4j_classes import create_relationship_if_not_exist, create_if_not_exist
+from cti.neo4j.neo4j_classes import create_relationship_if_not_exist, create_node_if_not_exist
 
 import ipinfo 
 access_token = '5a8dcf646a1d15'
@@ -28,7 +28,7 @@ def analyze(filename, server_data):
     for i in range(len(lines)):  # strip newline char
         lines[i] = lines[i].rstrip()
 
-    create_if_not_exist('Server', server_data)
+    create_node_if_not_exist('Server', server_data)
 
     for i in range(len(lines)):
         line = lines[i]
@@ -86,7 +86,7 @@ def analyze(filename, server_data):
             ip_attributes['longitude'] = details.longitude
         except:
             longitude = None  # ignore
-        create_if_not_exist('IP', ip_attributes)
+        create_node_if_not_exist('IP', ip_attributes)
 
         log_attributes = {
             "timestamp": timestamp,
@@ -97,7 +97,7 @@ def analyze(filename, server_data):
             "sizeInBytes": sizeInBytes
         }
 
-        create_if_not_exist('Log_line', log_attributes)
+        create_node_if_not_exist('Log_line', log_attributes)
         create_relationship_if_not_exist('IP', ip_attributes, 'Log_line', log_attributes, 'HAS_SENT')
         create_relationship_if_not_exist('Log_line', log_attributes, 'Server', server_data, 'HAS_ACCESSED')
 

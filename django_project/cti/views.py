@@ -27,7 +27,8 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
 from django.template.loader import get_template
 from .pdf_generator import render_to_pdf
-from cti.neo4j.neo4j_classes import get_nodes, get_requests_for_ip, get_ips_with_request_method
+from cti.neo4j.neo4j_classes import get_nodes, get_requests_for_ip, get_ips_with_request_method, get_all_ips, get_all_servers, get_all_log_lines, get_all_log_ip_relations, get_all_log_server_relations
+from collections import defaultdict
 
 # TEST IMPORTS
 from django.utils.deconstruct import deconstructible
@@ -35,6 +36,44 @@ from django.template.defaultfilters import filesizeformat
 #import validator.py
 @login_required
 def home(request):
+    # Get all nodes for visualization
+    ip_nodes = get_all_ips()
+    for ip in ip_nodes:
+        ip['group'] = 0
+        ip['name'] = ip['ip_address']
+
+    all_nodes = ip_nodes.copy()
+
+    server_nodes = get_all_servers()
+    for server in server_nodes:
+        server['group'] = 1
+        server['name'] = server['server_name']
+        all_nodes.append(server)
+
+    logline_nodes = get_all_log_lines()
+    for line in logline_nodes:
+        line['group'] = 2
+        line['name'] = line['path']
+        all_nodes.append(line)
+
+    r1 = get_all_log_ip_relations()
+    res = []
+    for relationship in r1:
+        temp = []
+        temp.append(relationship[0])
+        temp.append(relationship[1])
+        temp.append(relationship[2])
+        res.append(temp)
+
+    r2 = get_all_log_server_relations()
+    for relationship in r2:
+        temp = []
+        temp.append(relationship[0])
+        temp.append(relationship[1])
+        temp.append(relationship[2])
+        res.append(temp)
+
+    print(res)
     # Get top countries by IP
     TopCountriesByIP = get_Top_countries_by_ip()
     # Number of IPs
@@ -44,7 +83,7 @@ def home(request):
     # Number of Files
     numberOfFiles = Apache_log.objects.count()
     # print(numberOfRequests)
-    return render(request, 'cti/home.html', {'TopCountriesByIP': TopCountriesByIP, 'numberOfIPs': numberOfIPs, 'numberOfRequests': numberOfRequests, 'numberOfFiles': numberOfFiles})
+    return render(request, 'cti/home.html', {'nodes': all_nodes, 'links': res, 'TopCountriesByIP': TopCountriesByIP, 'numberOfIPs': numberOfIPs, 'numberOfRequests': numberOfRequests, 'numberOfFiles': numberOfFiles})
 
 @login_required
 def uploaded_files(request):

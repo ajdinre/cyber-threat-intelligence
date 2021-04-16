@@ -280,3 +280,34 @@ def get_all_servers():
     for res in db.query(query_string):
         result_array.append(res['a'])
     return result_array
+
+
+# returns a list of all Log_lines and their properties
+def get_all_log_lines():
+    result_array = []
+    query_string = 'MATCH(a:Log_line) RETURN a'
+    db = Database(db_url, db_name, db_password)
+    result = db.query(query_string)
+    for res in db.query(query_string):
+        result_array.append(res['a'])
+    return result_array
+
+# returns a list of all relationships between ip adresses and log lines
+def get_all_log_ip_relations():
+    result_array = []
+    query_string = 'MATCH(a:IP)-[r]-(b:Log_line) RETURN a, r, b'
+    db = Database(db_url, db_name, db_password)
+    result = db.query(query_string)
+    for res in db.query(query_string):
+        result_array.append(res['r'])
+    return result_array
+
+# returns a list of all relationships between servers and log lines
+def get_all_log_server_relations():
+    result_array = []
+    query_string = 'MATCH(a:Server)-[r]-(b:Log_line) RETURN a, r, b'
+    db = Database(db_url, db_name, db_password)
+    result = db.query(query_string)
+    for res in db.query(query_string):
+        result_array.append(res['r'])
+    return result_array

@@ -121,7 +121,8 @@ def upload(request):
 
                 if file.size < MaxsizeinMBs:
 
-                    server_data = {'server_name': str(server_name), 'file_name': str(file)}
+                    #server_data = {'server_name': str(server_name), 'file_name': str(file)}
+                    server_data = {'server_name': str(server_name)}
                     instance = Apache_log(log_file=request.FILES['file'])
                     instance.analyzed = False
                     #print("instance")

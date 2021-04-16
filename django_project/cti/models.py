@@ -36,14 +36,12 @@ class Log_line(models.Model):
     response = models.CharField(max_length=32, null=True)
     sizeInBytes = models.CharField(max_length=32, null=True)
 
-
 class UserProfile(models.Model):
 
     SECURITY_LEVEL = Choices('Confidential', 'Secret', 'Top_Secret')
     security = models.CharField(
         max_length=12,
         choices=SECURITY_LEVEL,
-        
     )
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)

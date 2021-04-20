@@ -21,21 +21,17 @@ import { MatMenu, MatMenuModule} from '@angular/material/menu';
 //my componentns
 import { NoContentComponent } from './no-content/no-content.component';
 import { AppComponent } from './app.component';
-import { HomeComponent } from './home/home.component';
-import { SharedComponent } from './shared/shared.component';
 
 //my modules
 import { AppRoutingModule } from './app-routing.module';
 import { routes } from './app-routing.module'
 import { SharedModule } from './shared/shared.module';
-import { UploadedFilesComponent } from './uploaded-files/uploaded-files.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
   declarations: [
     AppComponent,
     NoContentComponent,
-    UploadedFilesComponent
   ],
   imports: [
     BrowserModule,

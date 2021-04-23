@@ -4,9 +4,18 @@ table {
 
 .mat-form-field {
   font-size: 14px;
-  width: 100%;
-}
 
-td, th {
-  width: 25%;
+}
+.uploaded-files-container{
+  display:flex;
+  padding:20px !important;
+}
+.header-container{
+  flex: 1 1 auto !important;
+}
+.page-container{
+  flex:1 1 auto !important;
+}
+.export-container{
+  flex:1 1 auto !important;
 }

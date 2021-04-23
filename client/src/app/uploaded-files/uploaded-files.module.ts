@@ -8,6 +8,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 
 
@@ -20,7 +21,8 @@ import { MatInputModule } from '@angular/material/input';
     MatPaginatorModule,
     MatSortModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    FlexLayoutModule
   ],
   exports: [
     UploadedFilesComponent

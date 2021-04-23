@@ -3,11 +3,12 @@ import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
 
-export interface UserData {
+export interface FileData {
   id: string;
-  name: string;
-  progress: string;
-  color: string;
+  serverName: string;
+  fileName: string;
+  fileSize: string;
+  dateUploaded: string;
 }
 
 /** Constants used to fill up our data base. */
@@ -20,17 +21,15 @@ const NAMES: string[] = [
   'Isabella', 'Jasper', 'Cora', 'Levi', 'Violet', 'Arthur', 'Mia', 'Thomas', 'Elizabeth'
 ];
 
-/**
- * @title Data table with sorting, pagination, and filtering.
- */
+
 @Component({
   selector: 'uploaded-files',
   styleUrls: ['./uploaded-files.component.css'],
   templateUrl: './uploaded-files.component.html',
 })
 export class UploadedFilesComponent implements AfterViewInit {
-  displayedColumns: string[] = ['id', 'name', 'progress', 'color'];
-  dataSource: MatTableDataSource<UserData>;
+  displayedColumns: string[] = ['id', 'server name', 'file name', 'file size', 'date uploaded'];
+  dataSource: MatTableDataSource<FileData>;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -59,14 +58,15 @@ export class UploadedFilesComponent implements AfterViewInit {
 }
 
 /** Builds and returns a new User. */
-function createNewUser(id: number): UserData {
+function createNewUser(id: number): FileData {
   const name = NAMES[Math.round(Math.random() * (NAMES.length - 1))] + ' ' +
       NAMES[Math.round(Math.random() * (NAMES.length - 1))].charAt(0) + '.';
 
   return {
     id: id.toString(),
-    name: name,
-    progress: Math.round(Math.random() * 100).toString(),
-    color: COLORS[Math.round(Math.random() * (COLORS.length - 1))]
+    serverName: name,
+    fileName: Math.round(Math.random() * 100).toString(),
+    fileSize: "20MB",
+    dateUploaded: 'today'
   };
 }

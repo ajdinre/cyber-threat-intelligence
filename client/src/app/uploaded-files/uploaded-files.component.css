@@ -6,16 +6,24 @@ table {
   font-size: 14px;
 
 }
-.uploaded-files-container{
-  display:flex;
+mat-card{
+  background-color: #7a7a7a;
+}
+#uploaded-files-container{
+  display:flex !important;
+  height:100% !important;
+  width:100% !important;
+  flex-direction: column !important;
   padding:20px !important;
 }
-.header-container{
-  flex: 1 1 auto !important;
+#uploaded-files-container > .header-container{
+  align-self: center;
+  flex: 20% !important;
 }
-.page-container{
-  flex:1 1 auto !important;
+#uploaded-files-container > .table-container{
+  flex: 30% !important;
 }
-.export-container{
-  flex:1 1 auto !important;
+#uploaded-files-container > .export-container{
+  align-self: center;
+  flex: 50% !important;
 }

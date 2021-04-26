@@ -18,7 +18,7 @@ export class FileUploadComponent implements OnInit {
 
   }
   afuConfig = {
-    multiple: true,
+    multiple: false,
     formatsAllowed: ".txt,.docx,.pdf,.",
     maxSize: 40, // File size in MBs
     uploadAPI:  {
@@ -52,7 +52,8 @@ export class FileUploadComponent implements OnInit {
   initializeForm():void{
     this.fileUploadForm = this.fb.group({
       fileName : ['',[Validators.required,Validators.maxLength(20)]],
-      serverName : ['', [Validators.required,Validators.maxLength(20)]]
+      serverName : ['', [Validators.required,Validators.maxLength(20)]],
+      fileUploadSuccess : [true, Validators.requiredTrue]
     },
     {
      updateOn : 'change'

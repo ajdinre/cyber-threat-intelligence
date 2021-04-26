@@ -1,12 +1,13 @@
-<div class="file-upload-container">
+<div fxFlex ="100" fxLayout="column" fxLayoutAlign="space-around stretch" fxLayoutGap="10px" class="file-upload-container">
   <div class="title-container">
     <h3>Title Container Here!</h3>
   </div>
-  <div class="main-container">
+
+  <div class="main-container" fxLayout="column" fxLayoutAlign="space-around stretch">
     <div class="whole-form">
       <mat-card class="forms-mat-card">
         <div class="form-title">
-          <h3> Please fill in the form...</h3>
+          <p class="form-title-text"> Please fill in the form...</p>
         </div>
         <div class="form-body">
           <form [formGroup]="fileUploadForm" (ngSubmit)="submitForm()">

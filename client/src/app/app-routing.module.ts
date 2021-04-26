@@ -28,6 +28,10 @@ export const routes: Routes =
       loadChildren: () => import('./home/home.module').then(m=>m.HomeModule)
     },
     {
+      path: 'settings',
+      loadChildren: () => import('./settings/settings.module').then(m=>m.SettingsModule)
+    },
+    {
       path: '',
       pathMatch: 'full',
       redirectTo: 'home'

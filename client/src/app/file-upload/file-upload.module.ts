@@ -6,6 +6,9 @@ import { FileUploadComponent } from './file-upload.component';
 import { FileUploadRoutingModule } from './file-upload-routing.module';
 import { AngularFileUploaderModule } from "angular-file-uploader";
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { MatCardModule } from '@angular/material/card';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
 
 @NgModule({
   declarations: [
@@ -15,7 +18,11 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     CommonModule,
     FileUploadRoutingModule,
     AngularFileUploaderModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    MatButtonModule,
+    MatCardModule,
+    ReactiveFormsModule
+
     //BrowserModule,
     //HttpClientModule
     //SharedModule,

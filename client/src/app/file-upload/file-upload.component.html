@@ -1,3 +1,68 @@
-<angular-file-uploader
-      [config]="afuConfig">
-</angular-file-uploader>
+<div class="file-upload-container">
+  <div class="title-container">
+    <h3>Title Container Here!</h3>
+  </div>
+  <div class="main-container">
+    <div class="whole-form">
+      <mat-card class="forms-mat-card">
+        <div class="form-title">
+          <h3> Please fill in the form...</h3>
+        </div>
+        <div class="form-body">
+          <form [formGroup]="fileUploadForm" (ngSubmit)="submitForm()">
+            <div class="file-name-input">
+              <label for="fileName">File Name </label>
+              <fieldset>
+                <input id="fileName" name="fileName" formControlName="fileName" type="text">
+                <div
+                  *ngIf="!fileUploadForm.controls['fileName']?.valid && (fileUploadForm.controls['fileName']?.dirty ||fileUploadForm.controls['fileName']?.touched)">
+                  <div [hidden]="!fileUploadForm.controls['fileName'].errors?.required">
+                    File Name is required!
+                  </div>
+                  <div [hidden]="!fileUploadForm.controls['fileName'].errors?.maxlength">
+                    Max name length is 20 characters!
+                  </div>
+                </div>
+              </fieldset>
+            </div>
+
+            <div class="server-name-input">
+              <label for="serverName">Server Name </label>
+              <fieldset>
+                <input id="serverName" name="serverName" formControlName="serverName" type="text">
+                <div
+                  *ngIf="!fileUploadForm.controls['serverName']?.valid && (fileUploadForm.controls['serverName']?.dirty ||fileUploadForm.controls['serverName']?.touched)">
+                  <div [hidden]="!fileUploadForm.controls['serverName'].errors?.required">
+                    Server Name is required!
+                  </div>
+                  <div [hidden]="!fileUploadForm.controls['serverName'].errors?.maxlength">
+                    Max name length is 20 characters!
+                  </div>
+                </div>
+              </fieldset>
+            </div>
+
+
+            <div class="ang-file-uploader">
+              <label>File Uploader</label>
+              <angular-file-uploader
+              [config]="afuConfig">
+              </angular-file-uploader>
+            </div>
+
+            <div class="submit-button">
+              <button mat-button type="submit" [disabled]="!fileUploadForm.valid">Submit! </button>
+            </div>
+          </form>
+        </div>
+      </mat-card>
+
+    </div>
+  </div>
+  <div class="bottom-container">
+    <h3>Bottom Container Here!</h3>
+  </div>
+
+</div>
+
+

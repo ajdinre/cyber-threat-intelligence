@@ -4,15 +4,10 @@ import { AnalyseComponent } from './analyse/analyse.component';
 import { FileUploadComponent } from './file-upload/file-upload.component';
 import { HomeComponent } from './home/home.component';
 import { NoContentComponent } from './no-content/no-content.component';
-import { UploadedFilesComponent } from './uploaded-files/uploaded-files.component';
 
 
 export const routes: Routes =
   [
-    {
-      path: 'uploaded-files',
-      loadChildren: () => import('./uploaded-files/uploaded-files.module').then(m=>m.UploadedFilesModule)
-    },
     {
       path: 'analyse',
       loadChildren: () => import('./analyse/analyse.module').then(m=>m.AnalyseModule)

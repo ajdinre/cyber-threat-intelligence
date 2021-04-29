@@ -53,7 +53,7 @@ export class FileUploadComponent implements OnInit {
     this.fileUploadForm = this.fb.group({
       fileName : ['',[Validators.required,Validators.maxLength(20)]],
       serverName : ['', [Validators.required,Validators.maxLength(20)]],
-      fileUploadSuccess : [true, Validators.requiredTrue]
+      fileUploadSuccess : [false, Validators.requiredTrue]
     },
     {
      updateOn : 'change'

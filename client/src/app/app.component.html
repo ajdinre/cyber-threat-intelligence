@@ -21,7 +21,11 @@
         mat-icon-button (click)="drawer.toggle()">
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
         </button>
-        <div routerLink="/analyse" routerLinkActive="active">ANALYSE</div>
+
+        <button type="button" mat-icon-button routerLink="/analyse" routerLinkActive="active">
+        <mat-icon id="analyse-icon">fingerprint</mat-icon>
+        </button>
+
         <mat-menu #profileMenu="matMenu" yPosition="below" >
           <ng-template matMenuContent >
             <button mat-menu-item style="background-color: rgb(66, 66, 66); color:whitesmoke" routerLink="/settings" routerLinkActive="active">Settings</button>

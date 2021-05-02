@@ -5,6 +5,9 @@ from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.models import User, Group
 from django.contrib.auth.decorators import login_required
+from rest_framework.decorators import api_view
+
+from rest_framework.views import APIView
 from django.db.models import Count
 from .forms import UploadFileForm, EditProfileForm, AddressForm, StatisticsForm
 from cti.models import IP, Log_line
@@ -33,6 +36,17 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all().order_by('-date_joined')
     serializer_class = UserSerializer
     permission_classes = [permissions.IsAuthenticated]
+
+@api_view(['GET'])
+def current_user(request):
+    user_id = request._user._wrapped.id
+    user = User.objects.get(pk=user_id)
+    print(vars(user))
+    serializer_class = UserSerializer(user, context={'request': request})
+    print(vars(serializer_class))
+
+    return Response(serializer_class.data)
+
 
 class GroupViewSet(viewsets.ModelViewSet):
     """

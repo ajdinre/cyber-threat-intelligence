@@ -29,7 +29,7 @@
         <mat-menu #profileMenu="matMenu" yPosition="below" >
           <ng-template matMenuContent >
             <button mat-menu-item style="background-color: rgb(66, 66, 66); color:whitesmoke" routerLink="/settings" routerLinkActive="active">Settings</button>
-            <button mat-menu-item style="background-color: rgb(66, 66, 66); color:whitesmoke" routerLink="/home" routerLinkActive="active">Sign Out</button>
+            <button mat-menu-item style="background-color: rgb(66, 66, 66); color:whitesmoke" (click)="logoutRedirect()">Sign Out</button>
           </ng-template>
         </mat-menu>
         <button mat-fab type="menu" [matMenuTriggerFor]="profileMenu" style="background-color: rgb(180, 180, 180);">

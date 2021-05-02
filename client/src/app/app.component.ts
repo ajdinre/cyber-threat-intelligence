@@ -30,4 +30,7 @@ export class AppComponent implements OnInit, AfterViewInit{
   toggle(){
     this.toggleSelected = !this.toggleSelected;
   }
+  logoutRedirect(){
+    window.location.href="/logout";
+  }
 }

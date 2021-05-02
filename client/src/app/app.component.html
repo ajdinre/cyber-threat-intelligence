@@ -1,35 +1,46 @@
-<div (window:resize)="onResize($event)">
+<div fxFlex fxLayout="column" fxLayoutGap="10px" style="height:100vh;">
 
-  <mat-sidenav-container class="sidenav-container">
-    <mat-sidenav mode="side"
+  <mat-sidenav-container class="sidenav-container" style="background-color: rgb(75, 75, 75); color: whitesmoke">
+    <mat-sidenav style="background-color: rgb(66, 66, 66);" mode="side"
     #drawer
-    clas="sidenav"
+    class="sidenav"
     fixedInViewport="true">
-    <mat-toolbar color="primary">CTI</mat-toolbar>
-    <mat-nav-list>
+    <mat-toolbar color="primary" style="background-color: rgb(66, 66, 66);">CTI</mat-toolbar>
+    <mat-nav-list >
 
-      <a mat-list-item routerLink="/home" routerLinkActive="active"> Home </a>
-      <a mat-list-item routerLink="/analyse" routerLinkActive="active"> Analyse </a>
-      <a mat-list-item routerLink="/file-upload" routerLinkActive="active"> File Upload </a>
-      <a mat-list-item routerLink="/uploaded-files" routerLinkActive="active"> Uploaded Files </a>
+      <a mat-list-item style="color: whitesmoke;" routerLink="/home" routerLinkActive="active"> Home </a>
+      <a mat-list-item style="color: whitesmoke;" routerLink="/analyse" routerLinkActive="active"> Analyse </a>
+      <a mat-list-item style="color: whitesmoke;" routerLink="/file-upload" routerLinkActive="active"> File Upload </a>
 
     </mat-nav-list>
   </mat-sidenav>
 
-  <mat-sidenav-content class="sidenav-content">
-    <mat-toolbar color="primary">
-      <button type="button" aria-label="Toggle sidenav"
-      mat-icon-button (click)="drawer.toggle()">
-      <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
-      </button>
+  <mat-sidenav-content class="sidenav-content" style="height:100vh;">
+      <mat-toolbar fxLayout="row" fxLayoutAlign="space-between center" color="primary" style="background-color: rgb(66, 66, 66);">
+        <button type="button" aria-label="Toggle sidenav"
+        mat-icon-button (click)="drawer.toggle()">
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+        </button>
 
-      <span center="center" routerLink="/analyse" routerLinkActive="active">ANALYSE</span>
-    </mat-toolbar>
-      <router-outlet></router-outlet>
+        <button type="button" mat-icon-button routerLink="/analyse" routerLinkActive="active">
+        <mat-icon id="analyse-icon">fingerprint</mat-icon>
+        </button>
+
+        <mat-menu #profileMenu="matMenu" yPosition="below" >
+          <ng-template matMenuContent >
+            <button mat-menu-item style="background-color: rgb(66, 66, 66); color:whitesmoke" routerLink="/settings" routerLinkActive="active">Settings</button>
+            <button mat-menu-item style="background-color: rgb(66, 66, 66); color:whitesmoke" routerLink="/home" routerLinkActive="active">Sign Out</button>
+          </ng-template>
+        </mat-menu>
+        <button mat-fab type="menu" [matMenuTriggerFor]="profileMenu" style="background-color: rgb(180, 180, 180);">
+          <mat-icon>person</mat-icon>
+        </button>
+
+      </mat-toolbar>
+
+      <div>
+        <router-outlet></router-outlet>
+      </div>
     </mat-sidenav-content>
-
   </mat-sidenav-container>
-
-
-
 </div>

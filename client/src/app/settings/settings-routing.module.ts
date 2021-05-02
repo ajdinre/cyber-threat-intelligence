@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { UploadedFilesComponent } from './uploaded-files.component';
+import { SettingsComponent } from './settings.component';
 
 const routes: Routes = [
   {
     path: '',
-    pathMatch:'full',
-    component: UploadedFilesComponent
+    pathMatch: 'full',
+    component: SettingsComponent
   }
 ];
 
@@ -14,4 +14,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class UploadedFilesRoutingModule { }
+export class SettingsRoutingModule { }

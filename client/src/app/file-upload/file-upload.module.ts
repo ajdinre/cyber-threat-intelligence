@@ -1,12 +1,14 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-//import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule, RoutesRecognized } from '@angular/router';
 import { SharedModule } from '../shared/shared.module';
 import { FileUploadComponent } from './file-upload.component';
 import { FileUploadRoutingModule } from './file-upload-routing.module';
 import { AngularFileUploaderModule } from "angular-file-uploader";
-//import { HttpClientModule } from '@angular/common/http'
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { MatCardModule } from '@angular/material/card';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
 
 @NgModule({
   declarations: [
@@ -16,6 +18,11 @@ import { AngularFileUploaderModule } from "angular-file-uploader";
     CommonModule,
     FileUploadRoutingModule,
     AngularFileUploaderModule,
+    FlexLayoutModule,
+    MatButtonModule,
+    MatCardModule,
+    ReactiveFormsModule
+
     //BrowserModule,
     //HttpClientModule
     //SharedModule,

@@ -1,0 +1,32 @@
+table {
+  width: 100%;
+}
+
+.mat-form-field {
+  font-size: 14px;
+
+}
+mat-card{
+  background-color: #7a7a7a;
+}
+#home-page-container{
+  display:flex !important;
+  height:100% !important;
+  width:100% !important;
+  flex-direction: column !important;
+  padding:20px !important;
+}
+.header-container{
+  align-self: center;
+  flex: 20% !important;
+}
+.table-container{
+  flex: 30% !important;
+}
+.export-container{
+  align-self: center;
+  flex: 50% !important;
+}
+#welcome-container{
+  display:flex !important;
+}

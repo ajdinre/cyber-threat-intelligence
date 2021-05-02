@@ -1,0 +1,38 @@
+table {
+  width: 100%;
+}
+
+.mat-form-field {
+  font-size: 14px;
+
+}
+mat-card{
+  background-color: #7a7a7a;
+}
+#analyse-page-container{
+  display:flex !important;
+  height:100% !important;
+  width:100% !important;
+  flex-direction: column !important;
+  padding:40px !important;
+}
+.header-container{
+  align-self: center;
+  flex: 20% !important;
+}
+.table-container{
+  flex: 30% !important;
+}
+
+#welcome-container{
+  display:flex !important;
+}
+#select-multiple-button{
+  width: 100% !important;
+}
+#select-files-header{
+  padding-bottom: 10px;
+}
+#grafana-mat-card{
+  min-height: 600px;
+}

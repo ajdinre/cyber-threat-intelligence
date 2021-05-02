@@ -2,3 +2,6 @@
   height:auto;
   width:auto;
 }
+#analyse-icon{
+  transform: scale(2.5);
+}

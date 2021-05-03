@@ -13,7 +13,7 @@ from .forms import UploadFileForm, EditProfileForm, AddressForm, StatisticsForm
 from cti.models import IP, Log_line
 from .models import Apache_log
 from .log_analyzer import analyze
-from cti.neo4j.neo4j_classes import create_node, get_count_of_ip, get_Top_countries_by_ip, get_by_ip, get_by_country_code, get_by_city, get_by_org, get_by_region, get_by_timezone, get_by_postal, get_nodes, get_requests_for_ip, get_ips_with_request_method
+from cti.neo4j.neo4j_classes import create_node, get_count_of_ip, get_Top_countries_by_ip, get_by_ip, get_by_country_code, get_by_city, get_by_org, get_by_region, get_by_timezone, get_by_postal, get_nodes, get_requests_for_ip, get_ips_with_request_method, get_all
 from django.urls import reverse
 from django.template.loader import get_template
 from .pdf_generator import render_to_pdf
@@ -96,8 +96,30 @@ class IPView(views.APIView):
         Return a list of all users.
         """
         ip_list = get_all()
-        print(ip_list)
         return Response(ip_list)
+
+ 
+@api_view(['GET'])
+def ip_details(request, pk):
+    details = get_by_ip(pk)
+    if len(details) == 0:
+        return HttpResponse(status=404)
+
+    if request.method == 'GET':
+        return JsonResponse(details)
+
+    elif request.method == 'PUT':
+        data = JSONParser().parse(request)
+        serializer = SnippetSerializer(snippet, data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(serializer.data)
+        return JsonResponse(serializer.errors, status=400)
+
+    elif request.method == 'DELETE':
+        snippet.delete()
+        return HttpResponse(status=204)
+
 
 
 

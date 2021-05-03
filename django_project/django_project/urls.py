@@ -54,7 +54,8 @@ urlpatterns = [
 
     #REST
     path('log/upload', cti_views.FileUploadView.as_view()),
-    path('ip', cti_views.IPView.as_view())
+    path('ip', cti_views.IPView.as_view()),
+    path('ip/<int:pk>/', cti_views.ip_details)
 
 
 ]

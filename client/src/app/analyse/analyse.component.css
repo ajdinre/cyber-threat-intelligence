@@ -36,3 +36,14 @@ mat-card{
 #grafana-mat-card{
   min-height: 600px;
 }
+#neo4j-mat-card{
+  min-height: 600px;
+}
+.links line {
+  stroke: #999;
+  stroke-opacity: 0.6;
+}
+.nodes circle {
+  stroke: #fff;
+  stroke-width: 1.5px;
+}

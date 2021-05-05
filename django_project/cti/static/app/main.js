@@ -7,7 +7,7 @@
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /home/dino/Documents/fer/thesis/cyber-threat-intelligence/client/src/main.ts */"zUnb");
+module.exports = __webpack_require__(/*! /home/marta/development/cyber-threat-intelligence/client/src/main.ts */"zUnb");
 
 
 /***/ }),

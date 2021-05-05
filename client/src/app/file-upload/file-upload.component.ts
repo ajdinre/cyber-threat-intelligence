@@ -4,6 +4,7 @@ import { Validators } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatButton } from '@angular/material/button';
 import { HttpClient } from '@angular/common/http';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-file-upload',
@@ -12,14 +13,21 @@ import { HttpClient } from '@angular/common/http';
 })
 export class FileUploadComponent implements OnInit {
   fileUploadForm;
+  private csrf : any;
   constructor(
     private fb : FormBuilder,
-    private http : HttpClient
-    ) { }
+    private http : HttpClient,
+    private cookieService : CookieService
+    ) {
+      this.csrf = this.cookieService.get("csrftoken");
+      if (typeof(this.csrf) === 'undefined'){
+        this.csrf = '';
+      }
+    }
 
   ngOnInit(): void {
     this.initializeForm();
-
+    console.log(this.csrf);
   }
 
   onFileChange(event) {

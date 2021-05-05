@@ -9,6 +9,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatCardModule } from '@angular/material/card';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { CookieService } from 'ngx-cookie-service';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,9 @@ import { MatButtonModule } from '@angular/material/button';
   exports: [
     FileUploadComponent,
     AngularFileUploaderModule
+  ],
+  providers: [
+    CookieService
   ]
 
 })

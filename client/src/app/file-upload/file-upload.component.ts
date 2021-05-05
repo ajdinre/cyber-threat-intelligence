@@ -3,8 +3,9 @@ import { FormBuilder } from '@angular/forms';
 import { Validators } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatButton } from '@angular/material/button';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
+
 
 @Component({
   selector: 'app-file-upload',
@@ -56,17 +57,14 @@ export class FileUploadComponent implements OnInit {
   }
   submitForm(): void{
     console.log(this.fileUploadForm.value);
-    /**
-     * TODO:
-     * Upload file to server
-     * Send input fileName and serverName
-     * Send file size.
-     * Send date of making the request.
-     */
     const formData = new FormData();
     formData.append('file', this.fileUploadForm.get('fileSource').value);
-
-    this.http.post('/log/upload', formData)
+    formData.append('servername', this.fileUploadForm.get('serverName').value);
+    this.http.post('/log/upload', formData, {
+      headers: {
+        'X-CSRFToken': this.csrf
+      }
+    })
       .subscribe(res => {
         console.log(res);
         alert('Uploaded Successfully.');

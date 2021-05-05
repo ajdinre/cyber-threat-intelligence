@@ -43,18 +43,26 @@
               </fieldset>
             </div>
 
+            <div class="form-group">
+              <label for="file">File</label>
+              <input
+                  formControlName="file"
+                  id="file"
+                  type="file"
+                  class="form-control"
+                  (change)="onFileChange($event)">
+                  <div *ngIf="fileUploadForm.controls['file'].touched && fileUploadForm.controls['file'].invalid" class="alert alert-danger">
+                  <div *ngIf="fileUploadForm.controls['file'].errors.required">File is required.</div>
+              </div>
+          </div>
 
-            <div class="ang-file-uploader">
-              <label>File Uploader</label>
-              <angular-file-uploader
-              [config]="afuConfig">
-              </angular-file-uploader>
-            </div>
 
             <div class="submit-button">
               <button mat-button type="submit" [disabled]="!fileUploadForm.valid">Submit! </button>
             </div>
           </form>
+
+
         </div>
       </mat-card>
 

@@ -3,6 +3,7 @@ import { FormBuilder } from '@angular/forms';
 import { Validators } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatButton } from '@angular/material/button';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-file-upload',
@@ -11,49 +12,35 @@ import { MatButton } from '@angular/material/button';
 })
 export class FileUploadComponent implements OnInit {
   fileUploadForm;
-  constructor(private fb: FormBuilder) { }
+  constructor(
+    private fb : FormBuilder,
+    private http : HttpClient
+    ) { }
 
   ngOnInit(): void {
     this.initializeForm();
 
   }
-  afuConfig = {
-    multiple: false,
-    formatsAllowed: ".txt,.docx,.pdf,.",
-    maxSize: 40, // File size in MBs
-    uploadAPI:  {
-      url:"https://example-file-upload-api",
-      /*method:"POST",
-      headers: {
-     "Content-Type" : "text/plain;charset=UTF-8",
-     "Authorization" : `Bearer ${token}`
-      },
-      params: {
-        'page': '1'
-      },
-      responseType: 'blob',*/
-    },
-    theme: "attachPin",
-    hideProgressBar: false,
-    hideResetBtn: false,
-    hideSelectBtn: false,
-    fileNameIndex: true,
-    replaceTexts: {
-      selectFileBtn: 'Select Files',
-      resetBtn: 'Reset',
-      uploadBtn: 'Upload',
-      dragNDropBox: 'Drag N Drop',
-      attachPinBtn: 'Attach Files...',
-      afterUploadMsg_success: 'Successfully Uploaded !',
-      afterUploadMsg_error: 'Upload Failed !',
-      sizeLimit: 'Size Limit'
+
+  onFileChange(event) {
+
+    if (event.target.files.length > 0) {
+      const file = event.target.files[0];
+      this.fileUploadForm.patchValue({
+        fileSource: file
+      });
     }
-  };
+  }
+  get f(){
+    return this.fileUploadForm.controls;
+  }
+
   initializeForm():void{
     this.fileUploadForm = this.fb.group({
       fileName : ['',[Validators.required,Validators.maxLength(20)]],
       serverName : ['', [Validators.required,Validators.maxLength(20)]],
-      fileUploadSuccess : [false, Validators.requiredTrue]
+      file : ['', [Validators.required]],
+      fileSource : ['', [Validators.required]]
     },
     {
      updateOn : 'change'
@@ -68,5 +55,13 @@ export class FileUploadComponent implements OnInit {
      * Send file size.
      * Send date of making the request.
      */
+    const formData = new FormData();
+    formData.append('file', this.fileUploadForm.get('fileSource').value);
+
+    this.http.post('/log/upload', formData)
+      .subscribe(res => {
+        console.log(res);
+        alert('Uploaded Successfully.');
+      })
   }
 }

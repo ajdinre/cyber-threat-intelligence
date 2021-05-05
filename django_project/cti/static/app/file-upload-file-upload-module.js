@@ -46,10 +46,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FileUploadComponent", function() { return FileUploadComponent; });
 /* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/forms */ "3Pt+");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "fXoL");
-/* harmony import */ var _angular_flex_layout_flex__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/flex-layout/flex */ "XiUz");
-/* harmony import */ var _angular_material_card__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/material/card */ "Wp6s");
-/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/common */ "ofXK");
-/* harmony import */ var angular_file_uploader__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! angular-file-uploader */ "wn2B");
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/common/http */ "tk/3");
+/* harmony import */ var _angular_flex_layout_flex__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/flex-layout/flex */ "XiUz");
+/* harmony import */ var _angular_material_card__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/material/card */ "Wp6s");
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/common */ "ofXK");
 /* harmony import */ var _angular_material_button__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/material/button */ "bTqV");
 
 
@@ -61,10 +61,10 @@ __webpack_require__.r(__webpack_exports__);
 
 function FileUploadComponent_div_17_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](0, "div");
-    _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](1, "div", 21);
+    _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](1, "div", 23);
     _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtext"](2, " File Name is required! ");
     _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](3, "div", 21);
+    _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](3, "div", 23);
     _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtext"](4, " Max name length is 20 characters! ");
     _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
@@ -77,10 +77,10 @@ function FileUploadComponent_div_17_Template(rf, ctx) { if (rf & 1) {
 } }
 function FileUploadComponent_div_23_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](0, "div");
-    _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](1, "div", 21);
+    _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](1, "div", 23);
     _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtext"](2, " Server Name is required! ");
     _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](3, "div", 21);
+    _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](3, "div", 23);
     _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtext"](4, " Max name length is 20 characters! ");
     _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
@@ -91,41 +91,45 @@ function FileUploadComponent_div_23_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵadvance"](2);
     _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵproperty"]("hidden", !(ctx_r1.fileUploadForm.controls["serverName"].errors == null ? null : ctx_r1.fileUploadForm.controls["serverName"].errors.maxlength));
 } }
+function FileUploadComponent_div_28_div_1_Template(rf, ctx) { if (rf & 1) {
+    _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](0, "div");
+    _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtext"](1, "File is required.");
+    _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
+} }
+function FileUploadComponent_div_28_Template(rf, ctx) { if (rf & 1) {
+    _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](0, "div", 24);
+    _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtemplate"](1, FileUploadComponent_div_28_div_1_Template, 2, 0, "div", 12);
+    _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
+} if (rf & 2) {
+    const ctx_r2 = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵnextContext"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵproperty"]("ngIf", ctx_r2.fileUploadForm.controls["file"].errors.required);
+} }
 class FileUploadComponent {
-    constructor(fb) {
+    constructor(fb, http) {
         this.fb = fb;
-        this.afuConfig = {
-            multiple: false,
-            formatsAllowed: ".txt,.docx,.pdf,.",
-            maxSize: 40,
-            uploadAPI: {
-                url: "https://example-file-upload-api",
-            },
-            theme: "attachPin",
-            hideProgressBar: false,
-            hideResetBtn: false,
-            hideSelectBtn: false,
-            fileNameIndex: true,
-            replaceTexts: {
-                selectFileBtn: 'Select Files',
-                resetBtn: 'Reset',
-                uploadBtn: 'Upload',
-                dragNDropBox: 'Drag N Drop',
-                attachPinBtn: 'Attach Files...',
-                afterUploadMsg_success: 'Successfully Uploaded !',
-                afterUploadMsg_error: 'Upload Failed !',
-                sizeLimit: 'Size Limit'
-            }
-        };
+        this.http = http;
     }
     ngOnInit() {
         this.initializeForm();
+    }
+    onFileChange(event) {
+        if (event.target.files.length > 0) {
+            const file = event.target.files[0];
+            this.fileUploadForm.patchValue({
+                fileSource: file
+            });
+        }
+    }
+    get f() {
+        return this.fileUploadForm.controls;
     }
     initializeForm() {
         this.fileUploadForm = this.fb.group({
             fileName: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_0__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_0__["Validators"].maxLength(20)]],
             serverName: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_0__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_0__["Validators"].maxLength(20)]],
-            fileUploadSuccess: [false, _angular_forms__WEBPACK_IMPORTED_MODULE_0__["Validators"].requiredTrue]
+            file: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_0__["Validators"].required]],
+            fileSource: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_0__["Validators"].required]]
         }, {
             updateOn: 'change'
         });
@@ -139,10 +143,17 @@ class FileUploadComponent {
          * Send file size.
          * Send date of making the request.
          */
+        const formData = new FormData();
+        formData.append('file', this.fileUploadForm.get('fileSource').value);
+        this.http.post('/log/upload', formData)
+            .subscribe(res => {
+            console.log(res);
+            alert('Uploaded Successfully.');
+        });
     }
 }
-FileUploadComponent.ɵfac = function FileUploadComponent_Factory(t) { return new (t || FileUploadComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdirectiveInject"](_angular_forms__WEBPACK_IMPORTED_MODULE_0__["FormBuilder"])); };
-FileUploadComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineComponent"]({ type: FileUploadComponent, selectors: [["app-file-upload"]], decls: 34, vars: 5, consts: [["fxFlex", "100", "fxLayout", "column", "fxLayoutAlign", "space-around stretch", "fxLayoutGap", "10px", 1, "file-upload-container"], [1, "title-container"], ["fxLayout", "column", "fxLayoutAlign", "space-around stretch", 1, "main-container"], [1, "whole-form"], [1, "forms-mat-card"], [1, "form-title"], [1, "form-title-text"], [1, "form-body"], [3, "formGroup", "ngSubmit"], [1, "file-name-input"], ["for", "fileName"], ["id", "fileName", "name", "fileName", "formControlName", "fileName", "type", "text"], [4, "ngIf"], [1, "server-name-input"], ["for", "serverName"], ["id", "serverName", "name", "serverName", "formControlName", "serverName", "type", "text"], [1, "ang-file-uploader"], [3, "config"], [1, "submit-button"], ["mat-button", "", "type", "submit", 3, "disabled"], [1, "bottom-container"], [3, "hidden"]], template: function FileUploadComponent_Template(rf, ctx) { if (rf & 1) {
+FileUploadComponent.ɵfac = function FileUploadComponent_Factory(t) { return new (t || FileUploadComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdirectiveInject"](_angular_forms__WEBPACK_IMPORTED_MODULE_0__["FormBuilder"]), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdirectiveInject"](_angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClient"])); };
+FileUploadComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineComponent"]({ type: FileUploadComponent, selectors: [["app-file-upload"]], decls: 35, vars: 5, consts: [["fxFlex", "100", "fxLayout", "column", "fxLayoutAlign", "space-around stretch", "fxLayoutGap", "10px", 1, "file-upload-container"], [1, "title-container"], ["fxLayout", "column", "fxLayoutAlign", "space-around stretch", 1, "main-container"], [1, "whole-form"], [1, "forms-mat-card"], [1, "form-title"], [1, "form-title-text"], [1, "form-body"], [3, "formGroup", "ngSubmit"], [1, "file-name-input"], ["for", "fileName"], ["id", "fileName", "name", "fileName", "formControlName", "fileName", "type", "text"], [4, "ngIf"], [1, "server-name-input"], ["for", "serverName"], ["id", "serverName", "name", "serverName", "formControlName", "serverName", "type", "text"], [1, "form-group"], ["for", "file"], ["formControlName", "file", "id", "file", "type", "file", 1, "form-control", 3, "change"], ["class", "alert alert-danger", 4, "ngIf"], [1, "submit-button"], ["mat-button", "", "type", "submit", 3, "disabled"], [1, "bottom-container"], [3, "hidden"], [1, "alert", "alert-danger"]], template: function FileUploadComponent_Template(rf, ctx) { if (rf & 1) {
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](0, "div", 0);
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](1, "div", 1);
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](2, "h3");
@@ -179,24 +190,27 @@ FileUploadComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefi
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](24, "div", 16);
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](25, "label");
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtext"](26, "File Uploader");
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](25, "label", 17);
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtext"](26, "File");
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelement"](27, "angular-file-uploader", 17);
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](27, "input", 18);
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵlistener"]("change", function FileUploadComponent_Template_input_change_27_listener($event) { return ctx.onFileChange($event); });
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](28, "div", 18);
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](29, "button", 19);
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtext"](30, "Submit! ");
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtemplate"](28, FileUploadComponent_div_28_Template, 2, 1, "div", 19);
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](29, "div", 20);
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](30, "button", 21);
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtext"](31, "Submit! ");
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](31, "div", 20);
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](32, "h3");
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtext"](33, "Bottom Container Here!");
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](32, "div", 22);
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](33, "h3");
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtext"](34, "Bottom Container Here!");
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
@@ -207,11 +221,11 @@ FileUploadComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefi
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵproperty"]("ngIf", !(ctx.fileUploadForm.controls["fileName"] == null ? null : ctx.fileUploadForm.controls["fileName"].valid) && ((ctx.fileUploadForm.controls["fileName"] == null ? null : ctx.fileUploadForm.controls["fileName"].dirty) || (ctx.fileUploadForm.controls["fileName"] == null ? null : ctx.fileUploadForm.controls["fileName"].touched)));
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵadvance"](6);
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵproperty"]("ngIf", !(ctx.fileUploadForm.controls["serverName"] == null ? null : ctx.fileUploadForm.controls["serverName"].valid) && ((ctx.fileUploadForm.controls["serverName"] == null ? null : ctx.fileUploadForm.controls["serverName"].dirty) || (ctx.fileUploadForm.controls["serverName"] == null ? null : ctx.fileUploadForm.controls["serverName"].touched)));
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵadvance"](4);
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵproperty"]("config", ctx.afuConfig);
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵadvance"](5);
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵproperty"]("ngIf", ctx.fileUploadForm.controls["file"].touched && ctx.fileUploadForm.controls["file"].invalid);
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵadvance"](2);
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵproperty"]("disabled", !ctx.fileUploadForm.valid);
-    } }, directives: [_angular_flex_layout_flex__WEBPACK_IMPORTED_MODULE_2__["DefaultFlexDirective"], _angular_flex_layout_flex__WEBPACK_IMPORTED_MODULE_2__["DefaultLayoutDirective"], _angular_flex_layout_flex__WEBPACK_IMPORTED_MODULE_2__["DefaultLayoutAlignDirective"], _angular_flex_layout_flex__WEBPACK_IMPORTED_MODULE_2__["DefaultLayoutGapDirective"], _angular_material_card__WEBPACK_IMPORTED_MODULE_3__["MatCard"], _angular_forms__WEBPACK_IMPORTED_MODULE_0__["ɵangular_packages_forms_forms_ba"], _angular_forms__WEBPACK_IMPORTED_MODULE_0__["NgControlStatusGroup"], _angular_forms__WEBPACK_IMPORTED_MODULE_0__["FormGroupDirective"], _angular_forms__WEBPACK_IMPORTED_MODULE_0__["DefaultValueAccessor"], _angular_forms__WEBPACK_IMPORTED_MODULE_0__["NgControlStatus"], _angular_forms__WEBPACK_IMPORTED_MODULE_0__["FormControlName"], _angular_common__WEBPACK_IMPORTED_MODULE_4__["NgIf"], angular_file_uploader__WEBPACK_IMPORTED_MODULE_5__["AngularFileUploaderComponent"], _angular_material_button__WEBPACK_IMPORTED_MODULE_6__["MatButton"]], styles: [".file-upload-container[_ngcontent-%COMP%]{\n  display: flex !important;\n  height: 100% !important;\n  width: 100% !important;\n  flex-direction: column !important;\n  padding: 20px !important;\n\n}\n.title-container[_ngcontent-%COMP%]{\n  align-self: center !important;\n}\n.main-container[_ngcontent-%COMP%]{\n  align-self: center !important;\n  width: 40% !important;\n  justify-content: center !important;\n}\n.bottom-container[_ngcontent-%COMP%]{\n  align-self: center;\n}\n#fileName[_ngcontent-%COMP%]{\n  width: 100% !important;\n}\n#serverName[_ngcontent-%COMP%]{\n  width: 100% !important;\n}\n.form-title[_ngcontent-%COMP%]{\n  align-self: center !important;\n}\n.ang-file-uploader[_ngcontent-%COMP%]{\n  padding-top:10px !important;\n  padding-bottom:10px !important;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImZpbGUtdXBsb2FkLmNvbXBvbmVudC5jc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDRSx3QkFBd0I7RUFDeEIsdUJBQXVCO0VBQ3ZCLHNCQUFzQjtFQUN0QixpQ0FBaUM7RUFDakMsd0JBQXdCOztBQUUxQjtBQUNBO0VBQ0UsNkJBQTZCO0FBQy9CO0FBQ0E7RUFDRSw2QkFBNkI7RUFDN0IscUJBQXFCO0VBQ3JCLGtDQUFrQztBQUNwQztBQUNBO0VBQ0Usa0JBQWtCO0FBQ3BCO0FBQ0E7RUFDRSxzQkFBc0I7QUFDeEI7QUFDQTtFQUNFLHNCQUFzQjtBQUN4QjtBQUNBO0VBQ0UsNkJBQTZCO0FBQy9CO0FBQ0E7RUFDRSwyQkFBMkI7RUFDM0IsOEJBQThCO0FBQ2hDIiwiZmlsZSI6ImZpbGUtdXBsb2FkLmNvbXBvbmVudC5jc3MiLCJzb3VyY2VzQ29udGVudCI6WyIuZmlsZS11cGxvYWQtY29udGFpbmVye1xuICBkaXNwbGF5OiBmbGV4ICFpbXBvcnRhbnQ7XG4gIGhlaWdodDogMTAwJSAhaW1wb3J0YW50O1xuICB3aWR0aDogMTAwJSAhaW1wb3J0YW50O1xuICBmbGV4LWRpcmVjdGlvbjogY29sdW1uICFpbXBvcnRhbnQ7XG4gIHBhZGRpbmc6IDIwcHggIWltcG9ydGFudDtcblxufVxuLnRpdGxlLWNvbnRhaW5lcntcbiAgYWxpZ24tc2VsZjogY2VudGVyICFpbXBvcnRhbnQ7XG59XG4ubWFpbi1jb250YWluZXJ7XG4gIGFsaWduLXNlbGY6IGNlbnRlciAhaW1wb3J0YW50O1xuICB3aWR0aDogNDAlICFpbXBvcnRhbnQ7XG4gIGp1c3RpZnktY29udGVudDogY2VudGVyICFpbXBvcnRhbnQ7XG59XG4uYm90dG9tLWNvbnRhaW5lcntcbiAgYWxpZ24tc2VsZjogY2VudGVyO1xufVxuI2ZpbGVOYW1le1xuICB3aWR0aDogMTAwJSAhaW1wb3J0YW50O1xufVxuI3NlcnZlck5hbWV7XG4gIHdpZHRoOiAxMDAlICFpbXBvcnRhbnQ7XG59XG4uZm9ybS10aXRsZXtcbiAgYWxpZ24tc2VsZjogY2VudGVyICFpbXBvcnRhbnQ7XG59XG4uYW5nLWZpbGUtdXBsb2FkZXJ7XG4gIHBhZGRpbmctdG9wOjEwcHggIWltcG9ydGFudDtcbiAgcGFkZGluZy1ib3R0b206MTBweCAhaW1wb3J0YW50O1xufVxuIl19 */"] });
+    } }, directives: [_angular_flex_layout_flex__WEBPACK_IMPORTED_MODULE_3__["DefaultFlexDirective"], _angular_flex_layout_flex__WEBPACK_IMPORTED_MODULE_3__["DefaultLayoutDirective"], _angular_flex_layout_flex__WEBPACK_IMPORTED_MODULE_3__["DefaultLayoutAlignDirective"], _angular_flex_layout_flex__WEBPACK_IMPORTED_MODULE_3__["DefaultLayoutGapDirective"], _angular_material_card__WEBPACK_IMPORTED_MODULE_4__["MatCard"], _angular_forms__WEBPACK_IMPORTED_MODULE_0__["ɵangular_packages_forms_forms_ba"], _angular_forms__WEBPACK_IMPORTED_MODULE_0__["NgControlStatusGroup"], _angular_forms__WEBPACK_IMPORTED_MODULE_0__["FormGroupDirective"], _angular_forms__WEBPACK_IMPORTED_MODULE_0__["DefaultValueAccessor"], _angular_forms__WEBPACK_IMPORTED_MODULE_0__["NgControlStatus"], _angular_forms__WEBPACK_IMPORTED_MODULE_0__["FormControlName"], _angular_common__WEBPACK_IMPORTED_MODULE_5__["NgIf"], _angular_material_button__WEBPACK_IMPORTED_MODULE_6__["MatButton"]], styles: [".file-upload-container[_ngcontent-%COMP%]{\n  display: flex !important;\n  height: 100% !important;\n  width: 100% !important;\n  flex-direction: column !important;\n  padding: 20px !important;\n\n}\n.title-container[_ngcontent-%COMP%]{\n  align-self: center !important;\n}\n.main-container[_ngcontent-%COMP%]{\n  align-self: center !important;\n  width: 40% !important;\n  justify-content: center !important;\n}\n.bottom-container[_ngcontent-%COMP%]{\n  align-self: center;\n}\n#fileName[_ngcontent-%COMP%]{\n  width: 100% !important;\n}\n#serverName[_ngcontent-%COMP%]{\n  width: 100% !important;\n}\n.form-title[_ngcontent-%COMP%]{\n  align-self: center !important;\n}\n.ang-file-uploader[_ngcontent-%COMP%]{\n  padding-top:10px !important;\n  padding-bottom:10px !important;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImZpbGUtdXBsb2FkLmNvbXBvbmVudC5jc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDRSx3QkFBd0I7RUFDeEIsdUJBQXVCO0VBQ3ZCLHNCQUFzQjtFQUN0QixpQ0FBaUM7RUFDakMsd0JBQXdCOztBQUUxQjtBQUNBO0VBQ0UsNkJBQTZCO0FBQy9CO0FBQ0E7RUFDRSw2QkFBNkI7RUFDN0IscUJBQXFCO0VBQ3JCLGtDQUFrQztBQUNwQztBQUNBO0VBQ0Usa0JBQWtCO0FBQ3BCO0FBQ0E7RUFDRSxzQkFBc0I7QUFDeEI7QUFDQTtFQUNFLHNCQUFzQjtBQUN4QjtBQUNBO0VBQ0UsNkJBQTZCO0FBQy9CO0FBQ0E7RUFDRSwyQkFBMkI7RUFDM0IsOEJBQThCO0FBQ2hDIiwiZmlsZSI6ImZpbGUtdXBsb2FkLmNvbXBvbmVudC5jc3MiLCJzb3VyY2VzQ29udGVudCI6WyIuZmlsZS11cGxvYWQtY29udGFpbmVye1xuICBkaXNwbGF5OiBmbGV4ICFpbXBvcnRhbnQ7XG4gIGhlaWdodDogMTAwJSAhaW1wb3J0YW50O1xuICB3aWR0aDogMTAwJSAhaW1wb3J0YW50O1xuICBmbGV4LWRpcmVjdGlvbjogY29sdW1uICFpbXBvcnRhbnQ7XG4gIHBhZGRpbmc6IDIwcHggIWltcG9ydGFudDtcblxufVxuLnRpdGxlLWNvbnRhaW5lcntcbiAgYWxpZ24tc2VsZjogY2VudGVyICFpbXBvcnRhbnQ7XG59XG4ubWFpbi1jb250YWluZXJ7XG4gIGFsaWduLXNlbGY6IGNlbnRlciAhaW1wb3J0YW50O1xuICB3aWR0aDogNDAlICFpbXBvcnRhbnQ7XG4gIGp1c3RpZnktY29udGVudDogY2VudGVyICFpbXBvcnRhbnQ7XG59XG4uYm90dG9tLWNvbnRhaW5lcntcbiAgYWxpZ24tc2VsZjogY2VudGVyO1xufVxuI2ZpbGVOYW1le1xuICB3aWR0aDogMTAwJSAhaW1wb3J0YW50O1xufVxuI3NlcnZlck5hbWV7XG4gIHdpZHRoOiAxMDAlICFpbXBvcnRhbnQ7XG59XG4uZm9ybS10aXRsZXtcbiAgYWxpZ24tc2VsZjogY2VudGVyICFpbXBvcnRhbnQ7XG59XG4uYW5nLWZpbGUtdXBsb2FkZXJ7XG4gIHBhZGRpbmctdG9wOjEwcHggIWltcG9ydGFudDtcbiAgcGFkZGluZy1ib3R0b206MTBweCAhaW1wb3J0YW50O1xufVxuIl19 */"] });
 
 
 /***/ }),

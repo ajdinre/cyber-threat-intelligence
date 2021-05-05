@@ -6,6 +6,8 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.models import User, Group
 from django.contrib.auth.decorators import login_required
 from rest_framework.decorators import api_view
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
 
 from rest_framework.views import APIView
 from django.db.models import Count
@@ -66,12 +68,15 @@ class ApacheLogViewSet(viewsets.ModelViewSet):
     http_method_names = ['get']
     permission_classes = [permissions.IsAuthenticated]
 
+
+@method_decorator(csrf_exempt, name='dispatch')
 class FileUploadView(views.APIView):
     #permission_classes = [permissions.IsAuthenticated]
 
     #TODO: ovo ne mogu testirati bez Angulara
 
     parser_classes = [MultiPartParser]
+    @csrf_exempt
     def post(self, request, format=None):
         file = request.FILES['file']
         server_name = request.data['servername']
@@ -95,7 +100,7 @@ class IPView(views.APIView):
         """
         Return a list of all users.
         """
-        ip_list = get_all()
+        ip_list = ''
         print(ip_list)
         return Response(ip_list)
 

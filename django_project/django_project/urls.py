@@ -3,6 +3,7 @@ from django.urls import path, include
 from django.contrib.auth import views as auth_views
 from django.views.generic import TemplateView
 from django.conf.urls import url
+from django.views.decorators.csrf import csrf_exempt
 
 from rest_framework.schemas import get_schema_view
 from rest_framework import routers

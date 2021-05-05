@@ -338,7 +338,6 @@ def create_d3_nodes(server_name):
         line['name'] = line['path']
         all_nodes.append(line)
     
-    print(all_nodes)
     return all_nodes
 
 
@@ -383,5 +382,4 @@ def create_d3_links(server_name):
         temp.append(relationship[2])
         res.append(temp)
 
-    print(res)
     return res

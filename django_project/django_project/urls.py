@@ -54,7 +54,9 @@ urlpatterns = [
 
     #REST
     path('log/upload', cti_views.FileUploadView.as_view()),
-    path('ip', cti_views.IPView.as_view())
+    path('ip', cti_views.IPView.as_view()),
+    path('d3/links', cti_views.d3CreateLinks.as_view()),
+    path('d3/nodes', cti_views.d3CreateNodes.as_view())
 
 
 ]

@@ -13,7 +13,7 @@ from .forms import UploadFileForm, EditProfileForm, AddressForm, StatisticsForm
 from cti.models import IP, Log_line
 from .models import Apache_log
 from .log_analyzer import analyze
-from cti.neo4j.neo4j_classes import create_node, get_count_of_ip, get_Top_countries_by_ip, get_by_ip, get_by_country_code, get_by_city, get_by_org, get_by_region, get_by_timezone, get_by_postal, get_nodes, get_requests_for_ip, get_ips_with_request_method
+from cti.neo4j.neo4j_classes import create_node, get_count_of_ip, get_Top_countries_by_ip, get_by_ip, get_by_country_code, get_by_city, get_by_org, get_by_region, get_by_timezone, get_by_postal, get_nodes, get_requests_for_ip, get_ips_with_request_method, create_d3_nodes, create_d3_links
 from django.urls import reverse
 from django.template.loader import get_template
 from .pdf_generator import render_to_pdf
@@ -99,7 +99,27 @@ class IPView(views.APIView):
         print(ip_list)
         return Response(ip_list)
 
+class d3CreateNodes(views.APIView):
+    permission_classes = [permissions.IsAuthenticated]
+    def get(self, request, format=None):
+        """
+        Create d3 nodes.
+        """
+        #nodes = create_d3_nodes(server_name)
+        nodes = create_d3_nodes("jackie")
+        print(nodes)
+        return Response(nodes)
 
+class d3CreateLinks(views.APIView):
+    permission_classes = [permissions.IsAuthenticated]
+    def get(self, request, format=None):
+        """
+        Create d3 links.
+        """
+        #links = create_d3_links(server_name)
+        links = create_d3_links("jackie")
+        print(links)
+        return Response(links)
 
 
 # TEST IMPORTS

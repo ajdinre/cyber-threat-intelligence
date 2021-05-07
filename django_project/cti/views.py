@@ -94,12 +94,8 @@ class IPView(views.APIView):
         """
         Return a list of all users.
         """
-<<<<<<< HEAD
         ip_list = ''
         print(request.query_params)
-=======
-        ip_list = get_all()
->>>>>>> 28842cfe31ee4dacecf94b2d0834c4c07f7f3fdd
         return Response(ip_list)
 
  

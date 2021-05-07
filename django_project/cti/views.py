@@ -22,7 +22,7 @@ from .pdf_generator import render_to_pdf
 
 from cti.serializers import UserSerializer, GroupSerializer, ApacheLogSerializer
 
-from rest_framework import viewsets, mixins, permissions, status, views
+from rest_framework import viewsets, mixins, permissions, status, views, generics
 from rest_framework.parsers import FileUploadParser, MultiPartParser, FormParser
 from rest_framework.response import Response
 
@@ -58,7 +58,6 @@ class GroupViewSet(viewsets.ModelViewSet):
     serializer_class = GroupSerializer
     permission_classes = [permissions.IsAuthenticated]
 
-
 class ApacheLogViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows files to be viewed or edited.
@@ -68,15 +67,10 @@ class ApacheLogViewSet(viewsets.ModelViewSet):
     http_method_names = ['get']
     permission_classes = [permissions.IsAuthenticated]
 
-
 @method_decorator(csrf_exempt, name='dispatch')
 class FileUploadView(views.APIView):
-    #permission_classes = [permissions.IsAuthenticated]
-
-    #TODO: ovo ne mogu testirati bez Angulara
-
+    permission_classes = [permissions.IsAuthenticated]
     parser_classes = [MultiPartParser]
-    @csrf_exempt
     def post(self, request, format=None):
         file = request.FILES['file']
         server_name = request.data['servername']
@@ -92,7 +86,7 @@ class FileUploadView(views.APIView):
         analyzeThread = threading.Thread(target=analyze, args=(instance.log_file, server_data))
         analyzeThread.start()
 
-        return Response(status=204)
+        return Response(status=200)
 
 class IPView(views.APIView):
     permission_classes = [permissions.IsAuthenticated]
@@ -101,10 +95,8 @@ class IPView(views.APIView):
         Return a list of all users.
         """
         ip_list = ''
-        print(ip_list)
+        print(request.query_params)
         return Response(ip_list)
-
-
 
 
 # TEST IMPORTS

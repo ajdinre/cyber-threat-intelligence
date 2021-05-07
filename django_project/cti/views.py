@@ -6,6 +6,8 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.models import User, Group
 from django.contrib.auth.decorators import login_required
 from rest_framework.decorators import api_view
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
 
 from rest_framework.views import APIView
 from django.db.models import Count
@@ -20,7 +22,7 @@ from .pdf_generator import render_to_pdf
 
 from cti.serializers import UserSerializer, GroupSerializer, ApacheLogSerializer
 
-from rest_framework import viewsets, mixins, permissions, status, views
+from rest_framework import viewsets, mixins, permissions, status, views, generics
 from rest_framework.parsers import FileUploadParser, MultiPartParser, FormParser
 from rest_framework.response import Response
 
@@ -56,7 +58,6 @@ class GroupViewSet(viewsets.ModelViewSet):
     serializer_class = GroupSerializer
     permission_classes = [permissions.IsAuthenticated]
 
-
 class ApacheLogViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows files to be viewed or edited.
@@ -66,11 +67,9 @@ class ApacheLogViewSet(viewsets.ModelViewSet):
     http_method_names = ['get']
     permission_classes = [permissions.IsAuthenticated]
 
+@method_decorator(csrf_exempt, name='dispatch')
 class FileUploadView(views.APIView):
-    #permission_classes = [permissions.IsAuthenticated]
-
-    #TODO: ovo ne mogu testirati bez Angulara
-
+    permission_classes = [permissions.IsAuthenticated]
     parser_classes = [MultiPartParser]
     def post(self, request, format=None):
         file = request.FILES['file']
@@ -87,7 +86,7 @@ class FileUploadView(views.APIView):
         analyzeThread = threading.Thread(target=analyze, args=(instance.log_file, server_data))
         analyzeThread.start()
 
-        return Response(status=204)
+        return Response(status=200)
 
 class IPView(views.APIView):
     permission_classes = [permissions.IsAuthenticated]
@@ -95,7 +94,12 @@ class IPView(views.APIView):
         """
         Return a list of all users.
         """
+<<<<<<< HEAD
+        ip_list = ''
+        print(request.query_params)
+=======
         ip_list = get_all()
+>>>>>>> 28842cfe31ee4dacecf94b2d0834c4c07f7f3fdd
         return Response(ip_list)
 
  
@@ -119,8 +123,6 @@ def ip_details(request, pk):
     elif request.method == 'DELETE':
         snippet.delete()
         return HttpResponse(status=204)
-
-
 
 
 

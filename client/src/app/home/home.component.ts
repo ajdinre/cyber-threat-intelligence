@@ -1,8 +1,10 @@
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ViewChild, OnInit } from '@angular/core';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
 import {FlexLayoutModule} from '@angular/flex-layout';
+import { User } from '../shared/components/classes/user';
+import { UserService } from '../shared/services/user.service';
 
 export interface FileData {
   id: string;
@@ -25,15 +27,14 @@ const NAMES: string[] = [
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
-export class HomeComponent implements AfterViewInit {
-
+export class HomeComponent implements OnInit, AfterViewInit {
+  public currentUser : User = new User();
   displayedColumns: string[] = ['id', 'server name', 'file name', 'file size', 'date uploaded'];
   dataSource: MatTableDataSource<FileData>;
-  currentUserName="Karlo";
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  constructor() {
+  constructor(private userService : UserService) {
     //Pie part
 
     // Create 100 users
@@ -41,6 +42,9 @@ export class HomeComponent implements AfterViewInit {
 
     // Assign the data to the data source for the table to render
     this.dataSource = new MatTableDataSource(users);
+  }
+  ngOnInit(): void {
+    this.getUserInfo();
   }
 
   ngAfterViewInit() {
@@ -67,6 +71,15 @@ export class HomeComponent implements AfterViewInit {
   onDeactivate(data): void {
     console.log('Deactivate', JSON.parse(JSON.stringify(data)));
 
+  }
+  getUserInfo(){
+    this.userService.getUserData()
+      .subscribe((data:any)=>{
+        this.currentUser = data;
+      },
+      error => {
+        console.log(error);
+      });
   }
 }
 

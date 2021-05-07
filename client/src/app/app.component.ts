@@ -1,6 +1,5 @@
 import { Component,ViewChild, OnInit, Inject, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
-
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -10,7 +9,9 @@ export class AppComponent implements OnInit, AfterViewInit{
   title = 'Cyber Threat Intelligence';
   public showMenu = false;
   public toggleSelected = true;
-  constructor(private router: Router) {
+  constructor(
+    private router: Router
+    ) {
   }
 
 
@@ -29,5 +30,8 @@ export class AppComponent implements OnInit, AfterViewInit{
   }
   toggle(){
     this.toggleSelected = !this.toggleSelected;
+  }
+  logoutRedirect(){
+    window.location.href="/logout";
   }
 }

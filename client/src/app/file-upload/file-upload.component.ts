@@ -3,6 +3,10 @@ import { FormBuilder } from '@angular/forms';
 import { Validators } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatButton } from '@angular/material/button';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { CookieService } from 'ngx-cookie-service';
+import { FileService } from '../shared/services/file.service';
+
 
 @Component({
   selector: 'app-file-upload',
@@ -11,49 +15,42 @@ import { MatButton } from '@angular/material/button';
 })
 export class FileUploadComponent implements OnInit {
   fileUploadForm;
-  constructor(private fb: FormBuilder) { }
+  private csrf : any;
+  constructor(
+    private fb : FormBuilder,
+    private http : HttpClient,
+    private fileService : FileService,
+    private cookieService : CookieService
+    ) {
+      this.csrf = this.cookieService.get("csrftoken");
+      if (typeof(this.csrf) === 'undefined'){
+        this.csrf = '';
+      }
+    }
 
   ngOnInit(): void {
     this.initializeForm();
-
+    console.log(this.csrf);
   }
-  afuConfig = {
-    multiple: false,
-    formatsAllowed: ".txt,.docx,.pdf,.",
-    maxSize: 40, // File size in MBs
-    uploadAPI:  {
-      url:"https://example-file-upload-api",
-      /*method:"POST",
-      headers: {
-     "Content-Type" : "text/plain;charset=UTF-8",
-     "Authorization" : `Bearer ${token}`
-      },
-      params: {
-        'page': '1'
-      },
-      responseType: 'blob',*/
-    },
-    theme: "attachPin",
-    hideProgressBar: false,
-    hideResetBtn: false,
-    hideSelectBtn: false,
-    fileNameIndex: true,
-    replaceTexts: {
-      selectFileBtn: 'Select Files',
-      resetBtn: 'Reset',
-      uploadBtn: 'Upload',
-      dragNDropBox: 'Drag N Drop',
-      attachPinBtn: 'Attach Files...',
-      afterUploadMsg_success: 'Successfully Uploaded !',
-      afterUploadMsg_error: 'Upload Failed !',
-      sizeLimit: 'Size Limit'
+
+  onFileChange(event) {
+
+    if (event.target.files.length > 0) {
+      const file = event.target.files[0];
+      this.fileUploadForm.patchValue({
+        fileSource: file
+      });
     }
-  };
+  }
+  get f(){
+    return this.fileUploadForm.controls;
+  }
+
   initializeForm():void{
     this.fileUploadForm = this.fb.group({
-      fileName : ['',[Validators.required,Validators.maxLength(20)]],
       serverName : ['', [Validators.required,Validators.maxLength(20)]],
-      fileUploadSuccess : [false, Validators.requiredTrue]
+      file : ['', [Validators.required]],
+      fileSource : ['', [Validators.required]]
     },
     {
      updateOn : 'change'
@@ -61,12 +58,12 @@ export class FileUploadComponent implements OnInit {
   }
   submitForm(): void{
     console.log(this.fileUploadForm.value);
-    /**
-     * TODO:
-     * Upload file to server
-     * Send input fileName and serverName
-     * Send file size.
-     * Send date of making the request.
-     */
+    const formData = new FormData();
+    formData.append('file', this.fileUploadForm.get('fileSource').value);
+    formData.append('servername', this.fileUploadForm.get('serverName').value);
+    this.fileService.uploadFile(formData, this.csrf).subscribe(res => {
+      console.log(res);
+      alert('Upload Successfully.');
+    });
   }
 }

@@ -10,7 +10,7 @@ import { MatCardModule } from '@angular/material/card';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { CookieService } from 'ngx-cookie-service';
-
+import { FileService } from '../shared/services/file.service';
 @NgModule({
   declarations: [
     FileUploadComponent
@@ -35,7 +35,8 @@ import { CookieService } from 'ngx-cookie-service';
     AngularFileUploaderModule
   ],
   providers: [
-    CookieService
+    CookieService,
+    FileService
   ]
 
 })

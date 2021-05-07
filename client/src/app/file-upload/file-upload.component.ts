@@ -5,6 +5,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButton } from '@angular/material/button';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
+import { FileService } from '../shared/services/file.service';
 
 
 @Component({
@@ -18,6 +19,7 @@ export class FileUploadComponent implements OnInit {
   constructor(
     private fb : FormBuilder,
     private http : HttpClient,
+    private fileService : FileService,
     private cookieService : CookieService
     ) {
       this.csrf = this.cookieService.get("csrftoken");
@@ -46,7 +48,6 @@ export class FileUploadComponent implements OnInit {
 
   initializeForm():void{
     this.fileUploadForm = this.fb.group({
-      fileName : ['',[Validators.required,Validators.maxLength(20)]],
       serverName : ['', [Validators.required,Validators.maxLength(20)]],
       file : ['', [Validators.required]],
       fileSource : ['', [Validators.required]]
@@ -60,14 +61,9 @@ export class FileUploadComponent implements OnInit {
     const formData = new FormData();
     formData.append('file', this.fileUploadForm.get('fileSource').value);
     formData.append('servername', this.fileUploadForm.get('serverName').value);
-    this.http.post('/log/upload', formData, {
-      headers: {
-        'X-CSRFToken': this.csrf
-      }
-    })
-      .subscribe(res => {
-        console.log(res);
-        alert('Uploaded Successfully.');
-      })
+    this.fileService.uploadFile(formData, this.csrf).subscribe(res => {
+      console.log(res);
+      alert('Upload Successfully.');
+    });
   }
 }

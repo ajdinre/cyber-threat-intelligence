@@ -11,21 +11,6 @@
         </div>
         <div class="form-body">
           <form [formGroup]="fileUploadForm" (ngSubmit)="submitForm()">
-            <div class="file-name-input">
-              <label for="fileName">File Name </label>
-              <fieldset>
-                <input id="fileName" name="fileName" formControlName="fileName" type="text">
-                <div
-                  *ngIf="!fileUploadForm.controls['fileName']?.valid && (fileUploadForm.controls['fileName']?.dirty ||fileUploadForm.controls['fileName']?.touched)">
-                  <div [hidden]="!fileUploadForm.controls['fileName'].errors?.required">
-                    File Name is required!
-                  </div>
-                  <div [hidden]="!fileUploadForm.controls['fileName'].errors?.maxlength">
-                    Max name length is 20 characters!
-                  </div>
-                </div>
-              </fieldset>
-            </div>
 
             <div class="server-name-input">
               <label for="serverName">Server Name </label>

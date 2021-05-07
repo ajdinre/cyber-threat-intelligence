@@ -5,6 +5,11 @@ import {MatTableDataSource} from '@angular/material/table';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import { FormControl } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
+import * as d3 from 'd3';
+import * as d3Scale from 'd3';
+import * as d3Shape from 'd3';
+import * as d3Array from 'd3';
+import * as d3Axis from 'd3';
 
 export interface FileData {
   id: string;
@@ -29,6 +34,581 @@ const NAMES: string[] = [
   styleUrls: ['./analyse.component.css']
 })
 export class AnalyseComponent implements AfterViewInit{
+  private nodes: any=[
+    {
+      "country": "RU",
+      "hostname": "gprs-client-83.149.9.216.misp.ru",
+      "org": "AS31133 PJSC MegaFon",
+      "city": "Moscow",
+      "timezone": "Europe/Moscow",
+      "latitude": "55.7522",
+      "count": 9,
+      "ip_address": "83.149.9.216",
+      "postal": "127006",
+      "region": "Moscow",
+      "longitude": "37.6156",
+      "group": 0,
+      "name": "83.149.9.216"
+  },
+  {
+      "country": "RU",
+      "hostname": "gprs-client-83.149.9.216.misp.ru",
+      "org": "AS31133 PJSC MegaFon",
+      "city": "Moscow",
+      "timezone": "Europe/Moscow",
+      "latitude": "55.7522",
+      "count": 9,
+      "ip_address": "83.149.9.216",
+      "postal": "127006",
+      "region": "Moscow",
+      "longitude": "37.6156",
+      "group": 0,
+      "name": "83.149.9.216"
+  },
+  {
+      "country": "CZ",
+      "org": "AS29208 Dial Telecom, a.s.",
+      "city": "Prague",
+      "timezone": "Europe/Prague",
+      "latitude": "50.0880",
+      "count": 1,
+      "ip_address": "83.148.9.216",
+      "postal": "110 00",
+      "region": "Hlavní město Praha",
+      "longitude": "14.4208",
+      "group": 0,
+      "name": "83.148.9.216"
+  },
+  {
+      "country": "RU",
+      "hostname": "gprs-client-83.149.9.216.misp.ru",
+      "org": "AS31133 PJSC MegaFon",
+      "city": "Moscow",
+      "timezone": "Europe/Moscow",
+      "latitude": "55.7522",
+      "count": 9,
+      "ip_address": "83.149.9.216",
+      "postal": "127006",
+      "region": "Moscow",
+      "longitude": "37.6156",
+      "group": 0,
+      "name": "83.149.9.216"
+  },
+  {
+      "country": "RU",
+      "hostname": "gprs-client-83.149.9.216.misp.ru",
+      "org": "AS31133 PJSC MegaFon",
+      "city": "Moscow",
+      "timezone": "Europe/Moscow",
+      "latitude": "55.7522",
+      "count": 9,
+      "ip_address": "83.149.9.216",
+      "postal": "127006",
+      "region": "Moscow",
+      "longitude": "37.6156",
+      "group": 0,
+      "name": "83.149.9.216"
+  },
+  {
+      "country": "RU",
+      "hostname": "gprs-client-83.149.9.216.misp.ru",
+      "org": "AS31133 PJSC MegaFon",
+      "city": "Moscow",
+      "timezone": "Europe/Moscow",
+      "latitude": "55.7522",
+      "count": 9,
+      "ip_address": "83.149.9.216",
+      "postal": "127006",
+      "region": "Moscow",
+      "longitude": "37.6156",
+      "group": 0,
+      "name": "83.149.9.216"
+  },
+  {
+      "country": "CN",
+      "org": "AS4134 CHINANET-BACKBONE",
+      "city": "Hangzhou",
+      "timezone": "Asia/Shanghai",
+      "latitude": "30.2936",
+      "count": 1,
+      "ip_address": "183.149.9.216",
+      "region": "Zhejiang",
+      "longitude": "120.1614",
+      "group": 0,
+      "name": "183.149.9.216"
+  },
+  {
+      "country": "RU",
+      "hostname": "gprs-client-83.149.9.216.misp.ru",
+      "org": "AS31133 PJSC MegaFon",
+      "city": "Moscow",
+      "timezone": "Europe/Moscow",
+      "latitude": "55.7522",
+      "count": 9,
+      "ip_address": "83.149.9.216",
+      "postal": "127006",
+      "region": "Moscow",
+      "longitude": "37.6156",
+      "group": 0,
+      "name": "83.149.9.216"
+  },
+  {
+      "country": "RU",
+      "hostname": "gprs-client-83.149.9.216.misp.ru",
+      "org": "AS31133 PJSC MegaFon",
+      "city": "Moscow",
+      "timezone": "Europe/Moscow",
+      "latitude": "55.7522",
+      "count": 9,
+      "ip_address": "83.149.9.216",
+      "postal": "127006",
+      "region": "Moscow",
+      "longitude": "37.6156",
+      "group": 0,
+      "name": "83.149.9.216"
+  },
+  {
+      "country": "RU",
+      "org": "AS31163 PJSC MegaFon",
+      "city": "Krasnodar",
+      "timezone": "Europe/Moscow",
+      "latitude": "45.0448",
+      "count": 1,
+      "ip_address": "83.149.29.216",
+      "postal": "350000",
+      "region": "Krasnodarskiy",
+      "longitude": "38.9760",
+      "group": 0,
+      "name": "83.149.29.216"
+  },
+  {
+      "country": "RU",
+      "hostname": "gprs-client-83.149.9.216.misp.ru",
+      "org": "AS31133 PJSC MegaFon",
+      "city": "Moscow",
+      "timezone": "Europe/Moscow",
+      "latitude": "55.7522",
+      "count": 9,
+      "ip_address": "83.149.9.216",
+      "postal": "127006",
+      "region": "Moscow",
+      "longitude": "37.6156",
+      "group": 0,
+      "name": "83.149.9.216"
+  },
+  {
+      "path": "/presentations/logstash-monitorama-2013/images/kibana-dashboard.png",
+      "httpVersion": "1.1",
+      "sizeInBytes": "321631",
+      "response": "200",
+      "requestMethod": "GET",
+      "community": 28,
+      "timestamp": "17/May/2015:10:05:50",
+      "group": 1,
+      "name": "/presentations/logstash-monitorama-2013/images/kibana-dashboard.png"
+  },
+  {
+      "path": "/presentations/logstash-monitorama-2013/images/frontend-response-codes.png",
+      "httpVersion": "1.1",
+      "sizeInBytes": "52878",
+      "response": "200",
+      "requestMethod": "GET",
+      "community": 28,
+      "timestamp": "17/May/2015:10:05:24",
+      "group": 1,
+      "name": "/presentations/logstash-monitorama-2013/images/frontend-response-codes.png"
+  },
+  {
+      "path": "/presentations/logstash-monitorama-2013/css/fonts/Roboto-Regular.ttf",
+      "httpVersion": "1.1",
+      "sizeInBytes": "41820",
+      "response": "200",
+      "requestMethod": "GET",
+      "community": 28,
+      "timestamp": "17/May/2015:10:05:50",
+      "group": 1,
+      "name": "/presentations/logstash-monitorama-2013/css/fonts/Roboto-Regular.ttf"
+  },
+  {
+      "path": "/presentations/logstash-monitorama-2013/css/fonts/Roboto-Bold.ttf",
+      "httpVersion": "1.1",
+      "sizeInBytes": "38720",
+      "response": "200",
+      "requestMethod": "GET",
+      "community": 28,
+      "timestamp": "17/May/2015:10:05:57",
+      "group": 1,
+      "name": "/presentations/logstash-monitorama-2013/css/fonts/Roboto-Bold.ttf"
+  },
+  {
+      "path": "/presentations/logstash-monitorama-2013/images/sad-medic.png",
+      "httpVersion": "1.1",
+      "sizeInBytes": "430406",
+      "response": "200",
+      "requestMethod": "GET",
+      "community": 28,
+      "timestamp": "17/May/2015:10:05:34",
+      "group": 1,
+      "name": "/presentations/logstash-monitorama-2013/images/sad-medic.png"
+  },
+  {
+      "path": "/presentations/logstash-monitorama-2013/plugin/notes/notes.js",
+      "httpVersion": "1.1",
+      "sizeInBytes": "2892",
+      "response": "200",
+      "requestMethod": "GET",
+      "community": 28,
+      "timestamp": "17/May/2015:10:05:07",
+      "group": 1,
+      "name": "/presentations/logstash-monitorama-2013/plugin/notes/notes.js"
+  },
+  {
+      "path": "/presentations/logstash-monitorama-2013/plugin/zoom-js/zoom.js",
+      "httpVersion": "1.1",
+      "sizeInBytes": "7697",
+      "response": "200",
+      "requestMethod": "GET",
+      "community": 0,
+      "timestamp": "17/May/2015:10:05:12",
+      "group": 1,
+      "name": "/presentations/logstash-monitorama-2013/plugin/zoom-js/zoom.js"
+  },
+  {
+      "path": "/presentations/logstash-monitorama-2013/plugin/highlight/highlight.js",
+      "httpVersion": "1.1",
+      "sizeInBytes": "26185",
+      "response": "200",
+      "requestMethod": "GET",
+      "community": 0,
+      "timestamp": "17/May/2015:10:05:47",
+      "group": 1,
+      "name": "/presentations/logstash-monitorama-2013/plugin/highlight/highlight.js"
+  },
+  {
+      "path": "/pre2sentations/logstash-monitorama-2013/images/kibana-dashboard3.png",
+      "httpVersion": "1.1",
+      "sizeInBytes": "171717",
+      "response": "200",
+      "requestMethod": "GET",
+      "community": 28,
+      "timestamp": "17/May/2015:10:05:43",
+      "group": 1,
+      "name": "/pre2sentations/logstash-monitorama-2013/images/kibana-dashboard3.png"
+  },
+  {
+      "path": "/presentations/logstash-monitorama-2013/images/kibana-search.png",
+      "httpVersion": "1.1",
+      "sizeInBytes": "203023",
+      "response": "200",
+      "requestMethod": "GET",
+      "community": 27,
+      "timestamp": "17/May/2015:10:05:03",
+      "group": 1,
+      "name": "/presentations/logstash-monitorama-2013/images/kibana-search.png"
+  },
+  {
+      "path": "/presentations/logstash-monitorama-2013/images/kibana-search.png",
+      "httpVersion": "1.1",
+      "sizeInBytes": "203023",
+      "response": "200",
+      "requestMethod": "GET",
+      "community": 27,
+      "timestamp": "17/May/2015:10:05:03",
+      "group": 1,
+      "name": "/presentations/logstash-monitorama-2013/images/kibana-search.png"
+  }
+  ];
+  private links: any=[
+    [
+      {
+          "country": "RU",
+          "hostname": "gprs-client-83.149.9.216.misp.ru",
+          "org": "AS31133 PJSC MegaFon",
+          "city": "Moscow",
+          "timezone": "Europe/Moscow",
+          "latitude": "55.7522",
+          "count": 9,
+          "ip_address": "83.149.9.216",
+          "postal": "127006",
+          "region": "Moscow",
+          "longitude": "37.6156"
+      },
+      "HAS_SENT",
+      {
+          "path": "/presentations/logstash-monitorama-2013/images/kibana-dashboard.png",
+          "httpVersion": "1.1",
+          "sizeInBytes": "321631",
+          "response": "200",
+          "requestMethod": "GET",
+          "community": 28,
+          "timestamp": "17/May/2015:10:05:50"
+      }
+  ],
+  [
+      {
+          "country": "RU",
+          "hostname": "gprs-client-83.149.9.216.misp.ru",
+          "org": "AS31133 PJSC MegaFon",
+          "city": "Moscow",
+          "timezone": "Europe/Moscow",
+          "latitude": "55.7522",
+          "count": 9,
+          "ip_address": "83.149.9.216",
+          "postal": "127006",
+          "region": "Moscow",
+          "longitude": "37.6156"
+      },
+      "HAS_SENT",
+      {
+          "path": "/presentations/logstash-monitorama-2013/images/frontend-response-codes.png",
+          "httpVersion": "1.1",
+          "sizeInBytes": "52878",
+          "response": "200",
+          "requestMethod": "GET",
+          "community": 28,
+          "timestamp": "17/May/2015:10:05:24"
+      }
+  ],
+  [
+      {
+          "country": "CZ",
+          "org": "AS29208 Dial Telecom, a.s.",
+          "city": "Prague",
+          "timezone": "Europe/Prague",
+          "latitude": "50.0880",
+          "count": 1,
+          "ip_address": "83.148.9.216",
+          "postal": "110 00",
+          "region": "Hlavní město Praha",
+          "longitude": "14.4208"
+      },
+      "HAS_SENT",
+      {
+          "path": "/presentations/logstash-monitorama-2013/css/fonts/Roboto-Regular.ttf",
+          "httpVersion": "1.1",
+          "sizeInBytes": "41820",
+          "response": "200",
+          "requestMethod": "GET",
+          "community": 28,
+          "timestamp": "17/May/2015:10:05:50"
+      }
+  ],
+  [
+      {
+          "country": "RU",
+          "hostname": "gprs-client-83.149.9.216.misp.ru",
+          "org": "AS31133 PJSC MegaFon",
+          "city": "Moscow",
+          "timezone": "Europe/Moscow",
+          "latitude": "55.7522",
+          "count": 9,
+          "ip_address": "83.149.9.216",
+          "postal": "127006",
+          "region": "Moscow",
+          "longitude": "37.6156"
+      },
+      "HAS_SENT",
+      {
+          "path": "/presentations/logstash-monitorama-2013/css/fonts/Roboto-Bold.ttf",
+          "httpVersion": "1.1",
+          "sizeInBytes": "38720",
+          "response": "200",
+          "requestMethod": "GET",
+          "community": 28,
+          "timestamp": "17/May/2015:10:05:57"
+      }
+  ],
+  [
+      {
+          "country": "RU",
+          "hostname": "gprs-client-83.149.9.216.misp.ru",
+          "org": "AS31133 PJSC MegaFon",
+          "city": "Moscow",
+          "timezone": "Europe/Moscow",
+          "latitude": "55.7522",
+          "count": 9,
+          "ip_address": "83.149.9.216",
+          "postal": "127006",
+          "region": "Moscow",
+          "longitude": "37.6156"
+      },
+      "HAS_SENT",
+      {
+          "path": "/presentations/logstash-monitorama-2013/images/sad-medic.png",
+          "httpVersion": "1.1",
+          "sizeInBytes": "430406",
+          "response": "200",
+          "requestMethod": "GET",
+          "community": 28,
+          "timestamp": "17/May/2015:10:05:34"
+      }
+  ],
+  [
+      {
+          "country": "RU",
+          "hostname": "gprs-client-83.149.9.216.misp.ru",
+          "org": "AS31133 PJSC MegaFon",
+          "city": "Moscow",
+          "timezone": "Europe/Moscow",
+          "latitude": "55.7522",
+          "count": 9,
+          "ip_address": "83.149.9.216",
+          "postal": "127006",
+          "region": "Moscow",
+          "longitude": "37.6156"
+      },
+      "HAS_SENT",
+      {
+          "path": "/presentations/logstash-monitorama-2013/plugin/notes/notes.js",
+          "httpVersion": "1.1",
+          "sizeInBytes": "2892",
+          "response": "200",
+          "requestMethod": "GET",
+          "community": 28,
+          "timestamp": "17/May/2015:10:05:07"
+      }
+  ],
+  [
+      {
+          "country": "CN",
+          "org": "AS4134 CHINANET-BACKBONE",
+          "city": "Hangzhou",
+          "timezone": "Asia/Shanghai",
+          "latitude": "30.2936",
+          "count": 1,
+          "ip_address": "183.149.9.216",
+          "region": "Zhejiang",
+          "longitude": "120.1614"
+      },
+      "HAS_SENT",
+      {
+          "path": "/presentations/logstash-monitorama-2013/plugin/zoom-js/zoom.js",
+          "httpVersion": "1.1",
+          "sizeInBytes": "7697",
+          "response": "200",
+          "requestMethod": "GET",
+          "community": 0,
+          "timestamp": "17/May/2015:10:05:12"
+      }
+  ],
+  [
+      {
+          "country": "RU",
+          "hostname": "gprs-client-83.149.9.216.misp.ru",
+          "org": "AS31133 PJSC MegaFon",
+          "city": "Moscow",
+          "timezone": "Europe/Moscow",
+          "latitude": "55.7522",
+          "count": 9,
+          "ip_address": "83.149.9.216",
+          "postal": "127006",
+          "region": "Moscow",
+          "longitude": "37.6156"
+      },
+      "HAS_SENT",
+      {
+          "path": "/presentations/logstash-monitorama-2013/plugin/highlight/highlight.js",
+          "httpVersion": "1.1",
+          "sizeInBytes": "26185",
+          "response": "200",
+          "requestMethod": "GET",
+          "community": 0,
+          "timestamp": "17/May/2015:10:05:47"
+      }
+  ],
+  [
+      {
+          "country": "RU",
+          "hostname": "gprs-client-83.149.9.216.misp.ru",
+          "org": "AS31133 PJSC MegaFon",
+          "city": "Moscow",
+          "timezone": "Europe/Moscow",
+          "latitude": "55.7522",
+          "count": 9,
+          "ip_address": "83.149.9.216",
+          "postal": "127006",
+          "region": "Moscow",
+          "longitude": "37.6156"
+      },
+      "HAS_SENT",
+      {
+          "path": "/pre2sentations/logstash-monitorama-2013/images/kibana-dashboard3.png",
+          "httpVersion": "1.1",
+          "sizeInBytes": "171717",
+          "response": "200",
+          "requestMethod": "GET",
+          "community": 28,
+          "timestamp": "17/May/2015:10:05:43"
+      }
+  ],
+  [
+      {
+          "country": "RU",
+          "org": "AS31163 PJSC MegaFon",
+          "city": "Krasnodar",
+          "timezone": "Europe/Moscow",
+          "latitude": "45.0448",
+          "count": 1,
+          "ip_address": "83.149.29.216",
+          "postal": "350000",
+          "region": "Krasnodarskiy",
+          "longitude": "38.9760"
+      },
+      "HAS_SENT",
+      {
+          "path": "/presentations/logstash-monitorama-2013/images/kibana-search.png",
+          "httpVersion": "1.1",
+          "sizeInBytes": "203023",
+          "response": "200",
+          "requestMethod": "GET",
+          "community": 27,
+          "timestamp": "17/May/2015:10:05:03"
+      }
+  ],
+  [
+      {
+          "country": "RU",
+          "hostname": "gprs-client-83.149.9.216.misp.ru",
+          "org": "AS31133 PJSC MegaFon",
+          "city": "Moscow",
+          "timezone": "Europe/Moscow",
+          "latitude": "55.7522",
+          "count": 9,
+          "ip_address": "83.149.9.216",
+          "postal": "127006",
+          "region": "Moscow",
+          "longitude": "37.6156"
+      },
+      "HAS_SENT",
+      {
+          "path": "/presentations/logstash-monitorama-2013/images/kibana-search.png",
+          "httpVersion": "1.1",
+          "sizeInBytes": "203023",
+          "response": "200",
+          "requestMethod": "GET",
+          "community": 27,
+          "timestamp": "17/May/2015:10:05:03"
+      }
+  ]
+  ];
+  private svg;
+  private margin = 50;
+  private width = 960;
+  private height = 600;
+  private color: any[];
+  private d3links: any=[];
+  private simulation;
+  private link;
+  private node;
+  private label;
+  private tooltip: any;
+
+
+
+
+
+
+
   toppings = new FormControl();
 
   toppingList: string[] = ['Extra cheese', 'Mushroom', 'Onion', 'Pepperoni', 'Sausage', 'Tomato'];
@@ -47,6 +627,7 @@ export class AnalyseComponent implements AfterViewInit{
 
     // Assign the data to the data source for the table to render
     this.dataSource = new MatTableDataSource(users);
+    this.createSvg();
   }
 
   ngAfterViewInit() {
@@ -73,6 +654,136 @@ export class AnalyseComponent implements AfterViewInit{
   onDeactivate(data): void {
     console.log('Deactivate', JSON.parse(JSON.stringify(data)));
 
+  }
+
+  createSvg() {
+    this.svg = d3.select("svg");
+    this.width = this.svg.attr("width");
+    this.height = this.svg.attr("height");
+    this.color = ["red", "green", "blue", "yellow", "black"];
+
+    this.links.forEach(r => {
+      if(r[1] == 'HAS_SENT') {
+        this.d3links.push({ "source": r[0]['ip_address'], 'target': r[2]['path'] })
+      } else if (r[1] == 'HAS_ACCESSED') {
+        this.d3links.push({ 'source': r[0]['path'], 'target': r[2]['server_name'] })
+      }
+    });
+
+    this.simulation = d3
+      .forceSimulation(this.nodes)
+      .force(
+        "link",
+        d3
+        .forceLink(this.d3links)
+        .id(d => d["name"])
+        .distance(function(d) {
+          return 100;
+        })
+      )
+      .force("charge", d3.forceManyBody().strength(-70))
+      .force("center", d3.forceCenter(this.width / 2, this.height / 2))
+      //.on("tick", this.ticked);
+
+    this.link = this.svg
+      .append("g")
+      .attr("class", "links")
+      .selectAll("line")
+      .data(this.d3links)
+      .enter()
+      .append("line")
+      .attr("stroke-width", function(d) {
+        return 3;
+      });
+      console.log(this.link);
+
+    this.node = this.svg
+      .append("g")
+      .attr("class", "nodes")
+      .selectAll("circle")
+      .data(this.nodes)
+      .enter()
+      .append("circle")
+      .attr("r", 15)
+      .style("fill", (d) => { return this.color[d.group]; })
+      .call(
+        d3
+        .drag()
+        .on("start", (event, d) => {this.dragstarted(event, d);})
+        .on("drag", (event, d) => {this.dragged(event, d);})
+        .on("end", (event, d) => {this.dragended(event, d);})
+      );
+
+    this.label = this.svg.append("g");
+
+    this.tooltip = d3.select("body")
+      .append("div")
+      .style("position", "absolute")
+      .style("visibility", "hidden")
+      .style("color", "white")
+      .style("padding", "8px")
+      .style("background-color", "#626D71")
+      .style("border-radius", "6px")
+      .style("text-align", "center")
+      .style("width", "auto")
+      .text("");
+
+    this.label
+      .on("mouseover", (event, d) =>{
+        this.tooltip.html(`${d.name}`);
+        return this.tooltip.style("visibility", "visible");})
+      .on("mousemove", (event, d)=>{
+        return this.tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})
+
+    this.node
+        .on("mouseover", (event, d) => {
+            this.tooltip.html(`${d.name}`);
+            return this.tooltip.style("visibility", "visible");})
+        .on("mousemove", (event, d) =>{
+            return this.tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})
+        .on("mouseout", (event, d) =>{return this.tooltip.style("visibility", "hidden");});
+
+  }
+
+  dragended(event, d) {
+    if (!event.active) this.simulation.alphaTarget(0);
+    d.fx = null;
+    d.fy = null;
+  }
+
+  dragged(event, d) {
+    d.fx = event.x;
+    d.fy = event.y;
+  }
+
+  dragstarted(event, d) {
+    if (!event.active) this.simulation.alphaTarget(0.3).restart();
+    d.fx = d.x;
+    d.fy = d.y;
+  }
+
+  ticked() {
+    this.link
+    .attr("x1", function(d) {
+        return d.source.x;
+    })
+    .attr("y1", function(d) {
+        return d.source.y;
+    })
+    .attr("x2", function(d) {
+        return d.target.x;
+    })
+    .attr("y2", function(d) {
+        return d.target.y;
+    });
+
+    this.node
+    .attr("cx", function(d) {
+        return d.x;
+    })
+    .attr("cy", function(d) {
+        return d.y;
+    });
   }
 }
 

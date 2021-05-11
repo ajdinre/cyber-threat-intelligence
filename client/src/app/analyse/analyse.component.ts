@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ViewChild, ElementRef } from '@angular/core';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
@@ -6,10 +6,6 @@ import {FlexLayoutModule} from '@angular/flex-layout';
 import { FormControl } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import * as d3 from 'd3';
-import * as d3Scale from 'd3';
-import * as d3Shape from 'd3';
-import * as d3Array from 'd3';
-import * as d3Axis from 'd3';
 
 export interface FileData {
   id: string;
@@ -34,23 +30,9 @@ const NAMES: string[] = [
   styleUrls: ['./analyse.component.css']
 })
 export class AnalyseComponent implements AfterViewInit{
-  private nodes: any=[
+  @ViewChild('graphContainer') graphContainer: ElementRef;
+  nodes = [
     {
-      "country": "RU",
-      "hostname": "gprs-client-83.149.9.216.misp.ru",
-      "org": "AS31133 PJSC MegaFon",
-      "city": "Moscow",
-      "timezone": "Europe/Moscow",
-      "latitude": "55.7522",
-      "count": 9,
-      "ip_address": "83.149.9.216",
-      "postal": "127006",
-      "region": "Moscow",
-      "longitude": "37.6156",
-      "group": 0,
-      "name": "83.149.9.216"
-  },
-  {
       "country": "RU",
       "hostname": "gprs-client-83.149.9.216.misp.ru",
       "org": "AS31133 PJSC MegaFon",
@@ -80,92 +62,17 @@ export class AnalyseComponent implements AfterViewInit{
       "name": "83.148.9.216"
   },
   {
-      "country": "RU",
-      "hostname": "gprs-client-83.149.9.216.misp.ru",
-      "org": "AS31133 PJSC MegaFon",
-      "city": "Moscow",
-      "timezone": "Europe/Moscow",
-      "latitude": "55.7522",
-      "count": 9,
-      "ip_address": "83.149.9.216",
-      "postal": "127006",
-      "region": "Moscow",
-      "longitude": "37.6156",
-      "group": 0,
-      "name": "83.149.9.216"
-  },
-  {
-      "country": "RU",
-      "hostname": "gprs-client-83.149.9.216.misp.ru",
-      "org": "AS31133 PJSC MegaFon",
-      "city": "Moscow",
-      "timezone": "Europe/Moscow",
-      "latitude": "55.7522",
-      "count": 9,
-      "ip_address": "83.149.9.216",
-      "postal": "127006",
-      "region": "Moscow",
-      "longitude": "37.6156",
-      "group": 0,
-      "name": "83.149.9.216"
-  },
-  {
-      "country": "RU",
-      "hostname": "gprs-client-83.149.9.216.misp.ru",
-      "org": "AS31133 PJSC MegaFon",
-      "city": "Moscow",
-      "timezone": "Europe/Moscow",
-      "latitude": "55.7522",
-      "count": 9,
-      "ip_address": "83.149.9.216",
-      "postal": "127006",
-      "region": "Moscow",
-      "longitude": "37.6156",
-      "group": 0,
-      "name": "83.149.9.216"
-  },
-  {
       "country": "CN",
       "org": "AS4134 CHINANET-BACKBONE",
       "city": "Hangzhou",
       "timezone": "Asia/Shanghai",
       "latitude": "30.2936",
       "count": 1,
-      "ip_address": "183.149.9.216",
+      "ip_address": "183.149.9.221",
       "region": "Zhejiang",
       "longitude": "120.1614",
       "group": 0,
-      "name": "183.149.9.216"
-  },
-  {
-      "country": "RU",
-      "hostname": "gprs-client-83.149.9.216.misp.ru",
-      "org": "AS31133 PJSC MegaFon",
-      "city": "Moscow",
-      "timezone": "Europe/Moscow",
-      "latitude": "55.7522",
-      "count": 9,
-      "ip_address": "83.149.9.216",
-      "postal": "127006",
-      "region": "Moscow",
-      "longitude": "37.6156",
-      "group": 0,
-      "name": "83.149.9.216"
-  },
-  {
-      "country": "RU",
-      "hostname": "gprs-client-83.149.9.216.misp.ru",
-      "org": "AS31133 PJSC MegaFon",
-      "city": "Moscow",
-      "timezone": "Europe/Moscow",
-      "latitude": "55.7522",
-      "count": 9,
-      "ip_address": "83.149.9.216",
-      "postal": "127006",
-      "region": "Moscow",
-      "longitude": "37.6156",
-      "group": 0,
-      "name": "83.149.9.216"
+      "name": "183.149.9.221"
   },
   {
       "country": "RU",
@@ -180,21 +87,6 @@ export class AnalyseComponent implements AfterViewInit{
       "longitude": "38.9760",
       "group": 0,
       "name": "83.149.29.216"
-  },
-  {
-      "country": "RU",
-      "hostname": "gprs-client-83.149.9.216.misp.ru",
-      "org": "AS31133 PJSC MegaFon",
-      "city": "Moscow",
-      "timezone": "Europe/Moscow",
-      "latitude": "55.7522",
-      "count": 9,
-      "ip_address": "83.149.9.216",
-      "postal": "127006",
-      "region": "Moscow",
-      "longitude": "37.6156",
-      "group": 0,
-      "name": "83.149.9.216"
   },
   {
       "path": "/presentations/logstash-monitorama-2013/images/kibana-dashboard.png",
@@ -318,7 +210,7 @@ export class AnalyseComponent implements AfterViewInit{
       "name": "/presentations/logstash-monitorama-2013/images/kibana-search.png"
   }
   ];
-  private links: any=[
+  APIlinks = [
     [
       {
           "country": "RU",
@@ -476,7 +368,7 @@ export class AnalyseComponent implements AfterViewInit{
           "timezone": "Asia/Shanghai",
           "latitude": "30.2936",
           "count": 1,
-          "ip_address": "183.149.9.216",
+          "ip_address": "183.149.9.221",
           "region": "Zhejiang",
           "longitude": "120.1614"
       },
@@ -591,18 +483,26 @@ export class AnalyseComponent implements AfterViewInit{
       }
   ]
   ];
-  private svg;
-  private margin = 50;
-  private width = 960;
-  private height = 600;
-  private color: any[];
-  private d3links: any=[];
-  private simulation;
-  private link;
-  private node;
-  private label;
-  private tooltip: any;
 
+  width = 500;
+  height = 500;
+  colors = d3.scaleOrdinal(d3.schemeCategory10);
+
+  links = [{source: this.nodes[0], target: this.nodes[1]}];
+  svg: any;
+  force: any;
+  path: any;
+  circle: any;
+  drag: any;
+  dragLine: any;
+  tooltip: any;
+  label: any;
+
+  selectedNode = null;
+  selectedLink = null;
+  mousedownLink = null;
+  mousedownNode = null;
+  mouseupNode = null;
 
 
 
@@ -627,7 +527,6 @@ export class AnalyseComponent implements AfterViewInit{
 
     // Assign the data to the data source for the table to render
     this.dataSource = new MatTableDataSource(users);
-    this.createSvg();
   }
 
   ngAfterViewInit() {
@@ -656,7 +555,196 @@ export class AnalyseComponent implements AfterViewInit{
 
   }
 
-  createSvg() {
+
+
+  ngAfterContentInit() {
+    this.width = document.getElementById('neo4j-content-container')!.clientWidth;
+    // reformating links
+    this.links.pop()
+    this.APIlinks.forEach(r => {
+      if(r[1] == 'HAS_SENT') {
+        this.links.push({ "source": r[0]['ip_address'], 'target': r[2]['path'] })
+      } else if (r[1] == 'HAS_ACCESSED') {
+        this.links.push({ 'source': r[0]['path'], 'target': r[2]['server_name'] })
+      }
+    });
+    console.log(this.links);
+
+    this.svg = d3.select('#graphContainer')
+      .attr('oncontextmenu', 'return false;')
+      .attr('width', '100%')
+      .attr('height', '100%');
+
+    this.force = d3.forceSimulation()
+      .force('link', d3.forceLink().id((d: any) => d.name).distance(150))
+      .force('charge', d3.forceManyBody().strength(-500))
+      .force('x', d3.forceX(this.width / 4))
+      .force('y', d3.forceY(this.height / 2))
+      .on('tick', () => this.tick());
+
+
+      this.svg.append('svg:defs').append('svg:marker')
+      .attr('id', 'end-arrow')
+      .attr('viewBox', '0 -5 10 10')
+      .attr('refX', 6)
+      .attr('markerWidth', 3)
+      .attr('markerHeight', 3)
+      .attr('orient', 'auto')
+      .append('svg:path')
+      .attr('d', 'M0,-5L10,0L0,5')
+      .attr('fill', '#000');
+
+    this.svg.append('svg:defs').append('svg:marker')
+      .attr('id', 'start-arrow')
+      .attr('viewBox', '0 -5 10 10')
+      .attr('refX', 4)
+      .attr('markerWidth', 3)
+      .attr('markerHeight', 3)
+      .attr('orient', 'auto')
+      .append('svg:path')
+      .attr('d', 'M10,-5L0,0L10,5')
+      .attr('fill', '#000');
+
+
+    // handles to link and node element groups
+    this.path = this.svg.append('svg:g').selectAll('path');
+    this.circle = this.svg.append('svg:g').selectAll('g');
+
+
+    this.restart();
+  }
+
+
+  // update force layout (called automatically each iteration)
+  tick() {
+    // draw directed edges with proper padding from node centers
+    this.path.attr('d', (d: any) => {
+      return `M${d.source.x},${d.source.y}L${d.target.x},${d.target.y}`;
+    });
+
+    this.circle.attr('transform', (d) => `translate(${d.x},${d.y})`);
+  }
+
+  // update graph (called when needed)
+  restart() {
+    // path (link) group
+    this.path = this.path.data(this.links)
+
+    // update existing links
+    this.path.classed('selected', (d) => d === this.selectedLink);
+
+    // remove old links
+    this.path.exit().remove();
+
+    // add new links
+    this.path = this.path.enter().append('svg:path')
+      .attr('class', 'link')
+      .classed('selected', (d) => d === this.selectedLink)
+      .merge(this.path);
+
+      this.path.selectAll("path")
+        .style("color", "red")
+
+    // circle (node) group
+    // NB: the function arg is crucial here! nodes are known by id, not by index!
+    this.circle = this.circle.data(this.nodes, (d) => d.name);
+
+    // update existing nodes (reflexive & selected visual states)
+    this.circle.selectAll('circle')
+      .style('fill', (d) => (d === this.selectedNode) ? d3.rgb(this.colors(d.group)).brighter().toString() : this.colors(d.group))
+
+    // remove old nodes
+    this.circle.exit().remove();
+
+    // add new nodes
+    const g = this.circle.enter().append('svg:g');
+
+    g.append('svg:circle')
+      .attr('class', 'node')
+      .attr('r', 12)
+      .style('fill', (d) => (d === this.selectedNode) ? d3.rgb(this.colors(d.group)).brighter().toString() : this.colors(d.group))
+      .style('stroke', (d) => d3.rgb(this.colors(d.group)).darker().toString());
+
+    this.svg.selectAll("circle")
+      .call(
+        d3.drag()
+        .on("start", (event, d) => {this.dragstarted(event, d);})
+        .on("drag", (event, d) => {this.dragged(event, d);})
+        .on("end", (event, d) => {this.dragended(event, d);})
+      );
+
+    this.label = this.svg.append("g");
+
+    this.tooltip = d3.select("body")
+      .append("div")
+      .attr("class", "label")
+      .style("position", "absolute")
+      .style("visibility", "hidden")
+      .style("color", "white")
+      .style("padding", "8px")
+      .style("background-color", "#626D71")
+      .style("border-radius", "6px")
+      .style("text-align", "center")
+      .style("width", "auto")
+      .text("");
+
+    this.label
+      .on("mouseover", (event, d) =>{
+        this.tooltip.html(`${d.name}`);
+        return this.tooltip.style("visibility", "visible");})
+      .on("mousemove", (event, d)=>{
+        return this.tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})
+
+    this.svg.selectAll("circle")
+      .on("mouseover", (event, d) => {
+        this.tooltip.html(`${d.name}`);
+        return this.tooltip.style("visibility", "visible");})
+      .on("mousemove", (event, d) =>{
+        return this.tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})
+      .on("mouseout", (event, d) =>{return this.tooltip.style("visibility", "hidden");});
+
+
+    // shows a label/name of every node
+    g.append('svg:text')
+      .attr('x', 0)
+      .attr('y', 4)
+      .attr('class', 'id')
+      .text((d) => d.name);
+
+    this.circle = g.merge(this.circle);
+
+    // set the graph in motion
+    this.force
+      .nodes(this.nodes)
+      .force('link').links(this.links);
+
+    this.force.alphaTarget(0.3).restart();
+
+  }
+
+  dragended(event, d) {
+    if (!event.active) this.force.alphaTarget(0);
+    d.fx = null;
+    d.fy = null;
+  }
+
+  dragged(event, d) {
+    console.log(event);
+    console.log(d);
+    d.fx = event.sourceEvent.layerX;
+    d.fy = event.sourceEvent.layerY;
+  }
+
+  dragstarted(event, d) {
+    if (!event.active) this.force.alphaTarget(0.3).restart();
+    d.fx = d.x;
+    d.fy = d.y;
+  }
+
+
+
+
+  /*createSvg() {
     this.svg = d3.select("svg");
     this.width = this.svg.attr("width");
     this.height = this.svg.attr("height");
@@ -745,46 +833,9 @@ export class AnalyseComponent implements AfterViewInit{
 
   }
 
-  dragended(event, d) {
-    if (!event.active) this.simulation.alphaTarget(0);
-    d.fx = null;
-    d.fy = null;
-  }
+  }*/
 
-  dragged(event, d) {
-    d.fx = event.x;
-    d.fy = event.y;
-  }
 
-  dragstarted(event, d) {
-    if (!event.active) this.simulation.alphaTarget(0.3).restart();
-    d.fx = d.x;
-    d.fy = d.y;
-  }
-
-  ticked() {
-    this.link
-    .attr("x1", function(d) {
-        return d.source.x;
-    })
-    .attr("y1", function(d) {
-        return d.source.y;
-    })
-    .attr("x2", function(d) {
-        return d.target.x;
-    })
-    .attr("y2", function(d) {
-        return d.target.y;
-    });
-
-    this.node
-    .attr("cx", function(d) {
-        return d.x;
-    })
-    .attr("cy", function(d) {
-        return d.y;
-    });
-  }
 }
 
 /** Builds and returns a new User. */

@@ -39,11 +39,16 @@ mat-card{
 #neo4j-mat-card{
   min-height: 600px;
 }
-.links line {
-  stroke: #999;
-  stroke-opacity: 0.6;
-}
-.nodes circle {
-  stroke: #fff;
+:host /deep/.link {
+  stroke: rgb(0, 0, 0, 0.6);
+  fill: rgb(0, 0, 0, 0.6);
   stroke-width: 1.5px;
+}
+.mat-card-content {
+  width: 100%;
+  height: 400;
+  background-color: rgb(231, 231, 231);
+}
+.neo4j-content-container {
+  padding: 20px !important;
 }

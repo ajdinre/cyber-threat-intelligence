@@ -486,7 +486,8 @@ export class AnalyseComponent implements AfterViewInit{
 
   width = 500;
   height = 500;
-  //colors = d3.scaleOrdinal(d3.schemeCategory10);
+  colors = ["rgb(255, 95, 57)", "rgb(224, 97, 152)", "rgb(177, 125, 245)", "rgb(129, 89, 255)"];
+  stroke_colors = ["rgb(224, 95, 57)", "rgb(208, 97, 128)", "rgb(164, 113, 229)", "rgb(101, 69, 223)"];
 
   links = [{source: this.nodes[0], target: this.nodes[1]}];
   svg: any;
@@ -495,8 +496,6 @@ export class AnalyseComponent implements AfterViewInit{
   circle: any;
   tooltip: any;
   label: any;
-  colors = ["rgb(255, 95, 57)", "rgb(224, 97, 152)", "rgb(177, 125, 245)", "rgb(129, 89, 255)"];
-  stroke_colors = ["rgb(224, 95, 57)", "rgb(208, 97, 128)", "rgb(164, 113, 229)", "rgb(101, 69, 223)"];
 
   selectedNode = null;
   selectedLink = null;
@@ -641,7 +640,7 @@ export class AnalyseComponent implements AfterViewInit{
         .on("end", (event, d) => {this.dragended(event, d);})
       );
 
-    /*this.label = this.svg.append("g");
+
 
     this.tooltip = d3.select("#neo4j-mat-card")
       .append("div")
@@ -656,22 +655,6 @@ export class AnalyseComponent implements AfterViewInit{
       .style("width", "auto")
       .text("");
 
-    this.label
-      .on("mouseover", (event, d) =>{
-        this.tooltip.html(`${d.name}-${d.country}`);
-        return this.tooltip.style("visibility", "visible");})
-      .on("mousemove", (event, d)=>{
-        return this.tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})*/
-
-    /*this.svg.selectAll("circle")
-      .on("mouseover", (event, d) => {
-        this.tooltip.html(`${d.name}`);
-        return this.tooltip.style("visibility", "visible");})
-      .on("mousemove", (event, d) =>{
-        return this.tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})
-      .on("mouseout", (event, d) =>{return this.tooltip.style("visibility", "hidden");});*/
-
-
     // shows a label/name of every node
     g.append('svg:text')
       .attr('x', 0)
@@ -684,13 +667,20 @@ export class AnalyseComponent implements AfterViewInit{
     this.circle = g.merge(this.circle);
 
     //show tooltip
-    /*this.circle
+    this.circle
       .on('mouseover', (event, d) => {
-        this.tooltip.html(`${d.name}`);
+        var node_details = '<div style="text-align: left;">';
+        for (const key in d) {
+          if(key !== 'x' && key !== 'y' && key !== 'vx' && key !== 'vy' && key !== 'index' && key !== 'name') {
+            node_details += `<p>${key}: ${d[key]}</p>`;
+          }
+        }
+        node_details += '</div>';
+        this.tooltip.html(node_details);
         return this.tooltip.style("visibility", "visible");})
       .on("mousemove", (event, d) =>{
         return this.tooltip.style("top", (event.pageY-350)+"px").style("left",(event.pageX-10)+"px");})
-      .on("mouseout", (event, d) =>{return this.tooltip.style("visibility", "hidden");});*/
+      .on("mouseout", (event, d) =>{return this.tooltip.style("visibility", "hidden");});
 
     // set the graph in motion
     this.force
@@ -707,8 +697,6 @@ export class AnalyseComponent implements AfterViewInit{
   }
 
   dragged(event, d) {
-    console.log(event);
-    console.log(d);
     d.fx = event.sourceEvent.layerX;
     d.fy = event.sourceEvent.layerY;
   }

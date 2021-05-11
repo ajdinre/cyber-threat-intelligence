@@ -15579,10 +15579,9 @@ class AnalyseComponent {
         ];
         this.width = 500;
         this.height = 500;
-        //colors = d3.scaleOrdinal(d3.schemeCategory10);
-        this.links = [{ source: this.nodes[0], target: this.nodes[1] }];
         this.colors = ["rgb(255, 95, 57)", "rgb(224, 97, 152)", "rgb(177, 125, 245)", "rgb(129, 89, 255)"];
         this.stroke_colors = ["rgb(224, 95, 57)", "rgb(208, 97, 128)", "rgb(164, 113, 229)", "rgb(101, 69, 223)"];
+        this.links = [{ source: this.nodes[0], target: this.nodes[1] }];
         this.selectedNode = null;
         this.selectedLink = null;
         this.toppings = new _angular_forms__WEBPACK_IMPORTED_MODULE_3__["FormControl"]();
@@ -15706,34 +15705,18 @@ class AnalyseComponent {
             .on("start", (event, d) => { this.dragstarted(event, d); })
             .on("drag", (event, d) => { this.dragged(event, d); })
             .on("end", (event, d) => { this.dragended(event, d); }));
-        /*this.label = this.svg.append("g");
-    
-        this.tooltip = d3.select("#neo4j-mat-card")
-          .append("div")
-          .attr("class", "label")
-          .style("position", "absolute")
-          .style("visibility", "hidden")
-          .style("color", "white")
-          .style("padding", "8px")
-          .style("background-color", "#626D71")
-          .style("border-radius", "6px")
-          .style("text-align", "center")
-          .style("width", "auto")
-          .text("");
-    
-        this.label
-          .on("mouseover", (event, d) =>{
-            this.tooltip.html(`${d.name}-${d.country}`);
-            return this.tooltip.style("visibility", "visible");})
-          .on("mousemove", (event, d)=>{
-            return this.tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})*/
-        /*this.svg.selectAll("circle")
-          .on("mouseover", (event, d) => {
-            this.tooltip.html(`${d.name}`);
-            return this.tooltip.style("visibility", "visible");})
-          .on("mousemove", (event, d) =>{
-            return this.tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})
-          .on("mouseout", (event, d) =>{return this.tooltip.style("visibility", "hidden");});*/
+        this.tooltip = d3__WEBPACK_IMPORTED_MODULE_4__["select"]("#neo4j-mat-card")
+            .append("div")
+            .attr("class", "label")
+            .style("position", "absolute")
+            .style("visibility", "hidden")
+            .style("color", "white")
+            .style("padding", "8px")
+            .style("background-color", "#626D71")
+            .style("border-radius", "6px")
+            .style("text-align", "center")
+            .style("width", "auto")
+            .text("");
         // shows a label/name of every node
         g.append('svg:text')
             .attr('x', 0)
@@ -15749,13 +15732,22 @@ class AnalyseComponent {
         });
         this.circle = g.merge(this.circle);
         //show tooltip
-        /*this.circle
-          .on('mouseover', (event, d) => {
-            this.tooltip.html(`${d.name}`);
-            return this.tooltip.style("visibility", "visible");})
-          .on("mousemove", (event, d) =>{
-            return this.tooltip.style("top", (event.pageY-350)+"px").style("left",(event.pageX-10)+"px");})
-          .on("mouseout", (event, d) =>{return this.tooltip.style("visibility", "hidden");});*/
+        this.circle
+            .on('mouseover', (event, d) => {
+            var node_details = '<div style="text-align: left;">';
+            for (const key in d) {
+                if (key !== 'x' && key !== 'y' && key !== 'vx' && key !== 'vy' && key !== 'index' && key !== 'name') {
+                    node_details += `<p>${key}: ${d[key]}</p>`;
+                }
+            }
+            node_details += '</div>';
+            this.tooltip.html(node_details);
+            return this.tooltip.style("visibility", "visible");
+        })
+            .on("mousemove", (event, d) => {
+            return this.tooltip.style("top", (event.pageY - 350) + "px").style("left", (event.pageX - 10) + "px");
+        })
+            .on("mouseout", (event, d) => { return this.tooltip.style("visibility", "hidden"); });
         // set the graph in motion
         this.force
             .nodes(this.nodes)
@@ -15769,8 +15761,6 @@ class AnalyseComponent {
         d.fy = null;
     }
     dragged(event, d) {
-        console.log(event);
-        console.log(d);
         d.fx = event.sourceEvent.layerX;
         d.fy = event.sourceEvent.layerY;
     }

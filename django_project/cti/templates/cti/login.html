@@ -25,17 +25,16 @@
 <body>
 
 <div class="row justify-content-center">
-<div class="container-login100" style="background-image: url('https://cdn.pixabay.com/photo/2019/10/17/13/39/network-4556932_1280.jpg');">
     <div class="col-md-5">
     <div class="card mt-4">
-            <div class="card-header text-center bg-white text-dark">
-                <legend class="border-bottom mb-4-center">Login</legend>
+            <div class="card-header text-center text-dark">
+                <legend class=" text-dark mb-4-center">Login</legend>
             </div>
 
     <div class="card-body">
     <div class="container">
         <div class="content-section">
-            <form method="POST">
+            <form method="POST" class="text=light">
                 {% csrf_token %}
                 <fieldset class="form-group">
                      {{ form|crispy }}
@@ -49,7 +48,6 @@
     </div>
     </div>
     </div>
-</div>
 </div>
 
 </body>

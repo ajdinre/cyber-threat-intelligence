@@ -33,7 +33,7 @@ const NAMES: string[] = [
 export class AnalyseComponent implements AfterViewInit{
   serverNames = new FormControl();
   serverNamesList : string[] = ['ServerName1', 'ServerName2'];
-
+  ipInputList : string = '';
   displayedColumns: string[] = ['id', 'server name', 'file name', 'file size', 'date uploaded'];
   dataSource: MatTableDataSource<FileData>;
   currentUserName="Karlo";

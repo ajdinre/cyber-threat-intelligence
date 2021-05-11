@@ -36,3 +36,6 @@ mat-card{
 #grafana-mat-card{
   min-height: 600px;
 }
+.ip-input-field{
+  width: 100%;
+}

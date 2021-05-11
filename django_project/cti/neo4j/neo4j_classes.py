@@ -315,3 +315,12 @@ def get_all():
     for res in db.query(query_string):
         result_array.append(res['a'])
     return result_array
+
+def get_all_server_names():
+    # match(a:Server) return a.server_name
+    result_array = []
+    query_string = 'MATCH(a:Server) RETURN a.server_name'
+    db = Database(db_url, db_name, db_password)
+    for res in db.query(query_string):
+        result_array.append(res['a.server_name'])
+    return result_array

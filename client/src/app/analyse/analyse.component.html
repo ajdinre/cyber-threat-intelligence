@@ -3,10 +3,10 @@
   <div fxFlex="60" class="header-container">
     <h3>Analyse</h3>
   </div>
-  <div fxLayout="row" fxLayoutAlign="start stretch" fxLayoutGap="5%" id="file-selector-container">
-    <mat-card fxFlex="25" id="file-select-button-card">
+  <div fxLayout="row" fxLayoutAlign="space-between stretch" id="file-selector-container">
+    <mat-card fxFlex="30" id="file-select-button-card">
       <mat-card-header id="select-files-header">
-        <h3>Servers search</h3>
+        <h3>Choose servers to analyse</h3>
       </mat-card-header>
       <div>
         <mat-form-field id="select-multiple-button" appearance="outline">
@@ -24,22 +24,31 @@
       </div>
     </mat-card>
 
-    <mat-card fxFlex="25" id="ip-adress-search-card">
+    <mat-card fxFlex="30" id="ip-adress-search-card">
       <mat-card-header id="ip-address-search-header">
-        <h3>IP search</h3>
+        <h3>Filter IP adrresses</h3>
       </mat-card-header>
       <div>
         <form class="ip-input-field-form">
           <mat-form-field class="ip-input-field">
             <mat-label>Search IPs...</mat-label>
-            <input matInput #message maxlength="256" [(ngModel)]="ipInputList" placeholder="Ex. 192.192.192.192">
+            <input matInput #message maxlength="256" [(ngModel)]="ipInputList" name="ipInputList" placeholder="Ex. 192.192.192.192">
             <mat-hint style="font-size: medium;" align="start"><strong>Leave empty if you want to search all Ip adrresses in the servers.</strong> </mat-hint>
             <!--<mat-hint align="end">{{message.value.length}} / 256</mat-hint>-->
           </mat-form-field>
         </form>
       </div>
-
-
+    </mat-card>
+    <mat-card fxFlex="30" id="enter-search-card">
+      <mat-card-header id="enter-search-header">
+        <h3>Start your search here!</h3>
+      </mat-card-header>
+      <mat-label id="search-with-label">Search with:</mat-label>
+      <div fxLayout="row" fxLayoutAlign="space-between stretch" fxLayoutGap="20px" id="search-buttons-layout">
+        <button mat-button fxFlex="30" (click)="searchWithNeo4j()">Neo4j</button>
+        <button mat-button fxFlex="30" (click)="searchWithGrafana()">Grafana</button>
+        <button mat-button fxFlex="30" (click)="searchWithKibana()">Kibana</button>
+      </div>
     </mat-card>
   </div>
 

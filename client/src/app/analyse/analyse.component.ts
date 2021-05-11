@@ -85,6 +85,15 @@ export class AnalyseComponent implements AfterViewInit{
     }))
     });
   }
+  searchWithNeo4j(){
+    console.log("Search with Neo4j Button Clicked!")
+  }
+  searchWithGrafana(){
+    console.log("Search with Grafana Button Clicked!")
+  }
+  searchWithKibana(){
+    console.log("Search with Kibana Button Clicked!")
+  }
 }
 
 /** Builds and returns a new User. */

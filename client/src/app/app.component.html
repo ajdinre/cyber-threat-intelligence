@@ -1,11 +1,30 @@
-<div fxFlex fxLayout="column" fxLayoutGap="10px" style="height:100vh;">
+<div fxFlex fxLayout="column" fxLayoutGap="10px" style="">
+      <mat-toolbar class="margin-fix" fxLayout="row" fxLayoutAlign="space-between center" color="primary" style="background-color: rgb(66, 66, 68);">
+        <div>
+        <button type="button" aria-label="Toggle sidenav"
+        mat-icon-button (click)="drawer.toggle()">
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+        </button>
+        <img src="/static/img/icon.png" style="margin: 0 10px; filter: invert(1); height: 50px; width: 50px; ">
+        <span style="vertical-align: middle;">Cyber Threat Intelligence</span>
+        </div>
+        <mat-menu #profileMenu="matMenu" yPosition="below" >
+          <ng-template matMenuContent >
+            <button mat-menu-item style="background-color: rgb(66, 66, 66); color:whitesmoke" routerLink="/settings" routerLinkActive="active">Settings</button>
+            <button mat-menu-item style="background-color: rgb(66, 66, 66); color:whitesmoke" (click)="logoutRedirect()">Sign Out</button>
+          </ng-template>
+        </mat-menu>
+        <button mat-fab type="menu" [matMenuTriggerFor]="profileMenu" style="background-color: rgb(180, 180, 180); height: 50px; width: 50px;">
+          <mat-icon st>person</mat-icon>
+        </button>
+      </mat-toolbar>
 
-  <mat-sidenav-container class="sidenav-container" style="background-color: rgb(75, 75, 75); color: whitesmoke">
-    <mat-sidenav style="background-color: rgb(66, 66, 66);" mode="side"
+  <mat-sidenav-container class="sidenav-container" style="background-color: rgb(44, 44, 46); color: whitesmoke; height: 100vh;">
+    <mat-sidenav style="background-color: rgb(66, 66, 66); min-width:150px;" mode="side"
     #drawer
     class="sidenav"
-    fixedInViewport="true">
-    <mat-toolbar color="primary" style="background-color: rgb(66, 66, 66);">CTI</mat-toolbar>
+    fixedInViewport="false">
+
     <mat-nav-list >
 
       <a mat-list-item style="color: whitesmoke;" routerLink="/home" routerLinkActive="active"> Home </a>
@@ -15,28 +34,7 @@
     </mat-nav-list>
   </mat-sidenav>
 
-  <mat-sidenav-content class="sidenav-content" style="height:100vh;">
-      <mat-toolbar fxLayout="row" fxLayoutAlign="space-between center" color="primary" style="background-color: rgb(66, 66, 66);">
-        <button type="button" aria-label="Toggle sidenav"
-        mat-icon-button (click)="drawer.toggle()">
-        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
-        </button>
-
-        <button type="button" mat-icon-button routerLink="/analyse" routerLinkActive="active">
-        <mat-icon id="analyse-icon">fingerprint</mat-icon>
-        </button>
-
-        <mat-menu #profileMenu="matMenu" yPosition="below" >
-          <ng-template matMenuContent >
-            <button mat-menu-item style="background-color: rgb(66, 66, 66); color:whitesmoke" routerLink="/settings" routerLinkActive="active">Settings</button>
-            <button mat-menu-item style="background-color: rgb(66, 66, 66); color:whitesmoke" (click)="logoutRedirect()">Sign Out</button>
-          </ng-template>
-        </mat-menu>
-        <button mat-fab type="menu" [matMenuTriggerFor]="profileMenu" style="background-color: rgb(180, 180, 180);">
-          <mat-icon>person</mat-icon>
-        </button>
-
-      </mat-toolbar>
+  <mat-sidenav-content class="sidenav-content" style="">
 
       <div>
         <router-outlet></router-outlet>

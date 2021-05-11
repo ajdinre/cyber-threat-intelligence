@@ -58,6 +58,7 @@ urlpatterns = [
     #REST
     path('log/upload', cti_views.FileUploadView.as_view()),
     path('ip', cti_views.IPView.as_view()),
+    path('servername', cti_views.ServernameView.as_view()),
 
     #Angular redirects
     url('home', RedirectView.as_view(url='/')),

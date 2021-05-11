@@ -15579,13 +15579,12 @@ class AnalyseComponent {
         ];
         this.width = 500;
         this.height = 500;
-        this.colors = d3__WEBPACK_IMPORTED_MODULE_4__["scaleOrdinal"](d3__WEBPACK_IMPORTED_MODULE_4__["schemeCategory10"]);
+        //colors = d3.scaleOrdinal(d3.schemeCategory10);
         this.links = [{ source: this.nodes[0], target: this.nodes[1] }];
+        this.colors = ["rgb(255, 95, 57)", "rgb(224, 97, 152)", "rgb(177, 125, 245)", "rgb(129, 89, 255)"];
+        this.stroke_colors = ["rgb(224, 95, 57)", "rgb(208, 97, 128)", "rgb(164, 113, 229)", "rgb(101, 69, 223)"];
         this.selectedNode = null;
         this.selectedLink = null;
-        this.mousedownLink = null;
-        this.mousedownNode = null;
-        this.mouseupNode = null;
         this.toppings = new _angular_forms__WEBPACK_IMPORTED_MODULE_3__["FormControl"]();
         this.toppingList = ['Extra cheese', 'Mushroom', 'Onion', 'Pepperoni', 'Sausage', 'Tomato'];
         this.displayedColumns = ['id', 'server name', 'file name', 'file size', 'date uploaded'];
@@ -15615,6 +15614,7 @@ class AnalyseComponent {
     onDeactivate(data) {
         console.log('Deactivate', JSON.parse(JSON.stringify(data)));
     }
+    // d3 code
     ngAfterContentInit() {
         this.width = document.getElementById('neo4j-content-container').clientWidth;
         // reformating links
@@ -15627,7 +15627,7 @@ class AnalyseComponent {
                 this.links.push({ 'source': r[0]['path'], 'target': r[2]['server_name'] });
             }
         });
-        console.log(this.links);
+        // draw graph container
         this.svg = d3__WEBPACK_IMPORTED_MODULE_4__["select"]('#graphContainer')
             .attr('oncontextmenu', 'return false;')
             .attr('width', '100%')
@@ -15638,111 +15638,124 @@ class AnalyseComponent {
             .force('x', d3__WEBPACK_IMPORTED_MODULE_4__["forceX"](this.width / 4))
             .force('y', d3__WEBPACK_IMPORTED_MODULE_4__["forceY"](this.height / 2))
             .on('tick', () => this.tick());
-        this.svg.append('svg:defs').append('svg:marker')
-            .attr('id', 'end-arrow')
-            .attr('viewBox', '0 -5 10 10')
-            .attr('refX', 6)
-            .attr('markerWidth', 3)
-            .attr('markerHeight', 3)
-            .attr('orient', 'auto')
-            .append('svg:path')
-            .attr('d', 'M0,-5L10,0L0,5')
-            .attr('fill', '#000');
-        this.svg.append('svg:defs').append('svg:marker')
-            .attr('id', 'start-arrow')
-            .attr('viewBox', '0 -5 10 10')
-            .attr('refX', 4)
-            .attr('markerWidth', 3)
-            .attr('markerHeight', 3)
-            .attr('orient', 'auto')
-            .append('svg:path')
-            .attr('d', 'M10,-5L0,0L10,5')
-            .attr('fill', '#000');
         // handles to link and node element groups
         this.path = this.svg.append('svg:g').selectAll('path');
         this.circle = this.svg.append('svg:g').selectAll('g');
         this.restart();
     }
-    // update force layout (called automatically each iteration)
+    // update force layout
     tick() {
-        // draw directed edges with proper padding from node centers
+        // draw edges
         this.path.attr('d', (d) => {
             return `M${d.source.x},${d.source.y}L${d.target.x},${d.target.y}`;
         });
         this.circle.attr('transform', (d) => `translate(${d.x},${d.y})`);
     }
-    // update graph (called when needed)
+    // update graph
     restart() {
-        // path (link) group
-        this.path = this.path.data(this.links);
-        // update existing links
-        this.path.classed('selected', (d) => d === this.selectedLink);
-        // remove old links
-        this.path.exit().remove();
-        // add new links
-        this.path = this.path.enter().append('svg:path')
+        // draw links
+        this.path = this.path.data(this.links).enter()
+            .append('svg:path')
             .attr('class', 'link')
             .classed('selected', (d) => d === this.selectedLink)
             .merge(this.path);
-        this.path.selectAll("path")
-            .style("color", "red");
         // circle (node) group
-        // NB: the function arg is crucial here! nodes are known by id, not by index!
+        // NB: the function arg is crucial here! nodes are known by name, not by index!
         this.circle = this.circle.data(this.nodes, (d) => d.name);
-        // update existing nodes (reflexive & selected visual states)
-        this.circle.selectAll('circle')
-            .style('fill', (d) => (d === this.selectedNode) ? d3__WEBPACK_IMPORTED_MODULE_4__["rgb"](this.colors(d.group)).brighter().toString() : this.colors(d.group));
-        // remove old nodes
-        this.circle.exit().remove();
-        // add new nodes
+        // draw nodes
         const g = this.circle.enter().append('svg:g');
         g.append('svg:circle')
             .attr('class', 'node')
-            .attr('r', 12)
-            .style('fill', (d) => (d === this.selectedNode) ? d3__WEBPACK_IMPORTED_MODULE_4__["rgb"](this.colors(d.group)).brighter().toString() : this.colors(d.group))
-            .style('stroke', (d) => d3__WEBPACK_IMPORTED_MODULE_4__["rgb"](this.colors(d.group)).darker().toString());
+            .attr('r', function (d) { return d.count != null ? d.count + 10 : 10; })
+            .style('fill', (d) => {
+            if (d.count != null && d.count <= 1) {
+                return this.colors[0];
+            }
+            else if (d.count != null && d.count > 1 && d.count <= 5) {
+                return this.colors[1];
+            }
+            else if (d.count != null && d.count > 5 && d.count <= 10) {
+                return this.colors[2];
+            }
+            else if (d.count != null && d.count > 10) {
+                return this.colors[3];
+            }
+            else {
+                return "rgb(92, 158, 131)";
+            } //if not IP node
+        })
+            .style('stroke', (d) => {
+            if (d.count != null && d.count <= 1) {
+                return this.stroke_colors[0];
+            }
+            else if (d.count != null && d.count > 1 && d.count <= 5) {
+                return this.stroke_colors[1];
+            }
+            else if (d.count != null && d.count > 5 && d.count <= 10) {
+                return this.stroke_colors[2];
+            }
+            else if (d.count != null && d.count > 10) {
+                return this.stroke_colors[3];
+            }
+            else {
+                return "rgb(92, 158, 131)";
+            }
+        });
         this.svg.selectAll("circle")
             .call(d3__WEBPACK_IMPORTED_MODULE_4__["drag"]()
             .on("start", (event, d) => { this.dragstarted(event, d); })
             .on("drag", (event, d) => { this.dragged(event, d); })
             .on("end", (event, d) => { this.dragended(event, d); }));
-        this.label = this.svg.append("g");
-        this.tooltip = d3__WEBPACK_IMPORTED_MODULE_4__["select"]("body")
-            .append("div")
-            .attr("class", "label")
-            .style("position", "absolute")
-            .style("visibility", "hidden")
-            .style("color", "white")
-            .style("padding", "8px")
-            .style("background-color", "#626D71")
-            .style("border-radius", "6px")
-            .style("text-align", "center")
-            .style("width", "auto")
-            .text("");
+        /*this.label = this.svg.append("g");
+    
+        this.tooltip = d3.select("#neo4j-mat-card")
+          .append("div")
+          .attr("class", "label")
+          .style("position", "absolute")
+          .style("visibility", "hidden")
+          .style("color", "white")
+          .style("padding", "8px")
+          .style("background-color", "#626D71")
+          .style("border-radius", "6px")
+          .style("text-align", "center")
+          .style("width", "auto")
+          .text("");
+    
         this.label
-            .on("mouseover", (event, d) => {
+          .on("mouseover", (event, d) =>{
+            this.tooltip.html(`${d.name}-${d.country}`);
+            return this.tooltip.style("visibility", "visible");})
+          .on("mousemove", (event, d)=>{
+            return this.tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})*/
+        /*this.svg.selectAll("circle")
+          .on("mouseover", (event, d) => {
             this.tooltip.html(`${d.name}`);
-            return this.tooltip.style("visibility", "visible");
-        })
-            .on("mousemove", (event, d) => {
-            return this.tooltip.style("top", (event.pageY - 10) + "px").style("left", (event.pageX + 10) + "px");
-        });
-        this.svg.selectAll("circle")
-            .on("mouseover", (event, d) => {
-            this.tooltip.html(`${d.name}`);
-            return this.tooltip.style("visibility", "visible");
-        })
-            .on("mousemove", (event, d) => {
-            return this.tooltip.style("top", (event.pageY - 10) + "px").style("left", (event.pageX + 10) + "px");
-        })
-            .on("mouseout", (event, d) => { return this.tooltip.style("visibility", "hidden"); });
+            return this.tooltip.style("visibility", "visible");})
+          .on("mousemove", (event, d) =>{
+            return this.tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})
+          .on("mouseout", (event, d) =>{return this.tooltip.style("visibility", "hidden");});*/
         // shows a label/name of every node
         g.append('svg:text')
             .attr('x', 0)
             .attr('y', 4)
-            .attr('class', 'id')
-            .text((d) => d.name);
+            .attr('class', 'node-text')
+            .text((d) => {
+            if (d.ip_address != null) {
+                return d.name;
+            }
+            else {
+                return '';
+            }
+        });
         this.circle = g.merge(this.circle);
+        //show tooltip
+        /*this.circle
+          .on('mouseover', (event, d) => {
+            this.tooltip.html(`${d.name}`);
+            return this.tooltip.style("visibility", "visible");})
+          .on("mousemove", (event, d) =>{
+            return this.tooltip.style("top", (event.pageY-350)+"px").style("left",(event.pageX-10)+"px");})
+          .on("mouseout", (event, d) =>{return this.tooltip.style("visibility", "hidden");});*/
         // set the graph in motion
         this.force
             .nodes(this.nodes)
@@ -15894,7 +15907,7 @@ AnalyseComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵdefineC
         _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵproperty"]("matRowDefColumns", ctx.displayedColumns);
         _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵadvance"](2);
         _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵproperty"]("pageSizeOptions", _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵpureFunction0"](8, _c1));
-    } }, directives: [_angular_flex_layout_flex__WEBPACK_IMPORTED_MODULE_6__["DefaultFlexDirective"], _angular_flex_layout_flex__WEBPACK_IMPORTED_MODULE_6__["DefaultLayoutDirective"], _angular_flex_layout_flex__WEBPACK_IMPORTED_MODULE_6__["DefaultLayoutAlignDirective"], _angular_flex_layout_flex__WEBPACK_IMPORTED_MODULE_6__["DefaultLayoutGapDirective"], _angular_material_card__WEBPACK_IMPORTED_MODULE_7__["MatCard"], _angular_material_card__WEBPACK_IMPORTED_MODULE_7__["MatCardHeader"], _angular_material_form_field__WEBPACK_IMPORTED_MODULE_8__["MatFormField"], _angular_material_form_field__WEBPACK_IMPORTED_MODULE_8__["MatLabel"], _angular_material_select__WEBPACK_IMPORTED_MODULE_9__["MatSelect"], _angular_forms__WEBPACK_IMPORTED_MODULE_3__["NgControlStatus"], _angular_forms__WEBPACK_IMPORTED_MODULE_3__["FormControlDirective"], _angular_material_select__WEBPACK_IMPORTED_MODULE_9__["MatSelectTrigger"], _angular_common__WEBPACK_IMPORTED_MODULE_10__["NgIf"], _angular_common__WEBPACK_IMPORTED_MODULE_10__["NgForOf"], _angular_material_card__WEBPACK_IMPORTED_MODULE_7__["MatCardContent"], _angular_material_input__WEBPACK_IMPORTED_MODULE_11__["MatInput"], _angular_material_table__WEBPACK_IMPORTED_MODULE_2__["MatTable"], _angular_material_sort__WEBPACK_IMPORTED_MODULE_1__["MatSort"], _angular_material_table__WEBPACK_IMPORTED_MODULE_2__["MatColumnDef"], _angular_material_table__WEBPACK_IMPORTED_MODULE_2__["MatHeaderCellDef"], _angular_material_table__WEBPACK_IMPORTED_MODULE_2__["MatCellDef"], _angular_material_table__WEBPACK_IMPORTED_MODULE_2__["MatHeaderRowDef"], _angular_material_table__WEBPACK_IMPORTED_MODULE_2__["MatRowDef"], _angular_material_table__WEBPACK_IMPORTED_MODULE_2__["MatNoDataRow"], _angular_material_paginator__WEBPACK_IMPORTED_MODULE_0__["MatPaginator"], _angular_material_core__WEBPACK_IMPORTED_MODULE_12__["MatOption"], _angular_material_table__WEBPACK_IMPORTED_MODULE_2__["MatHeaderCell"], _angular_material_sort__WEBPACK_IMPORTED_MODULE_1__["MatSortHeader"], _angular_material_table__WEBPACK_IMPORTED_MODULE_2__["MatCell"], _angular_material_table__WEBPACK_IMPORTED_MODULE_2__["MatHeaderRow"], _angular_material_table__WEBPACK_IMPORTED_MODULE_2__["MatRow"]], styles: ["table[_ngcontent-%COMP%] {\n  width: 100%;\n}\n\n.mat-form-field[_ngcontent-%COMP%] {\n  font-size: 14px;\n\n}\n\nmat-card[_ngcontent-%COMP%]{\n  background-color: #7a7a7a;\n}\n\n#analyse-page-container[_ngcontent-%COMP%]{\n  display:flex !important;\n  height:100% !important;\n  width:100% !important;\n  flex-direction: column !important;\n  padding:40px !important;\n}\n\n.header-container[_ngcontent-%COMP%]{\n  align-self: center;\n  flex: 20% !important;\n}\n\n.table-container[_ngcontent-%COMP%]{\n  flex: 30% !important;\n}\n\n#welcome-container[_ngcontent-%COMP%]{\n  display:flex !important;\n}\n\n#select-multiple-button[_ngcontent-%COMP%]{\n  width: 100% !important;\n}\n\n#select-files-header[_ngcontent-%COMP%]{\n  padding-bottom: 10px;\n}\n\n#grafana-mat-card[_ngcontent-%COMP%]{\n  min-height: 600px;\n}\n\n#neo4j-mat-card[_ngcontent-%COMP%]{\n  min-height: 600px;\n}\n\n[_nghost-%COMP%]    .link {\n  stroke: rgb(0, 0, 0, 0.6);\n  fill: rgb(0, 0, 0, 0.6);\n  stroke-width: 1.5px;\n}\n\n.mat-card-content[_ngcontent-%COMP%] {\n  width: 100%;\n  height: 400;\n  background-color: rgb(231, 231, 231);\n}\n\n.neo4j-content-container[_ngcontent-%COMP%] {\n  padding: 20px !important;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImFuYWx5c2UuY29tcG9uZW50LmNzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNFLFdBQVc7QUFDYjs7QUFFQTtFQUNFLGVBQWU7O0FBRWpCOztBQUNBO0VBQ0UseUJBQXlCO0FBQzNCOztBQUNBO0VBQ0UsdUJBQXVCO0VBQ3ZCLHNCQUFzQjtFQUN0QixxQkFBcUI7RUFDckIsaUNBQWlDO0VBQ2pDLHVCQUF1QjtBQUN6Qjs7QUFDQTtFQUNFLGtCQUFrQjtFQUNsQixvQkFBb0I7QUFDdEI7O0FBQ0E7RUFDRSxvQkFBb0I7QUFDdEI7O0FBRUE7RUFDRSx1QkFBdUI7QUFDekI7O0FBQ0E7RUFDRSxzQkFBc0I7QUFDeEI7O0FBQ0E7RUFDRSxvQkFBb0I7QUFDdEI7O0FBQ0E7RUFDRSxpQkFBaUI7QUFDbkI7O0FBQ0E7RUFDRSxpQkFBaUI7QUFDbkI7O0FBQ0E7RUFDRSx5QkFBeUI7RUFDekIsdUJBQXVCO0VBQ3ZCLG1CQUFtQjtBQUNyQjs7QUFDQTtFQUNFLFdBQVc7RUFDWCxXQUFXO0VBQ1gsb0NBQW9DO0FBQ3RDOztBQUNBO0VBQ0Usd0JBQXdCO0FBQzFCIiwiZmlsZSI6ImFuYWx5c2UuY29tcG9uZW50LmNzcyIsInNvdXJjZXNDb250ZW50IjpbInRhYmxlIHtcbiAgd2lkdGg6IDEwMCU7XG59XG5cbi5tYXQtZm9ybS1maWVsZCB7XG4gIGZvbnQtc2l6ZTogMTRweDtcblxufVxubWF0LWNhcmR7XG4gIGJhY2tncm91bmQtY29sb3I6ICM3YTdhN2E7XG59XG4jYW5hbHlzZS1wYWdlLWNvbnRhaW5lcntcbiAgZGlzcGxheTpmbGV4ICFpbXBvcnRhbnQ7XG4gIGhlaWdodDoxMDAlICFpbXBvcnRhbnQ7XG4gIHdpZHRoOjEwMCUgIWltcG9ydGFudDtcbiAgZmxleC1kaXJlY3Rpb246IGNvbHVtbiAhaW1wb3J0YW50O1xuICBwYWRkaW5nOjQwcHggIWltcG9ydGFudDtcbn1cbi5oZWFkZXItY29udGFpbmVye1xuICBhbGlnbi1zZWxmOiBjZW50ZXI7XG4gIGZsZXg6IDIwJSAhaW1wb3J0YW50O1xufVxuLnRhYmxlLWNvbnRhaW5lcntcbiAgZmxleDogMzAlICFpbXBvcnRhbnQ7XG59XG5cbiN3ZWxjb21lLWNvbnRhaW5lcntcbiAgZGlzcGxheTpmbGV4ICFpbXBvcnRhbnQ7XG59XG4jc2VsZWN0LW11bHRpcGxlLWJ1dHRvbntcbiAgd2lkdGg6IDEwMCUgIWltcG9ydGFudDtcbn1cbiNzZWxlY3QtZmlsZXMtaGVhZGVye1xuICBwYWRkaW5nLWJvdHRvbTogMTBweDtcbn1cbiNncmFmYW5hLW1hdC1jYXJke1xuICBtaW4taGVpZ2h0OiA2MDBweDtcbn1cbiNuZW80ai1tYXQtY2FyZHtcbiAgbWluLWhlaWdodDogNjAwcHg7XG59XG46aG9zdCAvZGVlcC8ubGluayB7XG4gIHN0cm9rZTogcmdiKDAsIDAsIDAsIDAuNik7XG4gIGZpbGw6IHJnYigwLCAwLCAwLCAwLjYpO1xuICBzdHJva2Utd2lkdGg6IDEuNXB4O1xufVxuLm1hdC1jYXJkLWNvbnRlbnQge1xuICB3aWR0aDogMTAwJTtcbiAgaGVpZ2h0OiA0MDA7XG4gIGJhY2tncm91bmQtY29sb3I6IHJnYigyMzEsIDIzMSwgMjMxKTtcbn1cbi5uZW80ai1jb250ZW50LWNvbnRhaW5lciB7XG4gIHBhZGRpbmc6IDIwcHggIWltcG9ydGFudDtcbn1cbiJdfQ== */"] });
+    } }, directives: [_angular_flex_layout_flex__WEBPACK_IMPORTED_MODULE_6__["DefaultFlexDirective"], _angular_flex_layout_flex__WEBPACK_IMPORTED_MODULE_6__["DefaultLayoutDirective"], _angular_flex_layout_flex__WEBPACK_IMPORTED_MODULE_6__["DefaultLayoutAlignDirective"], _angular_flex_layout_flex__WEBPACK_IMPORTED_MODULE_6__["DefaultLayoutGapDirective"], _angular_material_card__WEBPACK_IMPORTED_MODULE_7__["MatCard"], _angular_material_card__WEBPACK_IMPORTED_MODULE_7__["MatCardHeader"], _angular_material_form_field__WEBPACK_IMPORTED_MODULE_8__["MatFormField"], _angular_material_form_field__WEBPACK_IMPORTED_MODULE_8__["MatLabel"], _angular_material_select__WEBPACK_IMPORTED_MODULE_9__["MatSelect"], _angular_forms__WEBPACK_IMPORTED_MODULE_3__["NgControlStatus"], _angular_forms__WEBPACK_IMPORTED_MODULE_3__["FormControlDirective"], _angular_material_select__WEBPACK_IMPORTED_MODULE_9__["MatSelectTrigger"], _angular_common__WEBPACK_IMPORTED_MODULE_10__["NgIf"], _angular_common__WEBPACK_IMPORTED_MODULE_10__["NgForOf"], _angular_material_card__WEBPACK_IMPORTED_MODULE_7__["MatCardContent"], _angular_material_input__WEBPACK_IMPORTED_MODULE_11__["MatInput"], _angular_material_table__WEBPACK_IMPORTED_MODULE_2__["MatTable"], _angular_material_sort__WEBPACK_IMPORTED_MODULE_1__["MatSort"], _angular_material_table__WEBPACK_IMPORTED_MODULE_2__["MatColumnDef"], _angular_material_table__WEBPACK_IMPORTED_MODULE_2__["MatHeaderCellDef"], _angular_material_table__WEBPACK_IMPORTED_MODULE_2__["MatCellDef"], _angular_material_table__WEBPACK_IMPORTED_MODULE_2__["MatHeaderRowDef"], _angular_material_table__WEBPACK_IMPORTED_MODULE_2__["MatRowDef"], _angular_material_table__WEBPACK_IMPORTED_MODULE_2__["MatNoDataRow"], _angular_material_paginator__WEBPACK_IMPORTED_MODULE_0__["MatPaginator"], _angular_material_core__WEBPACK_IMPORTED_MODULE_12__["MatOption"], _angular_material_table__WEBPACK_IMPORTED_MODULE_2__["MatHeaderCell"], _angular_material_sort__WEBPACK_IMPORTED_MODULE_1__["MatSortHeader"], _angular_material_table__WEBPACK_IMPORTED_MODULE_2__["MatCell"], _angular_material_table__WEBPACK_IMPORTED_MODULE_2__["MatHeaderRow"], _angular_material_table__WEBPACK_IMPORTED_MODULE_2__["MatRow"]], styles: ["table[_ngcontent-%COMP%] {\n  width: 100%;\n}\n\n.mat-form-field[_ngcontent-%COMP%] {\n  font-size: 14px;\n\n}\n\nmat-card[_ngcontent-%COMP%]{\n  background-color: #7a7a7a;\n}\n\n#analyse-page-container[_ngcontent-%COMP%]{\n  display:flex !important;\n  height:100% !important;\n  width:100% !important;\n  flex-direction: column !important;\n  padding:40px !important;\n}\n\n.header-container[_ngcontent-%COMP%]{\n  align-self: center;\n  flex: 20% !important;\n}\n\n.table-container[_ngcontent-%COMP%]{\n  flex: 30% !important;\n}\n\n#welcome-container[_ngcontent-%COMP%]{\n  display:flex !important;\n}\n\n#select-multiple-button[_ngcontent-%COMP%]{\n  width: 100% !important;\n}\n\n#select-files-header[_ngcontent-%COMP%]{\n  padding-bottom: 10px;\n}\n\n#grafana-mat-card[_ngcontent-%COMP%]{\n  min-height: 600px;\n}\n\n#neo4j-mat-card[_ngcontent-%COMP%]{\n  min-height: 600px;\n}\n\n[_nghost-%COMP%]    .link {\n  stroke: rgb(133, 133, 133);\n  fill: rgb(80, 80, 80);\n  stroke-width: 1.5px;\n}\n\n.mat-card-content[_ngcontent-%COMP%] {\n  width: 100%;\n  height: 400;\n  background-color: whitesmoke;\n}\n\n.neo4j-content-container[_ngcontent-%COMP%] {\n  padding: 20px !important;\n}\n\n.node-text[_ngcontent-%COMP%] {\n  color: whitesmoke;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImFuYWx5c2UuY29tcG9uZW50LmNzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNFLFdBQVc7QUFDYjs7QUFFQTtFQUNFLGVBQWU7O0FBRWpCOztBQUNBO0VBQ0UseUJBQXlCO0FBQzNCOztBQUNBO0VBQ0UsdUJBQXVCO0VBQ3ZCLHNCQUFzQjtFQUN0QixxQkFBcUI7RUFDckIsaUNBQWlDO0VBQ2pDLHVCQUF1QjtBQUN6Qjs7QUFDQTtFQUNFLGtCQUFrQjtFQUNsQixvQkFBb0I7QUFDdEI7O0FBQ0E7RUFDRSxvQkFBb0I7QUFDdEI7O0FBRUE7RUFDRSx1QkFBdUI7QUFDekI7O0FBQ0E7RUFDRSxzQkFBc0I7QUFDeEI7O0FBQ0E7RUFDRSxvQkFBb0I7QUFDdEI7O0FBQ0E7RUFDRSxpQkFBaUI7QUFDbkI7O0FBQ0E7RUFDRSxpQkFBaUI7QUFDbkI7O0FBQ0E7RUFDRSwwQkFBMEI7RUFDMUIscUJBQXFCO0VBQ3JCLG1CQUFtQjtBQUNyQjs7QUFDQTtFQUNFLFdBQVc7RUFDWCxXQUFXO0VBQ1gsNEJBQTRCO0FBQzlCOztBQUNBO0VBQ0Usd0JBQXdCO0FBQzFCOztBQUNBO0VBQ0UsaUJBQWlCO0FBQ25CIiwiZmlsZSI6ImFuYWx5c2UuY29tcG9uZW50LmNzcyIsInNvdXJjZXNDb250ZW50IjpbInRhYmxlIHtcbiAgd2lkdGg6IDEwMCU7XG59XG5cbi5tYXQtZm9ybS1maWVsZCB7XG4gIGZvbnQtc2l6ZTogMTRweDtcblxufVxubWF0LWNhcmR7XG4gIGJhY2tncm91bmQtY29sb3I6ICM3YTdhN2E7XG59XG4jYW5hbHlzZS1wYWdlLWNvbnRhaW5lcntcbiAgZGlzcGxheTpmbGV4ICFpbXBvcnRhbnQ7XG4gIGhlaWdodDoxMDAlICFpbXBvcnRhbnQ7XG4gIHdpZHRoOjEwMCUgIWltcG9ydGFudDtcbiAgZmxleC1kaXJlY3Rpb246IGNvbHVtbiAhaW1wb3J0YW50O1xuICBwYWRkaW5nOjQwcHggIWltcG9ydGFudDtcbn1cbi5oZWFkZXItY29udGFpbmVye1xuICBhbGlnbi1zZWxmOiBjZW50ZXI7XG4gIGZsZXg6IDIwJSAhaW1wb3J0YW50O1xufVxuLnRhYmxlLWNvbnRhaW5lcntcbiAgZmxleDogMzAlICFpbXBvcnRhbnQ7XG59XG5cbiN3ZWxjb21lLWNvbnRhaW5lcntcbiAgZGlzcGxheTpmbGV4ICFpbXBvcnRhbnQ7XG59XG4jc2VsZWN0LW11bHRpcGxlLWJ1dHRvbntcbiAgd2lkdGg6IDEwMCUgIWltcG9ydGFudDtcbn1cbiNzZWxlY3QtZmlsZXMtaGVhZGVye1xuICBwYWRkaW5nLWJvdHRvbTogMTBweDtcbn1cbiNncmFmYW5hLW1hdC1jYXJke1xuICBtaW4taGVpZ2h0OiA2MDBweDtcbn1cbiNuZW80ai1tYXQtY2FyZHtcbiAgbWluLWhlaWdodDogNjAwcHg7XG59XG46aG9zdCAvZGVlcC8ubGluayB7XG4gIHN0cm9rZTogcmdiKDEzMywgMTMzLCAxMzMpO1xuICBmaWxsOiByZ2IoODAsIDgwLCA4MCk7XG4gIHN0cm9rZS13aWR0aDogMS41cHg7XG59XG4ubWF0LWNhcmQtY29udGVudCB7XG4gIHdpZHRoOiAxMDAlO1xuICBoZWlnaHQ6IDQwMDtcbiAgYmFja2dyb3VuZC1jb2xvcjogd2hpdGVzbW9rZTtcbn1cbi5uZW80ai1jb250ZW50LWNvbnRhaW5lciB7XG4gIHBhZGRpbmc6IDIwcHggIWltcG9ydGFudDtcbn1cbi5ub2RlLXRleHQge1xuICBjb2xvcjogd2hpdGVzbW9rZTtcbn1cbiJdfQ== */"] });
 /** Builds and returns a new User. */
 function createNewUser(id) {
     const name = NAMES[Math.round(Math.random() * (NAMES.length - 1))] + ' ' +

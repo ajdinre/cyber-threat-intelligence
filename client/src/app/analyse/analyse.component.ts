@@ -486,25 +486,20 @@ export class AnalyseComponent implements AfterViewInit{
 
   width = 500;
   height = 500;
-  colors = d3.scaleOrdinal(d3.schemeCategory10);
+  //colors = d3.scaleOrdinal(d3.schemeCategory10);
 
   links = [{source: this.nodes[0], target: this.nodes[1]}];
   svg: any;
   force: any;
   path: any;
   circle: any;
-  drag: any;
-  dragLine: any;
   tooltip: any;
   label: any;
+  colors = ["rgb(255, 95, 57)", "rgb(224, 97, 152)", "rgb(177, 125, 245)", "rgb(129, 89, 255)"];
+  stroke_colors = ["rgb(224, 95, 57)", "rgb(208, 97, 128)", "rgb(164, 113, 229)", "rgb(101, 69, 223)"];
 
   selectedNode = null;
   selectedLink = null;
-  mousedownLink = null;
-  mousedownNode = null;
-  mouseupNode = null;
-
-
 
 
 
@@ -556,9 +551,10 @@ export class AnalyseComponent implements AfterViewInit{
   }
 
 
-
+  // d3 code
   ngAfterContentInit() {
     this.width = document.getElementById('neo4j-content-container')!.clientWidth;
+
     // reformating links
     this.links.pop()
     this.APIlinks.forEach(r => {
@@ -568,8 +564,8 @@ export class AnalyseComponent implements AfterViewInit{
         this.links.push({ 'source': r[0]['path'], 'target': r[2]['server_name'] })
       }
     });
-    console.log(this.links);
 
+    // draw graph container
     this.svg = d3.select('#graphContainer')
       .attr('oncontextmenu', 'return false;')
       .attr('width', '100%')
@@ -583,29 +579,6 @@ export class AnalyseComponent implements AfterViewInit{
       .on('tick', () => this.tick());
 
 
-      this.svg.append('svg:defs').append('svg:marker')
-      .attr('id', 'end-arrow')
-      .attr('viewBox', '0 -5 10 10')
-      .attr('refX', 6)
-      .attr('markerWidth', 3)
-      .attr('markerHeight', 3)
-      .attr('orient', 'auto')
-      .append('svg:path')
-      .attr('d', 'M0,-5L10,0L0,5')
-      .attr('fill', '#000');
-
-    this.svg.append('svg:defs').append('svg:marker')
-      .attr('id', 'start-arrow')
-      .attr('viewBox', '0 -5 10 10')
-      .attr('refX', 4)
-      .attr('markerWidth', 3)
-      .attr('markerHeight', 3)
-      .attr('orient', 'auto')
-      .append('svg:path')
-      .attr('d', 'M10,-5L0,0L10,5')
-      .attr('fill', '#000');
-
-
     // handles to link and node element groups
     this.path = this.svg.append('svg:g').selectAll('path');
     this.circle = this.svg.append('svg:g').selectAll('g');
@@ -615,9 +588,9 @@ export class AnalyseComponent implements AfterViewInit{
   }
 
 
-  // update force layout (called automatically each iteration)
+  // update force layout
   tick() {
-    // draw directed edges with proper padding from node centers
+    // draw edges
     this.path.attr('d', (d: any) => {
       return `M${d.source.x},${d.source.y}L${d.target.x},${d.target.y}`;
     });
@@ -625,45 +598,40 @@ export class AnalyseComponent implements AfterViewInit{
     this.circle.attr('transform', (d) => `translate(${d.x},${d.y})`);
   }
 
-  // update graph (called when needed)
+  // update graph
   restart() {
-    // path (link) group
-    this.path = this.path.data(this.links)
-
-    // update existing links
-    this.path.classed('selected', (d) => d === this.selectedLink);
-
-    // remove old links
-    this.path.exit().remove();
-
-    // add new links
-    this.path = this.path.enter().append('svg:path')
+    // draw links
+    this.path = this.path.data(this.links).enter()
+      .append('svg:path')
       .attr('class', 'link')
       .classed('selected', (d) => d === this.selectedLink)
       .merge(this.path);
 
-      this.path.selectAll("path")
-        .style("color", "red")
 
     // circle (node) group
-    // NB: the function arg is crucial here! nodes are known by id, not by index!
+    // NB: the function arg is crucial here! nodes are known by name, not by index!
     this.circle = this.circle.data(this.nodes, (d) => d.name);
 
-    // update existing nodes (reflexive & selected visual states)
-    this.circle.selectAll('circle')
-      .style('fill', (d) => (d === this.selectedNode) ? d3.rgb(this.colors(d.group)).brighter().toString() : this.colors(d.group))
-
-    // remove old nodes
-    this.circle.exit().remove();
-
-    // add new nodes
+    // draw nodes
     const g = this.circle.enter().append('svg:g');
 
     g.append('svg:circle')
       .attr('class', 'node')
-      .attr('r', 12)
-      .style('fill', (d) => (d === this.selectedNode) ? d3.rgb(this.colors(d.group)).brighter().toString() : this.colors(d.group))
-      .style('stroke', (d) => d3.rgb(this.colors(d.group)).darker().toString());
+      .attr('r', function(d) { return d.count != null ? d.count + 10 : 10; })
+      .style('fill', (d) => {
+        if(d.count != null && d.count <= 1) {return this.colors[0]}
+        else if (d.count != null && d.count > 1 && d.count <=5) {return this.colors[1]}
+        else if (d.count != null && d.count > 5 && d.count <=10) {return this.colors[2]}
+        else if (d.count != null && d.count > 10) {return this.colors[3]}
+        else {return "rgb(92, 158, 131)"} //if not IP node
+      })
+      .style('stroke', (d) => {
+        if(d.count != null && d.count <= 1) {return this.stroke_colors[0]}
+        else if (d.count != null && d.count > 1 && d.count <=5) {return this.stroke_colors[1]}
+        else if (d.count != null && d.count > 5 && d.count <=10) {return this.stroke_colors[2]}
+        else if (d.count != null && d.count > 10) {return this.stroke_colors[3]}
+        else {return "rgb(92, 158, 131)"}
+      });
 
     this.svg.selectAll("circle")
       .call(
@@ -673,9 +641,9 @@ export class AnalyseComponent implements AfterViewInit{
         .on("end", (event, d) => {this.dragended(event, d);})
       );
 
-    this.label = this.svg.append("g");
+    /*this.label = this.svg.append("g");
 
-    this.tooltip = d3.select("body")
+    this.tooltip = d3.select("#neo4j-mat-card")
       .append("div")
       .attr("class", "label")
       .style("position", "absolute")
@@ -690,28 +658,39 @@ export class AnalyseComponent implements AfterViewInit{
 
     this.label
       .on("mouseover", (event, d) =>{
-        this.tooltip.html(`${d.name}`);
+        this.tooltip.html(`${d.name}-${d.country}`);
         return this.tooltip.style("visibility", "visible");})
       .on("mousemove", (event, d)=>{
-        return this.tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})
+        return this.tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})*/
 
-    this.svg.selectAll("circle")
+    /*this.svg.selectAll("circle")
       .on("mouseover", (event, d) => {
         this.tooltip.html(`${d.name}`);
         return this.tooltip.style("visibility", "visible");})
       .on("mousemove", (event, d) =>{
         return this.tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})
-      .on("mouseout", (event, d) =>{return this.tooltip.style("visibility", "hidden");});
+      .on("mouseout", (event, d) =>{return this.tooltip.style("visibility", "hidden");});*/
 
 
     // shows a label/name of every node
     g.append('svg:text')
       .attr('x', 0)
       .attr('y', 4)
-      .attr('class', 'id')
-      .text((d) => d.name);
-
+      .attr('class', 'node-text')
+      .text((d) => {
+        if(d.ip_address != null) { return d.name; }
+        else { return ''; }
+      })
     this.circle = g.merge(this.circle);
+
+    //show tooltip
+    /*this.circle
+      .on('mouseover', (event, d) => {
+        this.tooltip.html(`${d.name}`);
+        return this.tooltip.style("visibility", "visible");})
+      .on("mousemove", (event, d) =>{
+        return this.tooltip.style("top", (event.pageY-350)+"px").style("left",(event.pageX-10)+"px");})
+      .on("mouseout", (event, d) =>{return this.tooltip.style("visibility", "hidden");});*/
 
     // set the graph in motion
     this.force
@@ -719,7 +698,6 @@ export class AnalyseComponent implements AfterViewInit{
       .force('link').links(this.links);
 
     this.force.alphaTarget(0.3).restart();
-
   }
 
   dragended(event, d) {
@@ -740,103 +718,10 @@ export class AnalyseComponent implements AfterViewInit{
     d.fx = d.x;
     d.fy = d.y;
   }
-
-
-
-
-  /*createSvg() {
-    this.svg = d3.select("svg");
-    this.width = this.svg.attr("width");
-    this.height = this.svg.attr("height");
-    this.color = ["red", "green", "blue", "yellow", "black"];
-
-    this.links.forEach(r => {
-      if(r[1] == 'HAS_SENT') {
-        this.d3links.push({ "source": r[0]['ip_address'], 'target': r[2]['path'] })
-      } else if (r[1] == 'HAS_ACCESSED') {
-        this.d3links.push({ 'source': r[0]['path'], 'target': r[2]['server_name'] })
-      }
-    });
-
-    this.simulation = d3
-      .forceSimulation(this.nodes)
-      .force(
-        "link",
-        d3
-        .forceLink(this.d3links)
-        .id(d => d["name"])
-        .distance(function(d) {
-          return 100;
-        })
-      )
-      .force("charge", d3.forceManyBody().strength(-70))
-      .force("center", d3.forceCenter(this.width / 2, this.height / 2))
-      //.on("tick", this.ticked);
-
-    this.link = this.svg
-      .append("g")
-      .attr("class", "links")
-      .selectAll("line")
-      .data(this.d3links)
-      .enter()
-      .append("line")
-      .attr("stroke-width", function(d) {
-        return 3;
-      });
-      console.log(this.link);
-
-    this.node = this.svg
-      .append("g")
-      .attr("class", "nodes")
-      .selectAll("circle")
-      .data(this.nodes)
-      .enter()
-      .append("circle")
-      .attr("r", 15)
-      .style("fill", (d) => { return this.color[d.group]; })
-      .call(
-        d3
-        .drag()
-        .on("start", (event, d) => {this.dragstarted(event, d);})
-        .on("drag", (event, d) => {this.dragged(event, d);})
-        .on("end", (event, d) => {this.dragended(event, d);})
-      );
-
-    this.label = this.svg.append("g");
-
-    this.tooltip = d3.select("body")
-      .append("div")
-      .style("position", "absolute")
-      .style("visibility", "hidden")
-      .style("color", "white")
-      .style("padding", "8px")
-      .style("background-color", "#626D71")
-      .style("border-radius", "6px")
-      .style("text-align", "center")
-      .style("width", "auto")
-      .text("");
-
-    this.label
-      .on("mouseover", (event, d) =>{
-        this.tooltip.html(`${d.name}`);
-        return this.tooltip.style("visibility", "visible");})
-      .on("mousemove", (event, d)=>{
-        return this.tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})
-
-    this.node
-        .on("mouseover", (event, d) => {
-            this.tooltip.html(`${d.name}`);
-            return this.tooltip.style("visibility", "visible");})
-        .on("mousemove", (event, d) =>{
-            return this.tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})
-        .on("mouseout", (event, d) =>{return this.tooltip.style("visibility", "hidden");});
-
-  }
-
-  }*/
-
-
 }
+
+
+
 
 /** Builds and returns a new User. */
 function createNewUser(id: number): FileData {

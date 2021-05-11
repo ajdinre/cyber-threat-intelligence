@@ -17,5 +17,8 @@ export class FileService {
       }
     });
   }
+  getServerNames(){
+    return this.http.get("/user/me/", {responseType: 'json'});
+  }
 
 }

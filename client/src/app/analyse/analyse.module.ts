@@ -12,6 +12,8 @@ import { MatCardModule } from '@angular/material/card';
 import { AnalyseComponent } from './analyse.component';
 import { MatSelectModule } from '@angular/material/select';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FileService } from '../shared/services/file.service';
+
 
 
 @NgModule({
@@ -32,6 +34,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
   ],
   exports:[
     AnalyseComponent
+  ],
+  providers:[
+    FileService
   ]
 })
 export class AnalyseModule { }

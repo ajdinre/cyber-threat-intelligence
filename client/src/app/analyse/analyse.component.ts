@@ -5,6 +5,8 @@ import {MatTableDataSource} from '@angular/material/table';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import { FormControl } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
+import { FileService } from '../shared/services/file.service';
+import { HttpClient } from '@angular/common/http';
 
 export interface FileData {
   id: string;
@@ -29,9 +31,8 @@ const NAMES: string[] = [
   styleUrls: ['./analyse.component.css']
 })
 export class AnalyseComponent implements AfterViewInit{
-  toppings = new FormControl();
-
-  toppingList: string[] = ['Extra cheese', 'Mushroom', 'Onion', 'Pepperoni', 'Sausage', 'Tomato'];
+  serverNames = new FormControl();
+  serverNamesList : string[] = ['ServerName1', 'ServerName2'];
 
   displayedColumns: string[] = ['id', 'server name', 'file name', 'file size', 'date uploaded'];
   dataSource: MatTableDataSource<FileData>;
@@ -39,12 +40,14 @@ export class AnalyseComponent implements AfterViewInit{
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  constructor() {
+  constructor(
+    private fileService : FileService
+  ) {
     //Pie part
 
     // Create 100 users
     const users = Array.from({length: 100}, (_, k) => createNewUser(k + 1));
-
+    this.getServerNames();
     // Assign the data to the data source for the table to render
     this.dataSource = new MatTableDataSource(users);
   }
@@ -73,6 +76,14 @@ export class AnalyseComponent implements AfterViewInit{
   onDeactivate(data): void {
     console.log('Deactivate', JSON.parse(JSON.stringify(data)));
 
+  }
+  getServerNames(){
+    this.fileService.getServerNames().subscribe((res : any) => {
+      JSON.parse(res.forEach(item => {
+        console.log(item);
+        this.serverNamesList.push(item);
+    }))
+    });
   }
 }
 

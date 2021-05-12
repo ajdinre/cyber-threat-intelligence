@@ -692,7 +692,7 @@ export class AnalyseComponent implements AfterViewInit{
       .attr('class', 'node-text')
       .text((d) => {
         if(d.ip_address != null) { return d.name; }
-        else { return d.sizeInBytes; }
+        else { return ''; }
       })
     this.circle = g.merge(this.circle);
 
@@ -710,7 +710,7 @@ export class AnalyseComponent implements AfterViewInit{
         this.tooltip.html(node_details);
         return this.tooltip.style("visibility", "visible");})
       .on("mousemove", (event, d) =>{
-        return this.tooltip.style("top", (event.pageY-350)+"px").style("left",(event.pageX-10)+"px");})
+        return this.tooltip.style("top", (event.pageY-350)+"px").style("left",(event.pageX-150)+"px");})
       .on("mouseout", (event, d) =>{return this.tooltip.style("visibility", "hidden");});
 
     // set the graph in motion

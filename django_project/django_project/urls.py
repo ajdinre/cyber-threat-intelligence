@@ -3,6 +3,9 @@ from django.urls import path, include
 from django.contrib.auth import views as auth_views
 from django.views.generic import TemplateView
 from django.conf.urls import url
+from django.views.decorators.csrf import csrf_exempt
+from django.views.generic import RedirectView
+
 
 from rest_framework.schemas import get_schema_view
 from rest_framework import routers
@@ -58,6 +61,12 @@ urlpatterns = [
     path('d3/links', cti_views.d3CreateLinks.as_view()),
     path('d3/nodes', cti_views.d3CreateNodes.as_view())
     #path('ip/<int:pk>/', cti_views.ip_details)
+    path('servername', cti_views.ServernameView.as_view()),
 
+    #Angular redirects
+    url('home', RedirectView.as_view(url='/')),
+    url('file-upload', RedirectView.as_view(url='/')),
+    url('analyse', RedirectView.as_view(url='/')),
+    url('settings', RedirectView.as_view(url='/'))
 
 ]

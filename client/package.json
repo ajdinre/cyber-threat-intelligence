@@ -27,6 +27,7 @@
     "d3": "^6.7.0",
     "igniteui-angular-charts": "^11.1.1",
     "igniteui-angular-core": "^11.1.1",
+    "ngx-cookie-service": "^11.0.2",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
     "zone.js": "~0.11.3"

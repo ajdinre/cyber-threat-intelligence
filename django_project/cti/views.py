@@ -6,6 +6,8 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.models import User, Group
 from django.contrib.auth.decorators import login_required
 from rest_framework.decorators import api_view
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
 
 from rest_framework.views import APIView
 from django.db.models import Count
@@ -13,14 +15,14 @@ from .forms import UploadFileForm, EditProfileForm, AddressForm, StatisticsForm
 from cti.models import IP, Log_line
 from .models import Apache_log
 from .log_analyzer import analyze
-from cti.neo4j.neo4j_classes import create_node, get_count_of_ip, get_Top_countries_by_ip, get_by_ip, get_by_country_code, get_by_city, get_by_org, get_by_region, get_by_timezone, get_by_postal, get_nodes, get_requests_for_ip, get_ips_with_request_method, create_d3_nodes, create_d3_links, get_all
+from cti.neo4j.neo4j_classes import create_node, get_count_of_ip, get_Top_countries_by_ip, get_by_ip, get_by_country_code, get_by_city, get_by_org, get_by_region, get_by_timezone, get_by_postal, get_nodes, get_requests_for_ip, get_ips_with_request_method, get_all, get_all_ips, create_d3_nodes, create_d3_links, get_all_server_names
 from django.urls import reverse
 from django.template.loader import get_template
 from .pdf_generator import render_to_pdf
 
 from cti.serializers import UserSerializer, GroupSerializer, ApacheLogSerializer
 
-from rest_framework import viewsets, mixins, permissions, status, views
+from rest_framework import viewsets, mixins, permissions, status, views, generics
 from rest_framework.parsers import FileUploadParser, MultiPartParser, FormParser
 from rest_framework.response import Response
 
@@ -56,7 +58,6 @@ class GroupViewSet(viewsets.ModelViewSet):
     serializer_class = GroupSerializer
     permission_classes = [permissions.IsAuthenticated]
 
-
 class ApacheLogViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows files to be viewed or edited.
@@ -66,11 +67,9 @@ class ApacheLogViewSet(viewsets.ModelViewSet):
     http_method_names = ['get']
     permission_classes = [permissions.IsAuthenticated]
 
+@method_decorator(csrf_exempt, name='dispatch')
 class FileUploadView(views.APIView):
-    #permission_classes = [permissions.IsAuthenticated]
-
-    #TODO: ovo ne mogu testirati bez Angulara
-
+    permission_classes = [permissions.IsAuthenticated]
     parser_classes = [MultiPartParser]
     def post(self, request, format=None):
         file = request.FILES['file']
@@ -87,16 +86,25 @@ class FileUploadView(views.APIView):
         analyzeThread = threading.Thread(target=analyze, args=(instance.log_file, server_data))
         analyzeThread.start()
 
-        return Response(status=204)
+        return Response(status=200)
 
 class IPView(views.APIView):
     permission_classes = [permissions.IsAuthenticated]
     def get(self, request, format=None):
         """
-        Return a list of all users.
+        Return a list of all ips.
         """
-        ip_list = get_all()
-        return Response(ip_list)
+        ip_list = get_all_ips()
+        try:
+            if request.query_params['search'] != None:
+                result = []
+                for ip_details in ip_list:
+                    if ip_details['ip_address'] == request.query_params['search']:
+                        result.append(ip_details) 
+                return Response(result) 
+        except:
+            return Response(ip_list)
+
 
 class d3CreateNodes(views.APIView):
     permission_classes = [permissions.IsAuthenticated]
@@ -108,6 +116,15 @@ class d3CreateNodes(views.APIView):
         nodes = create_d3_nodes("jackie")
         print(nodes)
         return Response(nodes)
+
+class ServernameView(views.APIView):
+    #permission_classes = [permissions.IsAuthenticated]
+    def get(self, request, format=None):
+        """
+        Return a list of all servernames.
+        """
+        servername_list = get_all_server_names()
+        return Response(servername_list)
  
 @api_view(['GET'])
 def ip_details(request, pk):

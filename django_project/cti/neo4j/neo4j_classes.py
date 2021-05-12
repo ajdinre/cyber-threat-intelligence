@@ -351,7 +351,6 @@ def get_d3_ips(server_name):
         result_array.append(res['a'])
     return result_array
 
-
 # gets all log line nodes connected to the given server
 def get_d3_loglines(server_name):
     # match(a:IP)-[]->(b:Log_line)-[]->(c:Server {server_name: "jackie"}) return a,b

@@ -1,25 +1,41 @@
 <div fxFlex="100" fxLayout="column" fxLayoutAlign="space-around stretch" fxLayoutGap="10px" id="home-page-container">
 
-  <div fxFlex="60" class="header-container">
-    <h3>HOME</h3>
-  </div>
-  <div fxLayout="row" fxLayoutAlign="space-around stretch" fxLayoutGap="20%" id="welcome-container">
-    <mat-card fxFlex="50" id="welcome-card-1">
-      <div>
-        <h3> Welcome {{currentUserName}}!</h3>
-      </div>
-        <p>
-          Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-        </p>
-      <div>
+  <div fxLayout="row" fxLayoutAlign="space-around stretch" id="welcome-container">
+    <mat-card fxFlex="50" id="welcome-card-1" style="margin-right: 10px;">
+        <mat-card-title>
+            Welcome {{currentUser.username}}
+        </mat-card-title>
+        <mat-card-content>
+            <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer vitae malesuada ligula, eget imperdiet odio. Nunc posuere, massa in luctus dignissim, metus elit luctus enim, non consectetur velit dui a quam. Nunc pulvinar massa ac enim hendrerit tincidunt. Proin nec orci volutpat, euismod velit sit amet, fermentum eros. Sed congue vestibulum risus, eget gravida purus volutpat eget. Fusce id risus nisl. Aenean fringilla aliquet sapien, a ullamcorper mi lacinia at. Proin arcu ante, ultrices non ex ut, ultricies scelerisque dolor.
+            </p>
+        </mat-card-content>
 
-
-      </div>
 
     </mat-card>
 
     <mat-card fxFlex="50" id="welcome-card-2">
-
+        <mat-card-title>
+            Statistics
+        </mat-card-title>
+        <mat-card-content>
+            <h3>
+                Last week
+            </h3>
+            <ul>
+                <li>Total IPs:  124153</li>
+                <li>Total Files: 244</li>
+                <li>Maliscious IPs: 241</li>
+            </ul>
+            <h3>
+                Last 24h
+            </h3>
+            <ul>
+                <li>Total IPs:  7243</li>
+                <li>Total Files: 6</li>
+                <li>Maliscious IPs: 4</li>
+            </ul>
+        </mat-card-content>
     </mat-card>
 
   </div>
@@ -78,7 +94,4 @@
   </div>
 
 
-  <div fxFlex="20" class="export-container">
-    <h3>TODO: Implement pdf export!</h3>
-  </div>
 </div>

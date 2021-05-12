@@ -89,21 +89,44 @@ class FileUploadView(views.APIView):
         return Response(status=200)
 
 class IPView(views.APIView):
-    permission_classes = [permissions.IsAuthenticated]
+    #permission_classes = [permissions.IsAuthenticated]
     def get(self, request, format=None):
         """
         Return a list of all ips.
         """
         ip_list = get_all_ips()
         try:
-            if request.query_params['search'] != None:
-                result = []
+            result = []
+            print('1')
+            try:
+                ip_search_query = request.query_params['search']
+            except:
+                ip_search_query = None
+            try:
+                servername_search_query = request.query_params['servername']
+            except:
+                servername_search_query = None
+
+            if (ip_search_query != None and servername_search_query == None):
+                print('3')
+                ip_search_list = ip_search_query.split(',')
+
                 for ip_details in ip_list:
-                    if ip_details['ip_address'] == request.query_params['search']:
+                    if ip_details['ip_address'] in ip_search_list:
                         result.append(ip_details) 
-                return Response(result) 
+                return Response(result)
+
+            #elif(ip_search_query == None and servername_search_query != None):
+            #    servername_search_list = servername_search_query.split(',')
+            #    for ip_details in ip_list:
+            #        if ip_details['ip_address'] == request.query_params['search']:
+            #            result.append(ip_details) 
+
+            #elif (ip_search_query != None and servername_search_query != None):
         except:
-            return Response(ip_list)
+            return Response('error')
+
+        return Response(ip_list)
 
 class LogView(views.APIView):
     #permission_classes = [permissions.IsAuthenticated]

@@ -673,6 +673,7 @@ export class AnalyseComponent implements AfterViewInit{
       .attr('x', 0)
       .attr('y', 4)
       .attr('class', 'node-text')
+      .style("fill", "#fff")
       .text((d) => {
         if(d.ip_address != null) { return d.name; }
         else { return ''; }

@@ -587,7 +587,7 @@ export class AnalyseComponent implements AfterViewInit{
     console.log("Search with Kibana Button Clicked!")
 
 
-
+}
   // d3 code
   ngAfterContentInit() {
     this.width = document.getElementById('neo4j-content-container')!.clientWidth;

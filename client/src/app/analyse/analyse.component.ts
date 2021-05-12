@@ -6,7 +6,8 @@ import {FlexLayoutModule} from '@angular/flex-layout';
 import { FormControl } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { FileService } from '../shared/services/file.service';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { CookieService } from 'ngx-cookie-service';
 
 export interface FileData {
   id: string;
@@ -32,7 +33,9 @@ const NAMES: string[] = [
 })
 export class AnalyseComponent implements AfterViewInit{
   serverNames = new FormControl();
-  serverNamesList : string[] = ['ServerName1', 'ServerName2'];
+  private csrf : any;
+  serverNamesList : string[] = [];
+  searchIpAddressesQuery : string = '';
   ipInputList : string = '';
   displayedColumns: string[] = ['id', 'server name', 'file name', 'file size', 'date uploaded'];
   dataSource: MatTableDataSource<FileData>;
@@ -41,10 +44,15 @@ export class AnalyseComponent implements AfterViewInit{
   @ViewChild(MatSort) sort: MatSort;
 
   constructor(
-    private fileService : FileService
+    private fileService : FileService,
+    private cookieService : CookieService,
+    private httpParams : HttpParams
   ) {
     //Pie part
-
+    this.csrf = this.cookieService.get("csrftoken");
+      if (typeof(this.csrf) === 'undefined'){
+        this.csrf = '';
+      }
     // Create 100 users
     const users = Array.from({length: 100}, (_, k) => createNewUser(k + 1));
     this.getServerNames();
@@ -86,7 +94,13 @@ export class AnalyseComponent implements AfterViewInit{
     });
   }
   searchWithNeo4j(){
-    console.log("Search with Neo4j Button Clicked!")
+    const chosenServerNames = this.serverNamesList.join(',');
+    this.fileService.getFilteredData(chosenServerNames, this.searchIpAddressesQuery)
+      .subscribe((res)=>{
+        console.log(res);
+      });
+
+
   }
   searchWithGrafana(){
     console.log("Search with Grafana Button Clicked!")

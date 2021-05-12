@@ -18,10 +18,7 @@ import { myFile} from '../shared/components/classes/file';
 })
 export class HomeComponent implements OnInit, AfterViewInit {
   public currentUser : User = new User();
-  retrievedFileData : any[] = [];
-  testFileRow = new myFile();
-  testFileData : myFile[] = [];
-  displayedColumns: string[] = ['id', 'file_name', 'file_size', 'date_uploaded'];
+  displayedColumns: string[] = ['id', 'log_file', 'created', 'analyzed'];
   dataSource: MatTableDataSource<myFile>;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -33,14 +30,14 @@ export class HomeComponent implements OnInit, AfterViewInit {
     )
 
     {
-
-    this.testFileRow = { "id" : "id1", "fileName":"filename1", "size": "size1", "dateOfUpload":"date1"}
-    this.testFileData.push(this.testFileRow);
-    this.initializeFileTable();
-    this.dataSource = new MatTableDataSource(this.testFileData);
+      this.fileService.getAllFiles().subscribe((res) =>{
+        this.dataSource = new MatTableDataSource(res);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      });
 
   }
-  ngOnInit(): void {
+  ngOnInit(): void{
     this.getUserInfo();
   }
 
@@ -59,12 +56,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
   onSelect(data): void {
     console.log('Item clicked', JSON.parse(JSON.stringify(data)));
-  }
-  initializeFileTable(){
-    this.fileService.getAllFiles()
-      .subscribe((res)=>{
-        console.log(res);
-      })
   }
 
   onActivate(data): void {

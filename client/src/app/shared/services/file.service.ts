@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, Subject, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 import { HttpParams} from '@angular/common/http';
+import { myFile } from '../components/classes/file';
 @Injectable({
   providedIn: 'root'
 })
@@ -34,8 +35,8 @@ export class FileService {
       params : params
     });
   }
-  getAllFiles(){
-    return  this.http.get("/log", { responseType: "json"})
+  getAllFiles():Observable<myFile[]>{
+    return  this.http.get<myFile[]>("/logfiles", { responseType: "json"})
   }
 
 }

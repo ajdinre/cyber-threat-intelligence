@@ -565,10 +565,9 @@ export class AnalyseComponent implements AfterViewInit{
   }
   getServerNames(){
     this.fileService.getServerNames().subscribe((res : any) => {
-      JSON.parse(res.forEach(item => {
-        console.log(item);
-        this.serverNamesList.push(item);
-    }))
+      res.forEach(item => {
+        this.serverNamesList.push(item.toString());
+      })
     });
   }
   searchWithNeo4j(){

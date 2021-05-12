@@ -15579,8 +15579,8 @@ class AnalyseComponent {
         ];
         this.width = 500;
         this.height = 500;
-        this.colors = ["rgb(255, 95, 57)", "rgb(224, 97, 152)", "rgb(177, 125, 245)", "rgb(129, 89, 255)"];
-        this.stroke_colors = ["rgb(224, 95, 57)", "rgb(208, 97, 128)", "rgb(164, 113, 229)", "rgb(101, 69, 223)"];
+        this.colors = ["rgb(255, 95, 57)", "rgb(177, 125, 245)", "rgb(224, 97, 152)", "rgb(129, 89, 255)"];
+        this.stroke_colors = ["rgb(224, 95, 57)", "rgb(164, 113, 229)", "rgb(208, 97, 128)", "rgb(101, 69, 223)"];
         this.links = [{ source: this.nodes[0], target: this.nodes[1] }];
         this.selectedNode = null;
         this.selectedLink = null;
@@ -15634,7 +15634,7 @@ class AnalyseComponent {
         this.force = d3__WEBPACK_IMPORTED_MODULE_4__["forceSimulation"]()
             .force('link', d3__WEBPACK_IMPORTED_MODULE_4__["forceLink"]().id((d) => d.name).distance(150))
             .force('charge', d3__WEBPACK_IMPORTED_MODULE_4__["forceManyBody"]().strength(-500))
-            .force('x', d3__WEBPACK_IMPORTED_MODULE_4__["forceX"](this.width / 4))
+            .force('x', d3__WEBPACK_IMPORTED_MODULE_4__["forceX"](this.width / 2))
             .force('y', d3__WEBPACK_IMPORTED_MODULE_4__["forceY"](this.height / 2))
             .on('tick', () => this.tick());
         // handles to link and node element groups
@@ -15667,38 +15667,10 @@ class AnalyseComponent {
             .attr('class', 'node')
             .attr('r', function (d) { return d.count != null ? d.count + 10 : 10; })
             .style('fill', (d) => {
-            if (d.count != null && d.count <= 1) {
-                return this.colors[0];
-            }
-            else if (d.count != null && d.count > 1 && d.count <= 5) {
-                return this.colors[1];
-            }
-            else if (d.count != null && d.count > 5 && d.count <= 10) {
-                return this.colors[2];
-            }
-            else if (d.count != null && d.count > 10) {
-                return this.colors[3];
-            }
-            else {
-                return "rgb(92, 158, 131)";
-            } //if not IP node
+            return this.colors[d.group % this.colors.length];
         })
             .style('stroke', (d) => {
-            if (d.count != null && d.count <= 1) {
-                return this.stroke_colors[0];
-            }
-            else if (d.count != null && d.count > 1 && d.count <= 5) {
-                return this.stroke_colors[1];
-            }
-            else if (d.count != null && d.count > 5 && d.count <= 10) {
-                return this.stroke_colors[2];
-            }
-            else if (d.count != null && d.count > 10) {
-                return this.stroke_colors[3];
-            }
-            else {
-                return "rgb(92, 158, 131)";
-            }
+            return this.stroke_colors[d.group % this.stroke_colors.length];
         });
         this.svg.selectAll("circle")
             .call(d3__WEBPACK_IMPORTED_MODULE_4__["drag"]()
@@ -15727,7 +15699,7 @@ class AnalyseComponent {
                 return d.name;
             }
             else {
-                return '';
+                return d.sizeInBytes;
             }
         });
         this.circle = g.merge(this.circle);
@@ -15736,7 +15708,8 @@ class AnalyseComponent {
             .on('mouseover', (event, d) => {
             var node_details = '<div style="text-align: left;">';
             for (const key in d) {
-                if (key !== 'x' && key !== 'y' && key !== 'vx' && key !== 'vy' && key !== 'index' && key !== 'name') {
+                if (key !== 'x' && key !== 'y' && key !== 'vx' && key !== 'vy' && key !== 'index'
+                    && key !== 'name' && key !== 'fx' && key !== 'fy' && key !== 'count' && key !== 'group') {
                     node_details += `<p>${key}: ${d[key]}</p>`;
                 }
             }

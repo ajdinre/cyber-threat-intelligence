@@ -105,6 +105,21 @@ class IPView(views.APIView):
         except:
             return Response(ip_list)
 
+class LogView(views.APIView):
+    #permission_classes = [permissions.IsAuthenticated]
+    def get(self, request, format=None):
+        """
+        Return a list of all files.
+        """
+        log_list = Apache_log.objects.all()
+        serializer_class = ApacheLogSerializer(log_list, context={'request': request}, many=True)
+
+        for log in serializer_class.data:
+            del log['url']
+            log['log_file'] = log['log_file'].split('/')[-1]
+            
+        return Response(serializer_class.data)
+
 
 class d3CreateNodes(views.APIView):
     permission_classes = [permissions.IsAuthenticated]
@@ -123,6 +138,7 @@ class ServernameView(views.APIView):
         Return a list of all servernames.
         """
         servername_list = get_all_server_names()
+
         return Response(servername_list)
  
 @api_view(['GET'])

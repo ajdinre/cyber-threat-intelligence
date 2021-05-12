@@ -62,6 +62,7 @@ urlpatterns = [
     path('d3/nodes', cti_views.d3CreateNodes.as_view()),
     #path('ip/<int:pk>/', cti_views.ip_details)
     path('servername', cti_views.ServernameView.as_view()),
+    path('logfiles', cti_views.LogView.as_view()),
 
     #Angular redirects
     url('home', RedirectView.as_view(url='/')),

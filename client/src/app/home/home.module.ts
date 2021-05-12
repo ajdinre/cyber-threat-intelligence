@@ -9,6 +9,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatCardModule } from '@angular/material/card';
+import { FileService } from '../shared/services/file.service';
+import { HttpParams } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -27,6 +29,10 @@ import { MatCardModule } from '@angular/material/card';
   ],
   exports:[
     HomeComponent
+  ],
+  providers:[
+    FileService,
+    HttpParams
   ]
 
 })

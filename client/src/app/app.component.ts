@@ -7,8 +7,8 @@ import { Router } from '@angular/router';
 })
 export class AppComponent implements OnInit, AfterViewInit{
   title = 'Cyber Threat Intelligence';
-  public showMenu = false;
-  public toggleSelected = false;
+  public showMenu = true;
+  public toggleSelected = true;
   constructor(
     private router: Router
     ) {

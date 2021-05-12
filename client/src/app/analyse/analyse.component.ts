@@ -10,20 +10,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
 import * as d3 from 'd3';
 import { IpAddress } from '../shared/components/classes/ipadrress';
-export interface FileData {
-  id: string;
-  serverName: string;
-  fileName: string;
-  fileSize: string;
-  dateUploaded: string;
-}
 
-/** Constants used to fill up our data base. */
-
-const NAMES: string[] = [
-  'Maia', 'Asher', 'Olivia', 'Atticus', 'Amelia', 'Jack', 'Charlotte', 'Theodore', 'Isla', 'Oliver',
-  'Isabella', 'Jasper', 'Cora', 'Levi', 'Violet', 'Arthur', 'Mia', 'Thomas', 'Elizabeth'
-];
 
 
 
@@ -526,16 +513,8 @@ export class AnalyseComponent implements AfterViewInit{
       if (typeof(this.csrf) === 'undefined'){
         this.csrf = '';
       }
-    // Create 100 users
-    this.testIpRow = {"ipAddress":"123.22.22.22", "hostName":"hostName1", "org": "orgName1", "city":"cityName1","region":"regionName1","country":"country1","countryName":"countryName1",
-      "postal":"postal1", "timeZone":"timezone1", "latitude":"latitude1","longitude":"longitude1"
-    }
-    this.testIpData.push(this.testIpRow);
-    console.log(this.testIpData);
     this.getServerNames();
-    // Assign the data to the data source for the table to render
-    this.dataSource = new MatTableDataSource(this.testIpData);
-    console.log(this.dataSource)
+    this.dataSource = new MatTableDataSource(this.retrievedSearchData);
   }
 
   ngAfterViewInit() {
@@ -576,9 +555,10 @@ export class AnalyseComponent implements AfterViewInit{
     const chosenServerNames = this.serverNamesList.join(',');
     this.fileService.getFilteredDataForMatTable(chosenServerNames, this.searchIpAddressesQuery)
       .subscribe((res)=>{
-        for(let item in res){
-          this.retrievedSearchData.push(item);
-        }
+        console.log(res);
+        this.dataSource = new MatTableDataSource(res);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
       });
 
 

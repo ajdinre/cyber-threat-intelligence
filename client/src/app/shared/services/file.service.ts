@@ -4,6 +4,7 @@ import { Observable, Subject, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 import { HttpParams} from '@angular/common/http';
 import { myFile } from '../components/classes/file';
+import { IpAddress } from '../components/classes/ipadrress';
 @Injectable({
   providedIn: 'root'
 })
@@ -25,12 +26,12 @@ export class FileService {
   getServerNames(){
     return this.http.get("/servername", {responseType: 'json'});
   }
-  getFilteredDataForMatTable(listOfServersQuery :  string, searchIpAddressesQuery : string){
+  getFilteredDataForMatTable(listOfServersQuery :  string, searchIpAddressesQuery : string): Observable<IpAddress[]>{
     let params = new HttpParams();
     params = params.append('serverNames', listOfServersQuery);
     params = params.append('ipAddresses', searchIpAddressesQuery);
 
-    return this.http.get('/ip',{
+    return this.http.get<IpAddress[]>('/ip',{
       responseType : 'json',
       params : params
     });

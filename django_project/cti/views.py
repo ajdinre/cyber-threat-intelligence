@@ -112,13 +112,12 @@ class d3CreateNodes(views.APIView):
         """
         Create d3 nodes.
         """
-        #nodes = create_d3_nodes(server_name)
-        nodes = create_d3_nodes("jackie")
-        print(nodes)
+        servername = request.query_params['servername']
+        nodes = create_d3_nodes(servername)
         return Response(nodes)
 
 class ServernameView(views.APIView):
-    #permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]
     def get(self, request, format=None):
         """
         Return a list of all servernames.
@@ -155,9 +154,8 @@ class d3CreateLinks(views.APIView):
         """
         Create d3 links.
         """
-        #links = create_d3_links(server_name)
-        links = create_d3_links("jackie")
-        print(links)
+        servername = request.query_params['servername']
+        links = create_d3_links(servername)
         return Response(links)
 
 

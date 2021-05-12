@@ -24,7 +24,7 @@ export class FileService {
   getServerNames(){
     return this.http.get("/servername", {responseType: 'json'});
   }
-  getFilteredData(listOfServersQuery :  string, searchIpAddressesQuery : string){
+  getFilteredDataForMatTable(listOfServersQuery :  string, searchIpAddressesQuery : string){
     let params = new HttpParams();
     params = params.append('serverNames', listOfServersQuery);
     params = params.append('ipAddresses', searchIpAddressesQuery);

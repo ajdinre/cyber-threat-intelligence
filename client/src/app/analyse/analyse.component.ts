@@ -9,7 +9,7 @@ import { FileService } from '../shared/services/file.service';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
 import * as d3 from 'd3';
-
+import { IpAddress } from '../shared/components/classes/ipadrress';
 export interface FileData {
   id: string;
   serverName: string;
@@ -34,10 +34,13 @@ const NAMES: string[] = [
 })
 export class AnalyseComponent implements AfterViewInit{
   serverNames = new FormControl();
+  retrievedSearchData : any[] = [];
   private csrf : any;
   serverNamesList : string[] = [];
   searchIpAddressesQuery : string = '';
   ipInputList : string = '';
+  testIpRow = new IpAddress();
+  testIpData : IpAddress[] = [];
   @ViewChild('graphContainer') graphContainer: ElementRef;
   nodes = [
     {
@@ -509,15 +512,8 @@ export class AnalyseComponent implements AfterViewInit{
   selectedLink = null;
 
 
-
-
-  toppings = new FormControl();
-
-  toppingList: string[] = ['Extra cheese', 'Mushroom', 'Onion', 'Pepperoni', 'Sausage', 'Tomato'];
-
-  displayedColumns: string[] = ['id', 'server name', 'file name', 'file size', 'date uploaded'];
-  dataSource: MatTableDataSource<FileData>;
-  currentUserName="Karlo";
+  displayedColumns: string[] = ['ip_address', 'host_name', 'org', 'city', 'region', 'country', 'country_name', 'postal','time_zone','latitude','longitude'];
+  dataSource: MatTableDataSource<IpAddress>;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
@@ -526,16 +522,20 @@ export class AnalyseComponent implements AfterViewInit{
     private cookieService : CookieService,
     private httpParams : HttpParams
   ) {
-    //Pie part
     this.csrf = this.cookieService.get("csrftoken");
       if (typeof(this.csrf) === 'undefined'){
         this.csrf = '';
       }
     // Create 100 users
-    const users = Array.from({length: 100}, (_, k) => createNewUser(k + 1));
+    this.testIpRow = {"ipAddress":"123.22.22.22", "hostName":"hostName1", "org": "orgName1", "city":"cityName1","region":"regionName1","country":"country1","countryName":"countryName1",
+      "postal":"postal1", "timeZone":"timezone1", "latitude":"latitude1","longitude":"longitude1"
+    }
+    this.testIpData.push(this.testIpRow);
+    console.log(this.testIpData);
     this.getServerNames();
     // Assign the data to the data source for the table to render
-    this.dataSource = new MatTableDataSource(users);
+    this.dataSource = new MatTableDataSource(this.testIpData);
+    console.log(this.dataSource)
   }
 
   ngAfterViewInit() {
@@ -551,6 +551,7 @@ export class AnalyseComponent implements AfterViewInit{
       this.dataSource.paginator.firstPage();
     }
   }
+
   onSelect(data): void {
     console.log('Item clicked', JSON.parse(JSON.stringify(data)));
   }
@@ -563,6 +564,7 @@ export class AnalyseComponent implements AfterViewInit{
     console.log('Deactivate', JSON.parse(JSON.stringify(data)));
 
   }
+
   getServerNames(){
     this.fileService.getServerNames().subscribe((res : any) => {
       res.forEach(item => {
@@ -572,9 +574,11 @@ export class AnalyseComponent implements AfterViewInit{
   }
   searchWithNeo4j(){
     const chosenServerNames = this.serverNamesList.join(',');
-    this.fileService.getFilteredData(chosenServerNames, this.searchIpAddressesQuery)
+    this.fileService.getFilteredDataForMatTable(chosenServerNames, this.searchIpAddressesQuery)
       .subscribe((res)=>{
-        console.log(res);
+        for(let item in res){
+          this.retrievedSearchData.push(item);
+        }
       });
 
 
@@ -739,18 +743,3 @@ export class AnalyseComponent implements AfterViewInit{
 }
 
 
-
-
-/** Builds and returns a new User. */
-function createNewUser(id: number): FileData {
-  const name = NAMES[Math.round(Math.random() * (NAMES.length - 1))] + ' ' +
-      NAMES[Math.round(Math.random() * (NAMES.length - 1))].charAt(0) + '.';
-
-  return {
-    id: id.toString(),
-    serverName: name,
-    fileName: Math.round(Math.random() * 100).toString(),
-    fileSize: "20MB",
-    dateUploaded: 'today'
-  };
-}

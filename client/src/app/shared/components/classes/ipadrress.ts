@@ -1,9 +1,16 @@
-export class IpAdrress{
-  id : string;
-  domain? : string;
-  location? : string;
-  latitude? : string;
+export class IpAddress{
+  ipAddress : string;
+  hostName? : string;
+  org? : string;
+  city? : string;
+  region? : string;
   country? : string;
-  countryCode? : string;
+  countryName? : string;
+  postal? : string;
+  timeZone? : string;
+  latitude? : string;
+  longitude? : string;
+
 }
 //TODO: Define ip address class with the right parameters!
+

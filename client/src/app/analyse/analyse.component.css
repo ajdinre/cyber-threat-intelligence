@@ -36,9 +36,14 @@ mat-card{
 #grafana-mat-card{
   min-height: 600px;
 }
+.ip-input-field{
+  width: 100%;
+}
+
 #neo4j-mat-card{
   min-height: 600px;
 }
+
 :host /deep/.link {
   stroke: rgb(133, 133, 133);
   fill: rgb(80, 80, 80);

@@ -30,7 +30,6 @@ export class FileUploadComponent implements OnInit {
 
   ngOnInit(): void {
     this.initializeForm();
-    console.log(this.csrf);
   }
 
   onFileChange(event) {
@@ -56,13 +55,13 @@ export class FileUploadComponent implements OnInit {
      updateOn : 'change'
     });
   }
+
   submitForm(): void{
     console.log(this.fileUploadForm.value);
     const formData = new FormData();
     formData.append('file', this.fileUploadForm.get('fileSource').value);
     formData.append('servername', this.fileUploadForm.get('serverName').value);
     this.fileService.uploadFile(formData, this.csrf).subscribe(res => {
-      console.log(res);
       alert('Upload Successfully.');
     });
   }

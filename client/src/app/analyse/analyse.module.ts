@@ -12,7 +12,10 @@ import { MatCardModule } from '@angular/material/card';
 import { AnalyseComponent } from './analyse.component';
 import { MatSelectModule } from '@angular/material/select';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
+import { FileService } from '../shared/services/file.service';
+import { CookieService } from 'ngx-cookie-service';
+import { HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 
 @NgModule({
   declarations: [AnalyseComponent],
@@ -32,6 +35,12 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
   ],
   exports:[
     AnalyseComponent
+  ],
+  providers:[
+    FileService,
+    HttpParams,
+    HttpClient,
+    CookieService
   ]
 })
 export class AnalyseModule { }

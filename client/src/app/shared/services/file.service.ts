@@ -22,7 +22,7 @@ export class FileService {
     });
   }
   getServerNames(){
-    return this.http.get("/servernames", {responseType: 'json'});
+    return this.http.get("/servername", {responseType: 'json'});
   }
   getFilteredData(listOfServersQuery :  string, searchIpAddressesQuery : string){
     let params = new HttpParams();

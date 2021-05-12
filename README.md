@@ -59,7 +59,7 @@ postgres=# CREATE USER cti_user WITH ENCRYPTED PASSWORD 'cti_password';
 postgres=# GRANT ALL PRIVILEGES ON DATABASE cti_db TO cti_user;
 ```
 
-4. Start neo4j database
+4.1 Start neo4j database
 
 ```
 Download neo4j from https://neo4j.com/download/
@@ -67,7 +67,23 @@ Fill out the form on the website with random data
 Create new database with name 'django' and password 'password'
 Start the database
 ```
+4.2 Start ELK stack
 
+```
+LOGSTASH
+Download Logstash from https://www.elastic.co/downloads/logstash
+ELASTICSEARCH
+Download Elasticsearch from https://www.elastic.co/downloads/elasticsearch 
+KIBANA
+Download Kibana from https://www.elastic.co/downloads/kibana 
+
+```
+
+4.3 Start Grafana
+```
+Download Grafana from https://grafana.com/grafana/download
+
+```
 5. Clone this repository and enter it
 
 ```

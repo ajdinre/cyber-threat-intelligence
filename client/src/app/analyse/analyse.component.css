@@ -39,3 +39,24 @@ mat-card{
 .ip-input-field{
   width: 100%;
 }
+
+#neo4j-mat-card{
+  min-height: 600px;
+}
+
+:host /deep/.link {
+  stroke: rgb(133, 133, 133);
+  fill: rgb(80, 80, 80);
+  stroke-width: 1.5px;
+}
+.mat-card-content {
+  width: 100%;
+  height: 400;
+  background-color: whitesmoke;
+}
+.neo4j-content-container {
+  padding: 20px !important;
+}
+.node-text {
+  color: whitesmoke;
+}

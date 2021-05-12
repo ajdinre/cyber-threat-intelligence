@@ -52,11 +52,20 @@
     </mat-card>
   </div>
 
-  <div fxFLex="70" class="grafana-container">
-    <mat-card id="grafana-mat-card">
-      <mat-card-header id="grafana-card-header">
-        <h3>Grafana</h3>
+  <div fxFLex="70" class="neo4j-container">
+    <mat-card id="neo4j-mat-card">
+      <mat-card-header id="neo4j-card-header">
+        <h3>Neo4j</h3>
+
       </mat-card-header>
+      <mat-card-content id="neo4j-content-container" style="height: 500px;">
+          <svg id="graphContainer"
+            width="100%"
+            height="100%"
+            class="associations"
+            #graphContainer>
+          </svg>
+      </mat-card-content>
     </mat-card>
   </div>
 
@@ -113,6 +122,14 @@
 
         <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
       </div>
+    </mat-card>
+  </div>
+
+  <div fxFLex="70" class="grafana-container">
+    <mat-card id="grafana-mat-card">
+      <mat-card-header id="grafana-card-header">
+        <h3>Grafana</h3>
+      </mat-card-header>
     </mat-card>
   </div>
 

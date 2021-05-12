@@ -289,29 +289,105 @@ def get_all_log_lines():
         result_array.append(res['a'])
     return result_array
 
-# returns a list of all relationships between ip adresses and log lines
-def get_all_log_ip_relations():
-    result_array = []
-    query_string = 'MATCH(a:IP)-[r]-(b:Log_line) RETURN a, r, b'
-    db = Database(db_url, db_name, db_password)
-    for res in db.query(query_string):
-        result_array.append(res['r'])
-    return result_array
 
-# returns a list of all relationships between servers and log lines
-def get_all_log_server_relations():
-    result_array = []
-    query_string = 'MATCH(a:Server)-[r]-(b:Log_line) RETURN a, r, b'
-    db = Database(db_url, db_name, db_password)
-    for res in db.query(query_string):
-        result_array.append(res['r'])
-    return result_array
-
-
+# returns all data
 def get_all():
     result_array = []
     query_string = 'MATCH(a) RETURN a'
     db = Database(db_url, db_name, db_password)
     for res in db.query(query_string):
         result_array.append(res['a'])
+    return result_array
+
+
+
+
+
+# returns a list of all relationships between ip adresses and log lines
+def get_all_log_ip_relations(server_name):
+    result_array = []
+    query_string = 'MATCH(a:IP)-[r]-(b:Log_line)-[]->(c:Server {server_name: "' + server_name + '"}) RETURN a, r, b'
+    db = Database(db_url, db_name, db_password)
+    for res in db.query(query_string):
+        result_array.append(res['r'])
+    return result_array
+
+
+# returns a list of all relationships between servers and log lines
+def get_all_log_server_relations(server_name):
+    result_array = []
+    query_string = 'MATCH(a:Server)-[r]-(b:Log_line)-[]->(c:Server {server_name: "' + server_name + '"}) RETURN a, r, b'
+    db = Database(db_url, db_name, db_password)
+    for res in db.query(query_string):
+        result_array.append(res['r'])
+    return result_array
+
+
+# creates a list of nodes for visualization with D3.js
+def create_d3_nodes(server_name):
+    ip_nodes = get_d3_ips(server_name)
+    #ip_nodes = get_all_ips()
+    for ip in ip_nodes:
+        ip['group'] = 0
+        ip['name'] = ip['ip_address']
+
+    all_nodes = ip_nodes.copy()
+    logline_nodes = get_d3_loglines(server_name)
+    for line in logline_nodes:
+        line['group'] = 1
+        line['name'] = line['path']
+        all_nodes.append(line)
+    
+    return all_nodes
+
+
+# gets all ip nodes connected to the given server
+def get_d3_ips(server_name):
+    # match(a:IP)-[]->(b:Log_line)-[]->(c:Server {server_name: "jackie"}) return a,b
+    result_array = []
+    query_string = 'MATCH(a:IP)-[]->(b:Log_line)-[]->(c:Server {server_name: "' + server_name + '"}) return a'
+    db = Database(db_url, db_name, db_password)
+    for res in db.query(query_string):
+        result_array.append(res['a'])
+    return result_array
+
+# gets all log line nodes connected to the given server
+def get_d3_loglines(server_name):
+    # match(a:IP)-[]->(b:Log_line)-[]->(c:Server {server_name: "jackie"}) return a,b
+    result_array = []
+    query_string = 'MATCH(a:IP)-[]->(b:Log_line)-[]->(c:Server {server_name: "' + server_name + '"}) return b'
+    db = Database(db_url, db_name, db_password)
+    for res in db.query(query_string):
+        result_array.append(res['b'])
+    return result_array
+
+
+# creates a list of links for D3.js
+def create_d3_links(server_name):
+    r1 = get_all_log_ip_relations(server_name)
+    res = []
+    for relationship in r1:
+        temp = []
+        temp.append(relationship[0])
+        temp.append(relationship[1])
+        temp.append(relationship[2])
+        res.append(temp)
+
+    r2 = get_all_log_server_relations(server_name)
+    for relationship in r2:
+        temp = []
+        temp.append(relationship[0])
+        temp.append(relationship[1])
+        temp.append(relationship[2])
+        res.append(temp)
+
+    return res
+
+def get_all_server_names():
+    # match(a:Server) return a.server_name
+    result_array = []
+    query_string = 'MATCH(a:Server) RETURN a.server_name'
+    db = Database(db_url, db_name, db_password)
+    for res in db.query(query_string):
+        result_array.append(res['a.server_name'])
     return result_array

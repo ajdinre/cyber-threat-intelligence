@@ -1,13 +1,12 @@
 export class IpAddress{
-  ipAddress : string;
-  hostName? : string;
+  ip_address : string;
+  hostname? : string;
   org? : string;
   city? : string;
   region? : string;
   country? : string;
-  countryName? : string;
   postal? : string;
-  timeZone? : string;
+  timezone? : string;
   latitude? : string;
   longitude? : string;
 

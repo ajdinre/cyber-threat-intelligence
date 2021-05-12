@@ -34,5 +34,8 @@ export class FileService {
       params : params
     });
   }
+  getAllFiles(){
+    return  this.http.get("/log", { responseType: "json"})
+  }
 
 }

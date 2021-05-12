@@ -1,7 +1,6 @@
-export class file {
+export class myFile {
   id : string;
-  name : string;
-  serverName : string;
+  fileName : string;
   size : string;
   dateOfUpload : string;
 }

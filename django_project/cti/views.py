@@ -15,7 +15,7 @@ from .forms import UploadFileForm, EditProfileForm, AddressForm, StatisticsForm
 from cti.models import IP, Log_line
 from .models import Apache_log
 from .log_analyzer import analyze
-from cti.neo4j.neo4j_classes import create_node, get_count_of_ip, get_Top_countries_by_ip, get_by_ip, get_by_country_code, get_by_city, get_by_org, get_by_region, get_by_timezone, get_by_postal, get_nodes, get_requests_for_ip, get_ips_with_request_method, get_all, get_all_ips, create_d3_nodes, create_d3_links, get_all_server_names
+from cti.neo4j.neo4j_classes import create_node, get_count_of_ip, get_Top_countries_by_ip, get_by_ip, get_by_country_code, get_by_city, get_by_org, get_by_region, get_by_timezone, get_by_postal, get_nodes, get_requests_for_ip, get_ips_with_request_method, get_all, get_all_ips, create_d3_nodes, create_d3_links, get_all_server_names, get_d3_ips
 from django.urls import reverse
 from django.template.loader import get_template
 from .pdf_generator import render_to_pdf
@@ -106,7 +106,7 @@ class IPView(views.APIView):
             except:
                 servername_search_query = None
 
-            if (ip_search_query != None and servername_search_query == None):
+            if ((ip_search_query != None) and servername_search_query == None):
                 ip_search_list = ip_search_query.split(',')
 
                 for ip_details in ip_list:
@@ -114,13 +114,25 @@ class IPView(views.APIView):
                         result.append(ip_details) 
                 return Response(result)
 
-            if (ip_search_query == None and servername_search_query != None):
+            elif (ip_search_query == None and servername_search_query != None):
                 servername_list = servername_search_query.split(',')
-                print(get_d3_ips(servername_list))
+                result = get_d3_ips(servername_list)
+                return Response(result)
+
+            elif (ip_search_query != None and servername_search_query != None):
+                ip_search_list = ip_search_query.split(',')
+                servername_list = servername_search_query.split(',')
+                result_tmp = get_d3_ips(servername_list)
+
+                for ip_details in result_tmp:
+                    if ip_details['ip_address'] in ip_search_list:
+                        result.append(ip_details) 
+                return Response(result)
 
                 return Response(result)
 
-        except:
+        except Exception as e:
+            print(e)
             return Response('error')
 
         return Response(ip_list)

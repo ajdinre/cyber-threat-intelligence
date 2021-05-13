@@ -28,8 +28,8 @@ export class FileService {
   }
   getFilteredDataForMatTable(listOfServersQuery :  string, searchIpAddressesQuery : string): Observable<IpAddress[]>{
     let params = new HttpParams();
-    params = params.append('serverNames', listOfServersQuery);
-    params = params.append('ipAddresses', searchIpAddressesQuery);
+    params = params.append('servernames', listOfServersQuery);
+    params = params.append('ipaddresses', searchIpAddressesQuery);
 
     return this.http.get<IpAddress[]>('/ip',{
       responseType : 'json',

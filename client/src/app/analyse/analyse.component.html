@@ -8,7 +8,7 @@
       <div>
         <mat-form-field id="select-multiple-button" appearance="outline">
           <mat-label>Server Names</mat-label>
-          <mat-select [formControl]="serverNames" multiple>
+          <mat-select [formControl]="serverNames" [(ngModel)]="chosenServerNamesList" multiple>
             <mat-select-trigger>
               {{serverNames.value ? serverNames.value[0] : ''}}
               <span *ngIf="serverNames.value?.length > 1" class="example-additional-selection">

@@ -21,7 +21,7 @@ import { IpAddress } from '../shared/components/classes/ipadrress';
 })
 export class AnalyseComponent implements AfterViewInit{
   serverNames = new FormControl();
-  retrievedSearchData : any[] = [];
+  chosenServerNamesList : string[] = [];
   private csrf : any;
   serverNamesList : string[] = [];
   searchIpAddressesQuery : string = '';
@@ -514,7 +514,7 @@ export class AnalyseComponent implements AfterViewInit{
         this.csrf = '';
       }
     this.getServerNames();
-    this.dataSource = new MatTableDataSource(this.retrievedSearchData);
+    this.dataSource = new MatTableDataSource();
   }
 
   ngAfterViewInit() {
@@ -552,10 +552,9 @@ export class AnalyseComponent implements AfterViewInit{
     });
   }
   searchWithNeo4j(){
-    const chosenServerNames = this.serverNamesList.join(',');
+    const chosenServerNames = this.chosenServerNamesList.join(',');
     this.fileService.getFilteredDataForMatTable(chosenServerNames, this.searchIpAddressesQuery)
       .subscribe((res)=>{
-        console.log(res);
         this.dataSource = new MatTableDataSource(res);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;

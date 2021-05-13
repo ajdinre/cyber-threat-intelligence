@@ -298,14 +298,23 @@ def get_all():
 
 
 # returns a list of all relationships between ip adresses and log lines
-def get_all_log_ip_relations(server_names):
+def get_all_log_ip_relations(server_names, ips):
     result_array = []
     query_string = 'MATCH(a:IP)-[r]-(b:Log_line)-[]->(c:Server) '
+    if server_names and ips:
+        query_string += " WHERE "
     for i in range(len(server_names)):
         if i > 0:
             query_string += ' OR c.server_name = "' + server_names[i] + '" '
         else:
-            query_string += ' WHERE c.server_name = "' + server_names[i] + '" '
+            query_string += ' c.server_name = "' + server_names[i] + '" '
+    if server_names:
+        query_string += " AND "
+    for i in range(len(ips)):
+        if i > 0:
+            query_string += ' OR a.ip_address = "' + ips[i] + '" '
+        else:
+            query_string += ' a.ip_address = "' + ips[i] + '" '
     query_string += ' RETURN a, r, b'
     db = Database(db_url, db_name, db_password)
     for res in db.query(query_string):
@@ -314,14 +323,23 @@ def get_all_log_ip_relations(server_names):
 
 
 # returns a list of all relationships between servers and log lines
-def get_all_log_server_relations(server_names):
+def get_all_log_server_relations(server_names, ips):
     result_array = []
     query_string = 'MATCH(a:Server)-[r]-(b:Log_line)-[]->(c:Server) '
+    if server_names and ips:
+        query_string += " WHERE "
     for i in range(len(server_names)):
         if i > 0:
             query_string += ' OR c.server_name = "' + server_names[i] + '" '
         else:
-            query_string += '  WHERE c.server_name = "' + server_names[i] + '" '
+            query_string += ' c.server_name = "' + server_names[i] + '" '
+    if server_names:
+        query_string += " AND "
+    for i in range(len(ips)):
+        if i > 0:
+            query_string += ' OR a.ip_address = "' + ips[i] + '" '
+        else:
+            query_string += ' a.ip_address = "' + ips[i] + '" '
     query_string += ' RETURN a, r, b'
     db = Database(db_url, db_name, db_password)
     for res in db.query(query_string):
@@ -330,14 +348,14 @@ def get_all_log_server_relations(server_names):
 
 
 # creates a list of nodes for D3.js
-def create_d3_nodes(server_names):
-    ip_nodes = get_d3_ips(server_names)
+def create_d3_nodes(server_names, ips):
+    ip_nodes = get_d3_ips(server_names, ips)
     for ip in ip_nodes:
         ip['group'] = 0
         ip['name'] = ip['ip_address']
 
     all_nodes = ip_nodes.copy()
-    logline_nodes = get_d3_loglines(server_names)
+    logline_nodes = get_d3_loglines(server_names, ips)
     for line in logline_nodes:
         line['group'] = 1
         line['name'] = line['path']
@@ -347,40 +365,60 @@ def create_d3_nodes(server_names):
 
 
 # gets all ip nodes connected to the given server
-def get_d3_ips(server_names):
+def get_d3_ips(server_names, ips):
     # match(a:IP)-[]->(b:Log_line)-[]->(c:Server {server_name: "jackie"}) return a,b
     result_array = []
     query_string = 'MATCH(a:IP)-[]->(b:Log_line)-[]->(c:Server) '
+    if server_names and ips:
+        query_string += " WHERE "
     for i in range(len(server_names)):
         if i > 0:
             query_string += ' OR c.server_name = "' + server_names[i] + '" '
         else:
-            query_string += '  WHERE c.server_name = "' + server_names[i] + '" '
+            query_string += ' c.server_name = "' + server_names[i] + '" '
+    if server_names:
+        query_string += " AND "
+    for i in range(len(ips)):
+        if i > 0:
+            query_string += ' OR a.ip_address = "' + ips[i] + '" '
+        else:
+            query_string += ' a.ip_address = "' + ips[i] + '" '
     query_string += ' return a'
-    db = Database(db_url, db_name, db_password)
-    for res in db.query(query_string):
-        result_array.append(res['a'])
+    db = Database(db_url, db_name, db_password).query(query_string)
+    if db:
+        for res in db:
+            result_array.append(res['a'])
     return result_array
 
-def get_d3_loglines(server_names):
+def get_d3_loglines(server_names, ips):
     # match(a:IP)-[]->(b:Log_line)-[]->(c:Server {server_name: "jackie"}) return a,b
     result_array = []
-    query_string = 'MATCH(a:IP)-[]->(b:Log_line)-[]->(c:Server) WHERE '
+    query_string = 'MATCH(a:IP)-[]->(b:Log_line)-[]->(c:Server) '
+    if server_names and ips:
+        query_string += " WHERE "
     for i in range(len(server_names)):
         if i > 0:
             query_string += ' OR c.server_name = "' + server_names[i] + '" '
         else:
-            query_string += ' WHERE c.server_name = "' + server_names[i] + '" '
+            query_string += ' c.server_name = "' + server_names[i] + '" '
+    if server_names:
+        query_string += " AND "
+    for i in range(len(ips)):
+        if i > 0:
+            query_string += ' OR a.ip_address = "' + ips[i] + '" '
+        else:
+            query_string += '  a.ip_address = "' + ips[i] + '" '
     query_string += ' return b'
-    db = Database(db_url, db_name, db_password)
-    for res in db.query(query_string):
-        result_array.append(res['b'])
+    db = Database(db_url, db_name, db_password).query(query_string)
+    if db:
+        for res in db:
+            result_array.append(res['b'])
     return result_array
 
 
 # creates a list of links for D3.js
-def create_d3_links(server_names):
-    r1 = get_all_log_ip_relations(server_names)
+def create_d3_links(server_names, ips):
+    r1 = get_all_log_ip_relations(server_names, ips)
     res = []
     for relationship in r1:
         temp = []
@@ -389,7 +427,7 @@ def create_d3_links(server_names):
         temp.append(relationship[2])
         res.append(temp)
 
-    r2 = get_all_log_server_relations(server_names)
+    r2 = get_all_log_server_relations(server_names, ips)
     for relationship in r2:
         temp = []
         temp.append(relationship[0])
@@ -406,4 +444,21 @@ def get_all_server_names():
     db = Database(db_url, db_name, db_password)
     for res in db.query(query_string):
         result_array.append(res['a.server_name'])
+    return result_array
+
+# gets all ip nodes connected to the given server
+def get_ips_by_server_name(server_names):
+    # match(a:IP)-[]->(b:Log_line)-[]->(c:Server {server_name: "jackie"}) return a,b
+    result_array = []
+    query_string = 'MATCH(a:IP)-[]->(b:Log_line)-[]->(c:Server) '
+    for i in range(len(server_names)):
+        if i > 0:
+            query_string += ' OR c.server_name = "' + server_names[i] + '" '
+        else:
+            query_string += ' WHERE c.server_name = "' + server_names[i] + '" '
+    query_string += ' return a'
+    db = Database(db_url, db_name, db_password).query(query_string)
+    if db:
+        for res in db:
+            result_array.append(res['a'])
     return result_array

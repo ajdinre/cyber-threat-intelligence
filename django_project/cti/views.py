@@ -15,7 +15,7 @@ from .forms import UploadFileForm, EditProfileForm, AddressForm, StatisticsForm
 from cti.models import IP, Log_line
 from .models import Apache_log
 from .log_analyzer import analyze
-from cti.neo4j.neo4j_classes import create_node, get_count_of_ip, get_Top_countries_by_ip, get_by_ip, get_by_country_code, get_by_city, get_by_org, get_by_region, get_by_timezone, get_by_postal, get_nodes, get_requests_for_ip, get_ips_with_request_method, get_all, get_all_ips, create_d3_nodes, create_d3_links, get_all_server_names, get_d3_ips
+from cti.neo4j.neo4j_classes import create_node, get_count_of_ip, get_Top_countries_by_ip, get_by_ip, get_by_country_code, get_by_city, get_by_org, get_ips_by_server_name, get_by_region, get_by_timezone, get_by_postal, get_nodes, get_requests_for_ip, get_ips_with_request_method, get_all, get_all_ips, create_d3_nodes, create_d3_links, get_all_server_names, get_d3_ips
 from django.urls import reverse
 from django.template.loader import get_template
 from .pdf_generator import render_to_pdf
@@ -117,13 +117,13 @@ class IPView(views.APIView):
 
             elif (ip_search_query == '' and servername_search_query != ''):
                 servername_list = servername_search_query.split(',')
-                result = get_d3_ips(servername_list)
+                result = get_ips_by_server_name(servername_list)
                 return Response(result)
 
             elif (ip_search_query != '' and servername_search_query != ''):
                 ip_search_list = ip_search_query.split(',')
                 servername_list = servername_search_query.split(',')
-                result_tmp = get_d3_ips(servername_list)
+                result_tmp = get_ips_by_server_name(servername_list)
 
                 for ip_details in result_tmp:
                     if ip_details['ip_address'] in ip_search_list:
@@ -155,13 +155,14 @@ class LogView(views.APIView):
 
 
 class d3CreateNodes(views.APIView):
-    permission_classes = [permissions.IsAuthenticated]
+    #permission_classes = [permissions.IsAuthenticated]
     def get(self, request, format=None):
         """
         Create d3 nodes.
         """
-        servername = request.query_params['servername']
-        nodes = create_d3_nodes(servername)
+        servernames = request.query_params['servernames'].split(',')
+        ips = request.query_params['ipaddresses'].split(',')
+        nodes = create_d3_nodes(servernames, ips)
         return Response(nodes)
 
 class ServernameView(views.APIView):
@@ -198,13 +199,14 @@ def ip_details(request, pk):
 
 
 class d3CreateLinks(views.APIView):
-    permission_classes = [permissions.IsAuthenticated]
+    #permission_classes = [permissions.IsAuthenticated]
     def get(self, request, format=None):
         """
         Create d3 links.
         """
-        servername = request.query_params['servername']
-        links = create_d3_links(servername)
+        servernames = request.query_params['servernames'].split(',')
+        ips = request.query_params['ipaddresses'].split(',')
+        links = create_d3_links(servernames, ips)
         return Response(links)
 
 

@@ -365,7 +365,7 @@ def get_d3_ips(server_names):
 def get_d3_loglines(server_names):
     # match(a:IP)-[]->(b:Log_line)-[]->(c:Server {server_name: "jackie"}) return a,b
     result_array = []
-    query_string = 'MATCH(a:IP)-[]->(b:Log_line)-[]->(c:Server) WHERE '
+    query_string = 'MATCH(a:IP)-[]->(b:Log_line)-[]->(c:Server) '
     for i in range(len(server_names)):
         if i > 0:
             query_string += ' OR c.server_name = "' + server_names[i] + '" '

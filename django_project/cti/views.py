@@ -97,18 +97,16 @@ class IPView(views.APIView):
         ip_list = get_all_ips()
         try:
             result = []
-            print('1')
             try:
-                ip_search_query = request.query_params['search']
+                ip_search_query = request.query_params['ipaddresses']
             except:
                 ip_search_query = None
             try:
-                servername_search_query = request.query_params['servername']
+                servername_search_query = request.query_params['servernames']
             except:
                 servername_search_query = None
 
             if (ip_search_query != None and servername_search_query == None):
-                print('3')
                 ip_search_list = ip_search_query.split(',')
 
                 for ip_details in ip_list:
@@ -116,13 +114,12 @@ class IPView(views.APIView):
                         result.append(ip_details) 
                 return Response(result)
 
-            #elif(ip_search_query == None and servername_search_query != None):
-            #    servername_search_list = servername_search_query.split(',')
-            #    for ip_details in ip_list:
-            #        if ip_details['ip_address'] == request.query_params['search']:
-            #            result.append(ip_details) 
+            if (ip_search_query == None and servername_search_query != None):
+                servername_list = servername_search_query.split(',')
+                print(get_d3_ips(servername_list))
 
-            #elif (ip_search_query != None and servername_search_query != None):
+                return Response(result)
+
         except:
             return Response('error')
 

@@ -160,8 +160,9 @@ class d3CreateNodes(views.APIView):
         """
         Create d3 nodes.
         """
-        servername = request.query_params['servername']
-        nodes = create_d3_nodes(servername)
+        servernames = request.query_params['servernames'].split(',')
+        ips = request.query_params['ipaddresses'].split(',')
+        nodes = create_d3_nodes(servernames, ips)
         return Response(nodes)
 
 class ServernameView(views.APIView):
@@ -203,8 +204,9 @@ class d3CreateLinks(views.APIView):
         """
         Create d3 links.
         """
-        servername = request.query_params['servername']
-        links = create_d3_links(servername)
+        servernames = request.query_params['servernames'].split(',')
+        ips = request.query_params['ipaddresses'].split(',')
+        links = create_d3_links(servernames, ips)
         return Response(links)
 
 

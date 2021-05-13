@@ -22,6 +22,7 @@
 }
 #serverName{
   width: 100% !important;
+  color: black;
 }
 .form-title{
   align-self: center !important;

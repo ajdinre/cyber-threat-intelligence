@@ -3,7 +3,7 @@
   <div fxLayout="row" fxLayoutAlign="space-around stretch" id="welcome-container">
     <mat-card fxFlex="50" id="welcome-card-1" style="margin-right: 10px;">
         <mat-card-title>
-            Welcome {{currentUser.username}}
+            Welcome {{currentUser.username}}!
         </mat-card-title>
         <mat-card-content>
             <p>
@@ -42,7 +42,7 @@
 
   <div fxFLex="20" class="table-container">
       <mat-card>
-      <mat-form-field>
+      <mat-form-field id="table-filter-input">
         <mat-label>Filter</mat-label>
         <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia" #input>
       </mat-form-field>

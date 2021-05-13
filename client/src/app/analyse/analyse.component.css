@@ -57,3 +57,6 @@ table {
 .node-text {
   color: whitesmoke;
 }
+#table-filter-input{
+  width:30%;
+}

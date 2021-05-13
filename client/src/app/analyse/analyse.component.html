@@ -3,7 +3,7 @@
   <div fxLayout="row" fxLayoutAlign="space-between stretch" id="file-selector-container">
     <mat-card fxFlex="" id="file-select-button-card" style="margin-right:10px;">
       <mat-card-header id="select-files-header">
-        <h3>Choose servers to analyse</h3>
+        <h3>Choose servers to analyse.</h3>
       </mat-card-header>
       <div>
         <mat-form-field id="select-multiple-button" appearance="outline">
@@ -23,14 +23,14 @@
 
     <mat-card fxFlex="" id="ip-adress-search-card" style="margin-right:10px;">
       <mat-card-header id="ip-address-search-header">
-        <h3>Filter IP adrresses</h3>
+        <h3>Filter IP adrresses.</h3>
       </mat-card-header>
       <div>
         <form class="ip-input-field-form">
           <mat-form-field class="ip-input-field">
             <mat-label>Search IPs...</mat-label>
-            <input matInput #message maxlength="256" [(ngModel)]="ipInputList" name="ipInputList" placeholder="Ex. 192.192.192.192">
-            <mat-hint style="font-size: medium;" align="start"><span>Leave empty if you want to search all addresses</span> </mat-hint>
+            <input matInput #message maxlength="256" [(ngModel)]="ipInputList" name="ipInputList" placeholder="Search multiple ip addresses with a comma ',' separator.">
+            <mat-hint style="font-size: medium;" align="start"><span>Leave empty if you want to search all addresses.</span> </mat-hint>
             <!--<mat-hint align="end">{{message.value.length}} / 256</mat-hint>-->
           </mat-form-field>
         </form>
@@ -52,7 +52,7 @@
   <div fxFLex="70" class="neo4j-container">
     <mat-card id="neo4j-mat-card">
       <mat-card-header id="neo4j-card-header">
-        <h3>Data relationship visualization</h3>
+        <h3>Data relationship visualization with Neo4j</h3>
 
       </mat-card-header>
       <mat-card-content id="neo4j-content-container" style="height: 500px;">
@@ -72,9 +72,9 @@
         <mat-card-header id="ip-table-card-header">
           <h3>Ip Table</h3>
         </mat-card-header>
-      <mat-form-field>
+      <mat-form-field id="table-filter-input">
         <mat-label>Filter</mat-label>
-        <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia" #input>
+        <input matInput (keyup)="applyFilter($event)" placeholder="Ex. 'US', 'Zagreb'..." #input>
       </mat-form-field>
 
       <div class="mat-elevation-z8">
@@ -113,11 +113,6 @@
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Country </th>
             <td mat-cell *matCellDef="let row"> {{row.country}} </td>
           </ng-container>
-          <!-- Country Name Column -->
-          <ng-container matColumnDef="country_name">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Country Name </th>
-            <td mat-cell *matCellDef="let row"> {{row.countryName}} </td>
-          </ng-container>
           <!-- Postal Column -->
           <ng-container matColumnDef="postal">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Postal </th>
@@ -152,15 +147,5 @@
       </div>
     </mat-card>
   </div>
-
-  <div fxFLex="70" class="grafana-container">
-    <mat-card id="grafana-mat-card">
-      <mat-card-header id="grafana-card-header">
-        <h3>Grafana</h3>
-      </mat-card-header>
-    </mat-card>
-  </div>
-
-
 
 </div>

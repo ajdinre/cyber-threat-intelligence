@@ -499,7 +499,7 @@ export class AnalyseComponent implements AfterViewInit{
   selectedLink = null;
 
 
-  displayedColumns: string[] = ['ip_address', 'host_name', 'org', 'city', 'region', 'country', 'country_name', 'postal','time_zone','latitude','longitude'];
+  displayedColumns: string[] = ['ip_address', 'host_name', 'org', 'city', 'region', 'country', 'postal','time_zone','latitude','longitude'];
   dataSource: MatTableDataSource<IpAddress>;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;

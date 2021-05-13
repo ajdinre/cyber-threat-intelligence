@@ -30,3 +30,6 @@ mat-card{
 #welcome-container{
   display:flex !important;
 }
+#table-filter-input{
+  width:30%;
+}

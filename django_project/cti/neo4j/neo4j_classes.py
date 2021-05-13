@@ -301,7 +301,7 @@ def get_all():
 def get_all_log_ip_relations(server_names, ips):
     result_array = []
     query_string = 'MATCH(a:IP)-[r]-(b:Log_line)-[]->(c:Server) '
-    if server_names or ips:
+    if server_names or ips[0] == '':
         query_string += " WHERE ("
     for i in range(len(server_names)):
         if i > 0:
@@ -326,7 +326,7 @@ def get_all_log_ip_relations(server_names, ips):
 def get_all_log_server_relations(server_names, ips):
     result_array = []
     query_string = 'MATCH(a:Server)-[r]-(b:Log_line)-[]->(c:Server) '
-    if server_names or ips:
+    if server_names or ips[0] == '':
         query_string += " WHERE ("
     for i in range(len(server_names)):
         if i > 0:
@@ -369,7 +369,7 @@ def get_d3_ips(server_names, ips):
     # match(a:IP)-[]->(b:Log_line)-[]->(c:Server {server_name: "jackie"}) return a,b
     result_array = []
     query_string = 'MATCH(a:IP)-[]->(b:Log_line)-[]->(c:Server) '
-    if server_names or ips:
+    if server_names or ips[0] == '':
         query_string += " WHERE ("
     for i in range(len(server_names)):
         if i > 0:
@@ -394,7 +394,7 @@ def get_d3_loglines(server_names, ips):
     # match(a:IP)-[]->(b:Log_line)-[]->(c:Server {server_name: "jackie"}) return a,b
     result_array = []
     query_string = 'MATCH(a:IP)-[]->(b:Log_line)-[]->(c:Server) '
-    if server_names or ips:
+    if server_names or ips[0] == '':
         query_string += " WHERE ("
     for i in range(len(server_names)):
         if i > 0:

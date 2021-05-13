@@ -29,7 +29,7 @@
         <form class="ip-input-field-form">
           <mat-form-field class="ip-input-field">
             <mat-label>Search IPs...</mat-label>
-            <input matInput #message maxlength="256" [(ngModel)]="ipInputList" name="ipInputList" placeholder="Search multiple ip addresses with a comma ',' separator.">
+            <input matInput #message maxlength="256" [(ngModel)]="searchIpAddressesQuery" name="ipInputList" placeholder="Search multiple ip addresses with a comma ',' separator.">
             <mat-hint style="font-size: medium;" align="start"><span>Leave empty if you want to search all addresses.</span> </mat-hint>
             <!--<mat-hint align="end">{{message.value.length}} / 256</mat-hint>-->
           </mat-form-field>

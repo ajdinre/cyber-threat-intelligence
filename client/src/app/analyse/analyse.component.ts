@@ -555,6 +555,7 @@ export class AnalyseComponent implements AfterViewInit{
     const chosenServerNames = this.chosenServerNamesList.join(',');
     this.fileService.getFilteredDataForMatTable(chosenServerNames, this.searchIpAddressesQuery)
       .subscribe((res)=>{
+        console.log(res);
         this.dataSource = new MatTableDataSource(res);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;

@@ -1,16 +1,15 @@
 <div fxFlex fxLayout="column" fxLayoutGap="10px" style="">
       <mat-toolbar class="margin-fix" fxLayout="row" fxLayoutAlign="space-between center" color="primary" style="background-color: rgb(66, 66, 68); height: 6vh;">
         <div>
-        <button type="button" aria-label="Toggle sidenav"
-        mat-icon-button (click)="drawer.toggle()">
-        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
-        </button>
-        <img src="/static/img/icon.png" style="margin: 0 10px; filter: invert(1); height: 50px; width: 50px; ">
-        <span style="vertical-align: middle;">Cyber Threat Intelligence</span>
+          <button type="button" aria-label="Toggle sidenav"
+          mat-icon-button (click)="drawer.toggle()">
+          <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+          </button>
+          <img src="/static/img/icon.png" style="margin: 0 10px; filter: invert(1); height: 50px; width: 50px; ">
+          <span style="vertical-align: middle;">Cyber Threat Intelligence</span>
         </div>
         <mat-menu #profileMenu="matMenu" yPosition="below" >
           <ng-template matMenuContent >
-            <button mat-menu-item style="background-color: rgb(66, 66, 66); color:whitesmoke" routerLink="/settings" routerLinkActive="active">Settings</button>
             <button mat-menu-item style="background-color: rgb(66, 66, 66); color:whitesmoke" (click)="logoutRedirect()">Sign Out</button>
           </ng-template>
         </mat-menu>

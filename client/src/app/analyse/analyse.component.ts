@@ -104,6 +104,7 @@ export class AnalyseComponent implements AfterViewInit{
   searchWithNeo4j(){
     const chosenServerNames = this.chosenServerNamesList.join(',');
 
+
     //Mat Table data request
     this.fileService.getFilteredDataForMatTable(chosenServerNames, this.searchIpAddressesQuery)
       .subscribe((res)=>{
@@ -112,6 +113,7 @@ export class AnalyseComponent implements AfterViewInit{
         this.dataSource.sort = this.sort;
       });
 
+      this.cleanUpD3Canvas();
     //Neo4j nodes data request
     this.fileService.getFilteredDataForNeoNodes(chosenServerNames, this.searchIpAddressesQuery)
       .subscribe((res)=>{
@@ -125,7 +127,7 @@ export class AnalyseComponent implements AfterViewInit{
         console.log(res);
         this.APIlinks = res;
       });
-    this.ngAfterContentInit();
+      setTimeout(() =>{ this.ngAfterContentInit()}, 500);
   }
 
   searchWithGrafana(){
@@ -136,10 +138,27 @@ export class AnalyseComponent implements AfterViewInit{
 
 
 }
+
   // d3 code
+  cleanUpD3Canvas() {
+    var d3container = document.getElementById("graphContainer");
+
+    while (d3container?.firstChild) {
+      d3container.querySelectorAll('*').forEach(n => n.remove());
+    }
+    while(this.links.length > 0) {
+      this.links.pop()
+    }
+    while(this.nodes.length > 0) {
+      this.nodes.pop()
+    }
+    while(this.APIlinks.length > 0) {
+      this.APIlinks.pop()
+    }
+  }
+
   ngAfterContentInit() {
     this.width = document.getElementById('neo4j-content-container')!.clientWidth;
-
     // reformating links
     this.links.pop()
     this.APIlinks.forEach(r => {
@@ -156,6 +175,14 @@ export class AnalyseComponent implements AfterViewInit{
       .attr('width', this.width)
       .attr('height', this.height);
 
+
+
+    setTimeout(() =>{ this.simulate()}, 2000);
+
+    setTimeout(() =>{ this.restart()}, 4000);
+  }
+
+  simulate() {
     this.force = d3.forceSimulation()
       .force('link', d3.forceLink().id((d: any) => d.id).distance(150))
       .force('charge', d3.forceManyBody().strength(-500))
@@ -167,10 +194,6 @@ export class AnalyseComponent implements AfterViewInit{
     // handles to link and node element groups
     this.path = this.svg.append('svg:g').selectAll('path');
     this.circle = this.svg.append('svg:g').selectAll('g');
-
-
-
-    setTimeout(() =>{ this.restart()}, 5000);
   }
 
 
@@ -269,7 +292,7 @@ export class AnalyseComponent implements AfterViewInit{
       .nodes(this.nodes)
       .force('link').links(this.links, d => d.id);
 
-    this.force.alphaTarget(0.3).restart();
+      setTimeout(() =>{ this.force.alphaTarget(0.3).restart()}, 1000);
   }
 
   dragended(event, d) {

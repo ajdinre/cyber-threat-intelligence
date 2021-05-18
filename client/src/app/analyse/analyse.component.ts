@@ -153,11 +153,11 @@ export class AnalyseComponent implements AfterViewInit{
     // draw graph container
     this.svg = d3.select('#graphContainer')
       .attr('oncontextmenu', 'return false;')
-      .attr('width', '100%')
-      .attr('height', '100%');
+      .attr('width', this.width)
+      .attr('height', this.height);
 
     this.force = d3.forceSimulation()
-      .force('link', d3.forceLink().id((d: any) => d.name).distance(150))
+      .force('link', d3.forceLink().id((d: any) => d.id).distance(150))
       .force('charge', d3.forceManyBody().strength(-500))
       .force('x', d3.forceX(this.width / 2))
       .force('y', d3.forceY(this.height / 2))
@@ -169,7 +169,8 @@ export class AnalyseComponent implements AfterViewInit{
     this.circle = this.svg.append('svg:g').selectAll('g');
 
 
-    this.restart();
+
+    setTimeout(() =>{ this.restart()}, 5000);
   }
 
 
@@ -180,6 +181,7 @@ export class AnalyseComponent implements AfterViewInit{
       return `M${d.source.x},${d.source.y}L${d.target.x},${d.target.y}`;
     });
 
+
     this.circle.attr('transform', (d) => `translate(${d.x},${d.y})`);
   }
 
@@ -189,13 +191,13 @@ export class AnalyseComponent implements AfterViewInit{
     this.path = this.path.data(this.links).enter()
       .append('svg:path')
       .attr('class', 'link')
-      .classed('selected', (d) => d === this.selectedLink)
+      //.classed('selected', (d) => d === this.selectedLink)
       .merge(this.path);
 
 
     // circle (node) group
     // NB: the function arg is crucial here! nodes are known by name, not by index!
-    this.circle = this.circle.data(this.nodes, (d) => d.name);
+    this.circle = this.circle.data(this.nodes, (d) => d.id);
 
     // draw nodes
     const g = this.circle.enter().append('svg:g');
@@ -208,7 +210,7 @@ export class AnalyseComponent implements AfterViewInit{
       })
       .style('stroke', (d) => {
         return this.stroke_colors[d.group%this.stroke_colors.length];
-      });
+      })
 
     this.svg.selectAll("circle")
       .call(
@@ -240,7 +242,7 @@ export class AnalyseComponent implements AfterViewInit{
       .attr('class', 'node-text')
       .style("fill", "#fff")
       .text((d) => {
-        if(d.ip_address != null) { return d.name; }
+        if(d.ip_address != null || d.server_name != null) { return d.id; }
         else { return ''; }
       })
     this.circle = g.merge(this.circle);
@@ -251,7 +253,7 @@ export class AnalyseComponent implements AfterViewInit{
         var node_details = '<div style="text-align: left;">';
         for (const key in d) {
           if(key !== 'x' && key !== 'y' && key !== 'vx' && key !== 'vy' && key !== 'index'
-          && key !== 'name' && key !== 'fx' && key !== 'fy' && key !== 'count' && key !== 'group') {
+          && key !== 'id' && key !== 'fx' && key !== 'fy' && key !== 'count' && key !== 'group') {
             node_details += `<p>${key}: ${d[key]}</p>`;
           }
         }
@@ -265,7 +267,7 @@ export class AnalyseComponent implements AfterViewInit{
     // set the graph in motion
     this.force
       .nodes(this.nodes)
-      .force('link').links(this.links);
+      .force('link').links(this.links, d => d.id);
 
     this.force.alphaTarget(0.3).restart();
   }

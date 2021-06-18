@@ -1,0 +1,6 @@
+django_project/upload/
+django_project/media/
+django_project/cti/__pycache__/
+client/node_modules/
+client/dist/
+client/dist/

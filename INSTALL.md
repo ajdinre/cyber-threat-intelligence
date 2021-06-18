@@ -1,8 +1,4 @@
-# Cyber Threat Intelligence
-
-A Django application for analyzing Apache logs for possible Denial-of-service attacks.
-
-## How to run this app
+//install instructions
 
 1. Install Postgres, Python3 and Neo4J
 
@@ -93,7 +89,3 @@ $ python manage.py createsuperuser
 This will propmt for information like username, email and password.
 
 The app should now be running http://localhost:8000 and you should be able to log into it with the credentials from step 9.
-
-## Bug reporting
-
-Please submit any bugs you encounter to GitHub Issues
